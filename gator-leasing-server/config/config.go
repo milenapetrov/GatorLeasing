@@ -10,6 +10,7 @@ type DBConfig struct {
 	Password string
 	Name     string
 	Charset  string
+	Address  string
 }
 
 type ServerConfig struct {
@@ -23,6 +24,7 @@ func GetConfig() *Config {
 			Password: "",
 			Name:     "releasedb",
 			Charset:  "utf8",
+			Address:  "127.0.0.1:3306",
 		},
 		Server: &ServerConfig{
 			Address: "0.0.0.0:8080",
