@@ -15,5 +15,7 @@ func NewLeaseRepository(db *gorm.DB) *LeaseRepository {
 }
 
 func (r *LeaseRepository) GetAllLeases() (*[]model.Lease, error) {
-	return &[]model.Lease{}, nil
+	var leases *[]model.Lease
+	r.DB.Find(&leases)
+	return leases, nil
 }
