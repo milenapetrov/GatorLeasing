@@ -16,7 +16,7 @@ type Database struct {
 }
 
 func (d *Database) GetConnection(dbConfig *config.DBConfig) error {
-	dsn := fmt.Sprintf("%s:%s@/%s?charset=%s&parseTime=True",
+	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/%s?charset=%s&parseTime=True&loc=Local",
 		dbConfig.Username,
 		dbConfig.Password,
 		dbConfig.Name,

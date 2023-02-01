@@ -20,8 +20,8 @@ func GetConfig() *Config {
 	return &Config{
 		DB: &DBConfig{
 			Username: "root",
-			Password: "LKDAM6341Eastwood3!",
-			Name:     "GatorLeasing",
+			Password: "",
+			Name:     "releasedb",
 			Charset:  "utf8",
 		},
 		Server: &ServerConfig{

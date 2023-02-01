@@ -1,6 +1,10 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"GatorLeasing/gator-leasing-server/model"
+
+	"gorm.io/gorm"
+)
 
 type LeaseRepository struct {
 	DB *gorm.DB
@@ -8,4 +12,8 @@ type LeaseRepository struct {
 
 func NewLeaseRepository(db *gorm.DB) *LeaseRepository {
 	return &LeaseRepository{DB: db}
+}
+
+func (r *LeaseRepository) GetAllLeases() (*[]model.Lease, error) {
+	return &[]model.Lease{}, nil
 }
