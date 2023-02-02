@@ -14,8 +14,8 @@ func NewLeaseRepository(db *gorm.DB) *LeaseRepository {
 	return &LeaseRepository{DB: db}
 }
 
-func (r *LeaseRepository) GetAllLeases() (*[]model.Lease, error) {
-	var leases *[]model.Lease
+func (r *LeaseRepository) GetAllLeases() ([]model.Lease, error) {
+	var leases []model.Lease
 	r.DB.Find(&leases)
 	return leases, nil
 }

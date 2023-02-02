@@ -65,9 +65,9 @@ func (s *Server) handler() *mux.Router {
 
 	r.Use(mux.CORSMethodMiddleware(r))
 
-	http.Handle("/", r)
-
 	get(r, "/leases", s.getAllLeases)
+
+	r.PathPrefix("/")
 
 	return r
 }

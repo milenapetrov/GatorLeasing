@@ -18,7 +18,7 @@ func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 
 	var leaseEntities []*entity.Lease
 
-	for _, l := range *leases {
+	for _, l := range leases {
 		leaseEntities = append(leaseEntities, entity.NewLease(&l))
 	}
 

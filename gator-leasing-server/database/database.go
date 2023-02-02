@@ -35,5 +35,5 @@ func (d *Database) GetConnection(dbConfig *config.DBConfig) error {
 }
 
 func (d *Database) AutoMigrate() {
-	d.DB.AutoMigrate(model.Lease{})
+	d.DB.AutoMigrate(&model.Lease{})
 }
