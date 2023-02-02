@@ -1,7 +1,7 @@
 package service
 
 import (
-	"GatorLeasing/gator-leasing-server/model"
+	"GatorLeasing/gator-leasing-server/entity"
 	"GatorLeasing/gator-leasing-server/repository"
 )
 
@@ -13,7 +13,14 @@ func NewLeaseService(repository *repository.LeaseRepository) *LeaseService {
 	return &LeaseService{repository: repository}
 }
 
-func (s *LeaseService) GetAllLeases() (*[]model.Lease, error) {
+func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	leases, err := s.repository.GetAllLeases()
-	return leases, err
+
+	var leaseEntities []*entity.Lease
+
+	for _, l := range *leases {
+		leaseEntities = append(leaseEntities, entity.NewLease(&l))
+	}
+
+	return leaseEntities, err
 }

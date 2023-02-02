@@ -1,5 +1,4 @@
 export interface Lease{
-    id: string,
+    id: number,
     name: string,
-    buildingType: string
 }

@@ -21,7 +21,7 @@ func GetConfig() *Config {
 	return &Config{
 		DB: &DBConfig{
 			Username: "root",
-			Password: "",
+			Password: "LKDAM6341Eastwood3!",
 			Name:     "releasedb",
 			Charset:  "utf8",
 			Address:  "127.0.0.1:3306",

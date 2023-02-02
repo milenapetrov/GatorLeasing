@@ -16,6 +16,6 @@ export class AppComponent {
   }
 
   loadLeases(){
-    this.leaseService.getLeases().subscribe((leases) => this.leases = leases);
+    this.leaseService.getLeases().subscribe((leases) => { this.leases = leases});
   }
 }
