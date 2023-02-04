@@ -1,6 +1,5 @@
 package entity
 
-type Lease struct {
-	ID   uint   `json:"id"`
+type CreateLeaseRequest struct {
 	Name string `json:"name"`
 }

@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"log"
 	"net/http"
@@ -13,18 +12,18 @@ import (
 	"github.com/gorilla/mux"
 
 	"GatorLeasing/gator-leasing-server/config"
-	"GatorLeasing/gator-leasing-server/service"
+	"GatorLeasing/gator-leasing-server/handler"
 )
 
 type Server struct {
 	config       *config.ServerConfig
-	leaseService *service.LeaseService
+	leaseHandler *handler.LeaseHandler
 }
 
-func NewServer(config *config.ServerConfig, leaseService *service.LeaseService) *Server {
+func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler) *Server {
 	return &Server{
 		config:       config,
-		leaseService: leaseService,
+		leaseHandler: leaseHandler,
 	}
 }
 
@@ -42,7 +41,7 @@ func (s *Server) Run() {
 
 	go func() {
 		if err := httpServer.ListenAndServe(); err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 	}()
 
@@ -65,7 +64,8 @@ func (s *Server) handler() *mux.Router {
 
 	r.Use(mux.CORSMethodMiddleware(r))
 
-	get(r, "/leases", s.getAllLeases)
+	get(r, "/leases", s.leaseHandler.GetAllLeases)
+	post(r, "/leases", s.leaseHandler.PostLease)
 
 	r.PathPrefix("/")
 
@@ -90,34 +90,4 @@ func put(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.
 // Wrap the router for DELETE method
 func delete(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
 	router.HandleFunc(path, f).Methods("DELETE")
-}
-
-// respondJSON makes the response with payload as json format
-func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
-	response, err := json.Marshal(payload)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	w.Write([]byte(response))
-}
-
-// respondError makes the error response with payload as json format
-func respondError(w http.ResponseWriter, code int, message string) {
-	respondJSON(w, code, map[string]string{"error": message})
-}
-
-func (s *Server) getAllLeases(w http.ResponseWriter, r *http.Request) {
-	leases, err := s.leaseService.GetAllLeases()
-	if err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	respondJSON(w, http.StatusOK, leases)
-	return
 }

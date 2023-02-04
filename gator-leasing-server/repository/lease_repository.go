@@ -19,3 +19,8 @@ func (r *LeaseRepository) GetAllLeases() ([]model.Lease, error) {
 	r.DB.Find(&leases)
 	return leases, nil
 }
+
+func (r *LeaseRepository) CreateLease(lease *model.Lease) (uint, error) {
+	result := r.DB.Create(lease)
+	return lease.ID, result.Error
+}
