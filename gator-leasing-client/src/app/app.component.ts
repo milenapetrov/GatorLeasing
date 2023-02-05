@@ -4,12 +4,20 @@ import { Lease } from './models/lease';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: `
+      <h2>{{ title }}</h2>
+      <ul>
+        <li *ngFor="let lease of leases">
+            {{ lease.id + '-' + lease.name }}
+        </li>
+      </ul>
+    `  
+  //templateUrl: './app.component.html',
+  ,styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   leases: Lease[] = [];
-  title = 'gator-leasing-client';
+  title = 'Leases';
 
   constructor(private leaseService:LeaseService){
     this.loadLeases();
