@@ -14,8 +14,17 @@ import { PostLeaseRequest } from './models/PostLeaseRequest';
             {{ lease.id }} -  {{ lease.name }}
         </div>
       <app-post></app-post>
+
+      <br> <br>
+      <h2> Current Listings: </h2>
+      <body ng-app="myApp">
       
-      </ul>
+      <p><a href="#!1-bed-4-by-4-standard">1 bedroom in a 4x4 at the Standard</a> </p>
+
+      <p><a href="#!2-bed-4-by-2-lark">2 bedrooms in a 4x2 at the Lark</a> </p>
+      
+      <div ng-view></div>
+            
     `  
   //templateUrl: './app.component.html',    for writing code in .html file
   ,styleUrls: ['./app.component.css']

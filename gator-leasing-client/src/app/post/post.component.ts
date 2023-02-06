@@ -10,6 +10,7 @@ import { PostLeaseRequest } from '../models/PostLeaseRequest';
       <input id="name" [(ngModel)]="post.name" placeholder="name">
    </div>
       <br>
+      <br>
       <div class="box">
        <br>
         1 bedroom in a 4x4 at the Standard.
@@ -17,7 +18,6 @@ import { PostLeaseRequest } from '../models/PostLeaseRequest';
         <br> 
         <br>
       </div>
-  
   `
   //templateUrl: './post.component.html',
   ,styleUrls: ['./post.component.css']
