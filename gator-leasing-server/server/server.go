@@ -66,7 +66,7 @@ func (s *Server) handler() *mux.Router {
 
 	get(r, "/leases", s.leaseHandler.GetAllLeases)
 	post(r, "/leases", s.leaseHandler.PostLease)
-	put(r, "/leases", s.leaseHandler.PutLease)
+	put(r, "/leases/{id}", s.leaseHandler.PutLease)
 
 	r.PathPrefix("/")
 

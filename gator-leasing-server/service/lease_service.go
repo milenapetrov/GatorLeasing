@@ -29,12 +29,12 @@ func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	return leaseEntities, nil
 }
 
-func (s *LeaseService) CreateLease(request entity.CreateLeaseRequest) (uint, error) {
+func (s *LeaseService) CreateLease(request *entity.CreateLeaseRequest) (uint, error) {
 	lease := &model.Lease{Name: request.Name}
 	return s.repository.CreateLease(lease)
 }
 
-func (s *LeaseService) EditLease(request entity.EditLeaseRequest) error {
-	lease := &model.Lease{Name: request.Name}
-	return s.repository.EditLease(request.Id, lease)
+func (s *LeaseService) EditLease(request *entity.EditLeaseRequest) error {
+	lease := &model.Lease{ID: request.ID, Name: request.Name}
+	return s.repository.EditLease(lease)
 }

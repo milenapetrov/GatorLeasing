@@ -16,21 +16,24 @@ func NewLeaseRepository(db *gorm.DB) *LeaseRepository {
 
 func (r *LeaseRepository) GetAllLeases() ([]model.Lease, error) {
 	var leases []model.Lease
-	r.DB.Find(&leases)
-	return leases, nil
+	err := r.DB.Find(&leases).Error
+	return leases, err
 }
 
 func (r *LeaseRepository) CreateLease(lease *model.Lease) (uint, error) {
-	result := r.DB.Create(lease)
-	return lease.ID, result.Error
+	err := r.DB.Create(lease).Error
+	return lease.ID, err
 }
 
-func (r *LeaseRepository) EditLease(id uint, lease *model.Lease) error {
-	var oldLease model.Lease
-	r.DB.First(&oldLease, id)
+func (r *LeaseRepository) EditLease(lease *model.Lease) error {
+	oldLease := model.Lease{ID: lease.ID}
+	err := r.DB.First(&oldLease).Error
+	if err != nil {
+		return err
+	}
 
 	oldLease.Name = lease.Name
 
-	result := r.DB.Save(&lease)
-	return result.Error
+	err = r.DB.Save(&oldLease).Error
+	return err
 }

@@ -3,6 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 
 	"GatorLeasing/gator-leasing-server/entity"
 	"GatorLeasing/gator-leasing-server/service"
@@ -38,7 +41,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := h.leaseService.CreateLease(request)
+	id, err := h.leaseService.CreateLease(&request)
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -49,20 +52,26 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
-	var request entity.EditLeaseRequest
+	params := mux.Vars(r)
+	id, err := strconv.ParseUint(params["id"], 10, 32)
+	if err != nil {
+		respondError(w, http.StatusBadRequest, err.Error())
+	}
+
+	request := entity.EditLeaseRequest{ID: uint(id)}
 
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&request); err != nil {
+	if err = decoder.Decode(&request); err != nil {
 		respondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err := h.leaseService.EditLease(request)
+	err = h.leaseService.EditLease(&request)
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	respondJson(w, http.StatusOK, nil)
+	respondJson(w, http.StatusNoContent, nil)
 	return
 }
