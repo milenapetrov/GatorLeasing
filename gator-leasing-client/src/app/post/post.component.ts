@@ -9,8 +9,13 @@ import { PostLeaseRequest } from '../models/PostLeaseRequest';
       <label for="name"> Post name: </label>
       <input id="name" [(ngModel)]="post.name" placeholder="name">
    </div>
+      <br>
       <div class="box">
-        This text is enclosed in a box.
+       <br>
+        1 bedroom in a 4x4 at the Standard.
+        <br>
+        <br> 
+        <br>
       </div>
   
   `
