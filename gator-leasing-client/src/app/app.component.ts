@@ -18,6 +18,7 @@ import { PostLeaseRequest } from './models/PostLeaseRequest';
       <div> 
           <label for="name"> Post name: </label>
           <input id="name" [(ngModel)]="post.name" placeholder="name">
+          <app-post></app-post>
        </div>
       </ul>
     `  
@@ -47,6 +48,7 @@ export class AppComponent {
   }*/
 }
 
+// <app-post> </app-post>
 /*<input #post
             (keyup.enter)= "addPost(post.value)"
             (blur)= "addPost(post.value); post.value='' ">
