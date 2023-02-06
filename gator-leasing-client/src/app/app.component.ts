@@ -13,13 +13,8 @@ import { PostLeaseRequest } from './models/PostLeaseRequest';
         <div *ngFor="let lease of leases">
             {{ lease.id }} -  {{ lease.name }}
         </div>
-
-      <h2> {{ post.name }} </h2>
-      <div> 
-          <label for="name"> Post name: </label>
-          <input id="name" [(ngModel)]="post.name" placeholder="name">
-          <app-post></app-post>
-       </div>
+      <app-post></app-post>
+      
       </ul>
     `  
   //templateUrl: './app.component.html',    for writing code in .html file
@@ -29,9 +24,6 @@ import { PostLeaseRequest } from './models/PostLeaseRequest';
 export class AppComponent {
   leases: Lease[] = [];
   title = 'Leases';
-  post: PostLeaseRequest ={
-    name: 'urmom'
-  };
 
   constructor(private leaseService:LeaseService){
     this.loadLeases();
