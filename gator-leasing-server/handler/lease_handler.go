@@ -47,3 +47,22 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusCreated, id)
 	return
 }
+
+func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
+	var request entity.EditLeaseRequest
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&request); err != nil {
+		respondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := h.leaseService.EditLease(request)
+	if err != nil {
+		respondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondJson(w, http.StatusOK, nil)
+	return
+}

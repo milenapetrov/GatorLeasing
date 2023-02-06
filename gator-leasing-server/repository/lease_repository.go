@@ -24,3 +24,13 @@ func (r *LeaseRepository) CreateLease(lease *model.Lease) (uint, error) {
 	result := r.DB.Create(lease)
 	return lease.ID, result.Error
 }
+
+func (r *LeaseRepository) EditLease(id uint, lease *model.Lease) error {
+	var oldLease model.Lease
+	r.DB.First(&oldLease, id)
+
+	oldLease.Name = lease.Name
+
+	result := r.DB.Save(&lease)
+	return result.Error
+}

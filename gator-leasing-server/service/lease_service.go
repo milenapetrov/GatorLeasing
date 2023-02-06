@@ -33,3 +33,8 @@ func (s *LeaseService) CreateLease(request entity.CreateLeaseRequest) (uint, err
 	lease := &model.Lease{Name: request.Name}
 	return s.repository.CreateLease(lease)
 }
+
+func (s *LeaseService) EditLease(request entity.EditLeaseRequest) error {
+	lease := &model.Lease{Name: request.Name}
+	return s.repository.EditLease(request.Id, lease)
+}
