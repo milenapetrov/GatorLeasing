@@ -10,18 +10,19 @@ import { PostLeaseRequest } from './models/PostLeaseRequest';
   template: `
       <h1>{{ title }}</h1>
       <ul>
-        <div *ngFor="let lease of leases">
-            {{ lease.id }} -  {{ lease.name }}
-        </div>
       <app-post></app-post>
 
       <br> <br>
       <h2> Current Listings: </h2>
       <body ng-app="myApp">
       
-      <p><a href="#!1-bed-4-by-4-standard">1 bedroom in a 4x4 at the Standard</a> </p>
+      <div *ngFor="let lease of leases">
+            <p><a href="#leaseNumber{{lease.id}}"> {{lease.id}} - {{ lease.name }} </a></p>
+        </div>
 
-      <p><a href="#!2-bed-4-by-2-lark">2 bedrooms in a 4x2 at the Lark</a> </p>
+      <p><a href="#!3-bed-4-by-4-standard">3 bedroom in a 4x4 at the Standard</a> </p>
+
+      <p><a href="#!4-bed-4-by-2-lark">4 bedrooms in a 4x2 at the Lark</a> </p>
       
       <div ng-view></div>
             

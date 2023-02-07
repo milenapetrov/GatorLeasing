@@ -5,13 +5,13 @@ import { PostLeaseRequest } from '../models/PostLeaseRequest';
   selector: 'app-post',
   template: `
     <div> 
-      <label for="name"> Post name: </label>
+      <label for="name"> Post Lease: </label>
       <input #p
             (keyup.enter)= "addPost(p.value)"
             
             placeholder="name">
 
-      <button type="button" (click)="addPost(p.value)"> post </button>
+      <button type="button" (click)="addPost(p.value)" > post </button>
     </div>
   
 
