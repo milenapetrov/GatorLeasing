@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , Input, Output, EventEmitter} from '@angular/core';
 import { PostLeaseRequest } from '../models/PostLeaseRequest';
 
 @Component({
@@ -15,31 +15,37 @@ import { PostLeaseRequest } from '../models/PostLeaseRequest';
     </div>
   
 
-    <br>
-    <br>
-    <div class="box">
-    <br>
-      {{post.name}}
-    <br>
-    <br> 
-    <br>
-    </div>
-  
   `
   //templateUrl: './post.component.html',
   ,styleUrls: ['./post.component.css']
 })
 export class PostComponent {
   //name: 'Ur moms Penthouse'
-  post: PostLeaseRequest ={
+  post: PostLeaseRequest = {
     name: ' '
   };
 
+  @Output() newPost = new EventEmitter<string>(); 
+
+
   addPost(name: string) {
-    this.post.name = name;
+    this.newPost.emit(name);
   };
+
 }
 
 
 //<input id="name" [(ngModel)]="post.name" placeholder="name">         for dynamic input
 //(blur)= "addPost(p.value); p.value='' "
+
+//BOX
+// <br>
+//     <br>
+//     <div class="box">
+//     <br>
+//       {{post.name}}
+//     <br>
+//     <br> 
+//     <br>
+//     </div>
+  
