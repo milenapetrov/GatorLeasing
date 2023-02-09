@@ -68,7 +68,12 @@ func (s *Server) handler() *mux.Router {
 	post(r, "/leases", s.leaseHandler.PostLease)
 	put(r, "/leases/{id}", s.leaseHandler.PutLease)
 
-	r.PathPrefix("/")
+	r.PathPrefix("/").HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.WriteHeader(http.StatusNotFound)
+			return
+		})
 
 	return r
 }
