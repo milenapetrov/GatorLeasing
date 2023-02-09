@@ -26,3 +26,4 @@
 * Use branches to create features in a safer and more organized manner
 * Keep up with documentation (we have none so far)
 * Assign user stories to specific people at the beginning of the sprint so they know what to work on
+* Unit tests (we have none so far)
