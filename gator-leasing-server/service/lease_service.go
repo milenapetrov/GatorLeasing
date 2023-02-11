@@ -7,15 +7,16 @@ import (
 )
 
 type LeaseService struct {
-	repository *repository.LeaseRepository
+	repository repository.ILeaseRepository
 }
 
-func NewLeaseService(repository *repository.LeaseRepository) *LeaseService {
+func NewLeaseService(repository repository.ILeaseRepository) *LeaseService {
 	return &LeaseService{repository: repository}
 }
 
 func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	leases, err := s.repository.GetAllLeases()
+
 	if err != nil {
 		return nil, err
 	}
