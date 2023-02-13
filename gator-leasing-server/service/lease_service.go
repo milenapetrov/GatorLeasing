@@ -31,10 +31,18 @@ func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 
 func (s *LeaseService) CreateLease(request *entity.CreateLeaseRequest) (uint, error) {
 	lease := &model.Lease{Name: request.Name}
-	return s.repository.CreateLease(lease)
+	id, err := s.repository.CreateLease(lease)
+	return id, err
 }
 
 func (s *LeaseService) EditLease(request *entity.EditLeaseRequest) error {
 	lease := &model.Lease{ID: request.ID, Name: request.Name}
-	return s.repository.EditLease(lease)
+	err := s.repository.EditLease(lease)
+	return err
+}
+
+func (s *LeaseService) DeleteLease(request *entity.DeleteLeaseRequest) error {
+	lease := &model.Lease{ID: request.ID, Name: request.Name}
+	err := s.repository.DeleteLease(lease)
+	return err
 }
