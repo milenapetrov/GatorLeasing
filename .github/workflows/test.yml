@@ -1,0 +1,39 @@
+on:
+  push:
+    branches:
+    - main
+  
+  pull_request:
+    branches:
+    - main
+  
+  workflow_dispatch:
+  
+jobs:
+  build_test:
+    name: build and test
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3.3.0
+    
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v3.6.0
+      
+    - name: Setup Go environment
+      uses: actions/setup-go@v3.5.0
+      
+    - name: Install dependencies
+      run: |
+        cd ./gator-leasing-client
+        npm install
+        cd ../gator-leasing-server
+        go get
+        
+    - name: Build and test
+      run: |
+        cd ./gator-leasing-server
+        go build
+        go test ./...
+    
+    
