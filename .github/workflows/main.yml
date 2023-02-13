@@ -23,14 +23,14 @@ jobs:
       
     - name: Install dependencies
       run: |
-        cd gator-leasing-client
+        cd ./gator-leasing-client
         npm install
         cd ../gator-leasing-server
         go get
         
     - name: Build and test
       run: |
-        cd gator-leasing-server
+        cd ./gator-leasing-server
         go build
         go test ./...
     
