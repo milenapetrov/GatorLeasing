@@ -44,3 +44,13 @@ func (r *LeaseRepository) EditLease(lease *model.Lease) error {
 	err = r.DB.Save(&oldLease).Error
 	return err
 }
+
+func (r *LeaseRepository) DeleteLease(lease *model.Lease) error {
+	err := r.DB.First(&lease).Error
+	if err != nil {
+		return err
+	}
+
+	err = r.DB.Delete(lease).Error
+	return err
+}
