@@ -71,3 +71,16 @@ func TestEditLeaseOK(t *testing.T) {
 	mockLeaseRepository.AssertExpectations(t)
 	assert.Nil(t, resultErr)
 }
+
+func TestDeleteLeaseOK(t *testing.T) {
+	mockLeaseRepository := mocks.NewILeaseRepository(t)
+	mockLeaseRepository.On("DeleteLease", mock.AnythingOfType("*model.Lease")).Return(nil)
+
+	leaseService := NewLeaseService(mockLeaseRepository)
+
+	request := entity.DeleteLeaseRequest{ID: 0, Name: "lease"}
+	resultErr := leaseService.DeleteLease(&request)
+
+	mockLeaseRepository.AssertExpectations(t)
+	assert.Nil(t, resultErr)
+}
