@@ -37,6 +37,20 @@ func (_m *ILeaseRepository) CreateLease(lease *model.Lease) (uint, error) {
 	return r0, r1
 }
 
+// DeleteLease provides a mock function with given fields: lease
+func (_m *ILeaseRepository) DeleteLease(lease *model.Lease) error {
+	ret := _m.Called(lease)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*model.Lease) error); ok {
+		r0 = rf(lease)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // EditLease provides a mock function with given fields: lease
 func (_m *ILeaseRepository) EditLease(lease *model.Lease) error {
 	ret := _m.Called(lease)

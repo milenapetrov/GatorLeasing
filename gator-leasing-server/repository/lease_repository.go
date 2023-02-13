@@ -11,6 +11,7 @@ type ILeaseRepository interface {
 	GetAllLeases() ([]model.Lease, error)
 	CreateLease(lease *model.Lease) (uint, error)
 	EditLease(lease *model.Lease) error
+	DeleteLease(lease *model.Lease) error
 }
 
 type LeaseRepository struct {
