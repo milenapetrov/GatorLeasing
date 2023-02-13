@@ -7,22 +7,23 @@ import (
 )
 
 type LeaseService struct {
-	repository *repository.LeaseRepository
+	repository repository.ILeaseRepository
 }
 
-func NewLeaseService(repository *repository.LeaseRepository) *LeaseService {
+func NewLeaseService(repository repository.ILeaseRepository) *LeaseService {
 	return &LeaseService{repository: repository}
 }
 
 func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
-	leases, err := s.repository.GetAllLeases()
+	leaseModels, err := s.repository.GetAllLeases()
+
 	if err != nil {
 		return nil, err
 	}
 
 	var leaseEntities []*entity.Lease
 
-	for _, l := range leases {
+	for _, l := range leaseModels {
 		leaseEntities = append(leaseEntities, &entity.Lease{ID: l.ID, Name: l.Name})
 	}
 

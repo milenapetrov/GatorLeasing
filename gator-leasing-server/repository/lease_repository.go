@@ -6,6 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockery --name ILeaseRepository
+type ILeaseRepository interface {
+	GetAllLeases() ([]model.Lease, error)
+	CreateLease(lease *model.Lease) (uint, error)
+	EditLease(lease *model.Lease) error
+}
+
 type LeaseRepository struct {
 	DB *gorm.DB
 }
