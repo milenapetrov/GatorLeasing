@@ -23,7 +23,7 @@ jobs:
       
     - name: Install dependencies
       run: |
-        cd ./gator-leasing-client
+        cd ../gator-leasing-client
         npm install
         cd ../gator-leasing-server
         go get
