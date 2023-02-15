@@ -1,5 +1,5 @@
 import { Component , Input, Output, EventEmitter} from '@angular/core';
-import { PostLeaseRequest } from '../models/PostLeaseRequest';
+import { PostLeaseRequest } from '../../models/PostLeaseRequest';
 
 @Component({
   selector: 'app-post',

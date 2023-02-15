@@ -11,6 +11,10 @@ import { PostLeaseRequest } from './models/PostLeaseRequest';
       <h1>{{ title }}</h1>
       <ul>
 
+      <app-login-button> </app-login-button>
+      <app-logout-button> </app-logout-button>
+      <app-user-profile> </app-user-profile>
+
       <app-post (newPost)="addLease($event)"></app-post>
 
       <br> <br>
