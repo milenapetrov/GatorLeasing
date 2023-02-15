@@ -64,6 +64,13 @@ func (s *Server) handler() *mux.Router {
 
 	r.Use(mux.CORSMethodMiddleware(r))
 
+	r.Methods("OPTIONS").HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.WriteHeader(http.StatusOK)
+		},
+	)
 	get(r, "/leases", s.leaseHandler.GetAllLeases)
 	post(r, "/leases", s.leaseHandler.PostLease)
 	put(r, "/leases/{id}", s.leaseHandler.PutLease)
