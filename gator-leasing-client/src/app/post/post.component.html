@@ -1,1 +1,15 @@
-<p>post works!</p>
+<section>
+    <div> 
+      <label for="name"> Post Lease: </label>
+
+      <mat-form-field class="example-form-field">
+        <mat-label>name</mat-label>
+        <input matInput type="text" #p
+          (keyup.enter)= "addPost(p.value)"
+          (blur)= "addPost(p.value); p.value='' "
+          placeholder="name">
+          <button mat-raised-button type="button" (click)="addPost(p.value)" > post </button>
+      </mat-form-field>
+
+    </div>
+ </section>

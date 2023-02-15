@@ -16,6 +16,7 @@ func respondJson(w http.ResponseWriter, status int, payload interface{}) {
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write([]byte(response))

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Lease } from '../models/lease'
+import { Post } from '../models/post'
 
 @Injectable({
   providedIn: 'root'
@@ -11,5 +12,12 @@ export class LeaseService {
 
   getLeases(): Observable<Lease[]> {
     return this.http.get<Lease[]>("http://localhost:8080/leases");
+  }
+
+  createPost(name: string){
+    const postData: Post = {name: name};
+    this.http.post<Post>("http://localhost:8080/leases", postData, {observe: 'response'}).subscribe(response =>{ 
+      console.log(response); 
+      console.log(response.status); })  
   }
 }

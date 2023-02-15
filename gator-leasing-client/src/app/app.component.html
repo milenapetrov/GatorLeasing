@@ -1,4 +1,21 @@
-<h2>Leases</h2>
-<div *ngFor="let lease of leases">
-  {{ lease.id}} - {{ lease.name}}
-</div>
+
+  
+  <!-- <app-navigation></app-navigation> -->
+  
+   <app-post (newPost)="postLease($event)"></app-post>
+
+      <br> <br>
+      <h2> Current Listings: </h2>
+      <body ng-app="myApp">
+
+    <p><a href="#!3-bed-4-by-4-standard">3 bedroom in a 4x4 at the Standard</a> </p>
+
+     <p><a href="#!4-bed-4-by-2-lark">4 bedrooms in a 4x2 at the Lark</a> </p>
+
+     <div *ngFor="let lease of leases">
+            <p><a href="#lease:{{lease.name}}"> {{ lease.name }} </a></p>
+    </div>
+      
+      </body>
+   
+  <div ng-view></div> 

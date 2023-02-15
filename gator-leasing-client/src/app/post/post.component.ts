@@ -1,51 +1,24 @@
 import { Component , Input, Output, EventEmitter} from '@angular/core';
-import { PostLeaseRequest } from '../models/PostLeaseRequest';
+
+import { LeaseService } from '../services/lease.service';
+import { Post } from '../models/post';
 
 @Component({
   selector: 'app-post',
-  template: `
-    <div> 
-      <label for="name"> Post Lease: </label>
-      <input #p
-            (keyup.enter)= "addPost(p.value)"
-            
-            placeholder="name">
-
-      <button type="button" (click)="addPost(p.value)" > post </button>
-    </div>
-  
-
-  `
-  //templateUrl: './post.component.html',
-  ,styleUrls: ['./post.component.css']
+  templateUrl: './post.component.html',
+  styleUrls: ['./post.component.css']
 })
 export class PostComponent {
-  //name: 'Ur moms Penthouse'
-  post: PostLeaseRequest = {
-    name: ' '
-  };
+  constructor(private leaseService:LeaseService){}
 
+  //for displaying input read in this component in the parent app component
   @Output() newPost = new EventEmitter<string>(); 
-
 
   addPost(name: string) {
     this.newPost.emit(name);
+    //this.leaseService.createPost(name);
   };
 
 }
 
-
-//<input id="name" [(ngModel)]="post.name" placeholder="name">         for dynamic input
-//(blur)= "addPost(p.value); p.value='' "
-
-//BOX
-// <br>
-//     <br>
-//     <div class="box">
-//     <br>
-//       {{post.name}}
-//     <br>
-//     <br> 
-//     <br>
-//     </div>
   
