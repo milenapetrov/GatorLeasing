@@ -16,8 +16,7 @@ export class LeaseService {
 
   createPost(name: string){
     const postData: Post = {name: name};
-    this.http.post<Post>("http://localhost:8080/leases", postData, {observe: 'response'}).subscribe(response =>{ 
-      console.log(response); 
-      console.log(response.status); })  
+    this.http.post<Number>("http://localhost:8080/leases", postData).subscribe(response =>{ 
+      console.log(response);  })  
   }
 }

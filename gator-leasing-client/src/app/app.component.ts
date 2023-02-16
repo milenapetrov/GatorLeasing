@@ -28,7 +28,7 @@ export class AppComponent {
     var leas = <Lease>{};
     leas.name = newPost;
     this.leases.push(leas);
-    this.leaseService.createPost(newPost);
+    //this.leaseService.createPost(newPost);
   }
 
 }

@@ -16,7 +16,7 @@ export class PostComponent {
 
   addPost(name: string) {
     this.newPost.emit(name);
-    //this.leaseService.createPost(name);
+    this.leaseService.createPost(name);
   };
 
 }
