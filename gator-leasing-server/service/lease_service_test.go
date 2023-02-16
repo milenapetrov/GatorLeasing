@@ -83,4 +83,5 @@ func TestDeleteLeaseOK(t *testing.T) {
 
 	mockLeaseRepository.AssertExpectations(t)
 	assert.Nil(t, resultErr)
+	assert.True(t, false)
 }
