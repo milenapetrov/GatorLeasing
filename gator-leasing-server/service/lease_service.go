@@ -21,7 +21,7 @@ func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 		return nil, err
 	}
 
-	var leaseEntities []*entity.Lease
+	leaseEntities := []*entity.Lease{}
 
 	for _, l := range leaseModels {
 		leaseEntities = append(leaseEntities, &entity.Lease{ID: l.ID, Name: l.Name})

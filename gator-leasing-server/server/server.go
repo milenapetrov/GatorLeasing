@@ -62,15 +62,8 @@ func (s *Server) Run() {
 func (s *Server) handler() *mux.Router {
 	r := mux.NewRouter()
 
-	r.Use(mux.CORSMethodMiddleware(r))
+	r.Use(corsMiddleware)
 
-	r.Methods("OPTIONS").HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-			w.WriteHeader(http.StatusOK)
-		},
-	)
 	get(r, "/leases", s.leaseHandler.GetAllLeases)
 	post(r, "/leases", s.leaseHandler.PostLease)
 	put(r, "/leases/{id}", s.leaseHandler.PutLease)
@@ -78,7 +71,6 @@ func (s *Server) handler() *mux.Router {
 
 	r.PathPrefix("/").HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.WriteHeader(http.StatusNotFound)
 			return
 		})
@@ -104,4 +96,17 @@ func put(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.
 // Wrap the router for DELETE method
 func delete(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
 	router.HandleFunc(path, f).Methods("DELETE")
+}
+
+func corsMiddleware(h http.Handler) http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			if r.Method == "OPTIONS" {
+				w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+			h.ServeHTTP(w, r)
+		})
 }
