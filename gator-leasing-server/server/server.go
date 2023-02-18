@@ -10,9 +10,11 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 
 	"GatorLeasing/gator-leasing-server/config"
 	"GatorLeasing/gator-leasing-server/handler"
+	"GatorLeasing/gator-leasing-server/server/middleware"
 )
 
 type Server struct {
@@ -28,6 +30,10 @@ func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler) 
 }
 
 func (s *Server) Run() {
+	if err := godotenv.Load("../.env"); err != nil {
+		log.Fatalf("Error loading the .env file: %v", err)
+	}
+
 	var wait time.Duration
 	flag.DurationVar(&wait, "graceful-timeout", time.Second*15, "the duration for which the server gracefully waits for existing connections to finish -e.g. 15s or 1m")
 
@@ -62,12 +68,12 @@ func (s *Server) Run() {
 func (s *Server) handler() *mux.Router {
 	r := mux.NewRouter()
 
-	r.Use(corsMiddleware)
+	r.Use(middleware.CorsMiddleware)
 
-	get(r, "/leases", s.leaseHandler.GetAllLeases)
-	post(r, "/leases", s.leaseHandler.PostLease)
-	put(r, "/leases/{id}", s.leaseHandler.PutLease)
-	delete(r, "/leases/{id}", s.leaseHandler.DeleteLease)
+	handle(r, "/leases", "GET", s.leaseHandler.GetAllLeases, false)
+	handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
+	handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
+	handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
 
 	r.PathPrefix("/").HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -78,35 +84,10 @@ func (s *Server) handler() *mux.Router {
 	return r
 }
 
-// Wrap the router for GET method
-func get(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("GET")
-}
-
-// Wrap the router for POST method
-func post(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("POST")
-}
-
-// Wrap the router for PUT method
-func put(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("PUT")
-}
-
-// Wrap the router for DELETE method
-func delete(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("DELETE")
-}
-
-func corsMiddleware(h http.Handler) http.Handler {
-	return http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			if r.Method == "OPTIONS" {
-				w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-				w.WriteHeader(http.StatusOK)
-				return
-			}
-			h.ServeHTTP(w, r)
-		})
+func handle(router *mux.Router, path string, method string, f func(w http.ResponseWriter, r *http.Request), requiresAuth bool) {
+	if requiresAuth {
+		router.Handle(path, middleware.EnsureValidToken()(http.HandlerFunc(f))).Methods(method)
+	} else {
+		router.Handle(path, http.HandlerFunc(f)).Methods(method)
+	}
 }
