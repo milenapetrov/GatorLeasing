@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,14 +17,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 
 import {MatGridListModule} from '@angular/material/grid-list';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { LayoutModule } from '@angular/cdk/layout';
-import { NavigationComponent } from './navigation/navigation.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+
 import { HomeComponent } from './home/home.component';
 
 
@@ -32,12 +32,14 @@ import { HomeComponent } from './home/home.component';
   declarations: [
     AppComponent,
     PostComponent,
-    DashboardComponent,
-    NavigationComponent,
     HomeComponent,
   ],
   imports: [
     BrowserModule,
+    RouterModule.forRoot([
+      {path: 'home', component: HomeComponent},
+      {path: 'post', component: PostComponent}
+    ]),
     AppRoutingModule,
     HttpClientModule, 
     FormsModule, BrowserAnimationsModule, MatSlideToggleModule, MatButtonModule,

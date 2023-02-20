@@ -1,21 +1,21 @@
 
   
-  <!-- <app-navigation></app-navigation> -->
-  
-   <app-post (newPost)="postLease($event)"></app-post>
+  <!-- <app-navigation></app-navigation> 
+  (newPost)="postLease($event)"-->
 
-      <br> <br>
-      <h2> Current Listings: </h2>
-      <body ng-app="myApp">
+  <p>
+    <mat-toolbar color="primary">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="example-spacer"></span>
+      <span routerLink="/home">ReLease</span>
+      <span class="example-spacer"></span>
+      <a mat-button routerLink="/post"> Post </a>
+      <a mat-stroked-button href="#login" target="_blank">Sign in</a>
+    </mat-toolbar>
+  </p>
 
-    <p><a href="#!3-bed-4-by-4-standard">3 bedroom in a 4x4 at the Standard</a> </p>
+  <router-outlet></router-outlet>
 
-     <p><a href="#!4-bed-4-by-2-lark">4 bedrooms in a 4x2 at the Lark</a> </p>
-
-     <div *ngFor="let lease of leases">
-            <p><a href="#lease:{{lease.name}}"> {{ lease.name }} </a></p>
-    </div>
-      
-      </body>
    
-  <div ng-view></div> 

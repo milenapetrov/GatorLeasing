@@ -1,7 +1,7 @@
-import { Component , Input, Output, EventEmitter} from '@angular/core';
+import { Component , Input, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
 
 import { LeaseService } from '../services/lease.service';
-import { Post } from '../models/post';
+import { Lease } from '../models/lease';
 
 @Component({
   selector: 'app-post',
@@ -9,8 +9,15 @@ import { Post } from '../models/post';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent {
-  constructor(private leaseService:LeaseService){}
+  leases: Lease[] = [];
+  
+  constructor(private leaseService:LeaseService, private cd: ChangeDetectorRef){
+    this.loadLeases();
+  }
 
+  loadLeases(){
+    this.leaseService.getLeases().subscribe((leases) => { this.leases = leases});
+  }
   //for displaying input read in this component in the parent app component
   @Output() newPost = new EventEmitter<string>(); 
 
