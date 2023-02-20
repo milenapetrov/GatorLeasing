@@ -10,15 +10,6 @@ import { Post } from '../models/post';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  posts: Post[] = [];
-  leases: Lease[] = [];
 
-  constructor(private leaseService:LeaseService){
-    this.loadLeases();
-  }
-
-  loadLeases(){
-    this.leaseService.getLeases().subscribe((leases) => { this.leases = leases});
-  }
 
 }
