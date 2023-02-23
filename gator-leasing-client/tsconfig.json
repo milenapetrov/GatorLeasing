@@ -1,12 +1,12 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+
 {
   "compileOnSave": false,
   "include": [
     "src/**/*.ts",
-    "cypress/Home.cy.ts"
-  ],
+    //"cypress/Home.cy.ts"
+  ], 
   "compilerOptions": {
-    "types": ["jest", "node", "cypress"],
+    "types": ["jest", "node"],   
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -21,7 +21,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES5",
+    "target": "ES2022",   //ES2022
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": [
