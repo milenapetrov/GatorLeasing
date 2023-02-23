@@ -10,6 +10,8 @@ describe('PostComponent', () => {
       providers: [LeaseService],
       imports: [HttpClientTestingModule]
     })
+    cy.get('input').type("New Post!")
+    cy.get('button').click()
   })
 
 })
