@@ -15,6 +15,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatDialog} from '@angular/material/dialog';
 
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
@@ -25,6 +26,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -33,12 +35,14 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     PostComponent,
     HomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
       {path: 'home', component: HomeComponent},
-      {path: 'post', component: PostComponent}
+      {path: 'post', component: PostComponent},
+      {path: 'login', component: LoginComponent}
     ]),
     AppRoutingModule,
     HttpClientModule, 
