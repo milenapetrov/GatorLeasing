@@ -32,6 +32,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from 'src/environments/environment';
 import { MyLeasesComponent } from './my-leases/my-leases.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -44,7 +45,11 @@ import { NavigationComponent } from './navigation/navigation.component';
   ],
   imports: [
     BrowserModule,
-    RouterModule,
+    RouterModule.forRoot([
+      {path: 'home', component: HomeComponent},
+      {path: 'post', component: PostComponent},
+      {path: 'login', component: LoginComponent}
+    ]),
     AppRoutingModule,
     HttpClientModule, 
     FormsModule, BrowserAnimationsModule, MatSlideToggleModule, MatButtonModule,
