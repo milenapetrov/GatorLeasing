@@ -1,12 +1,11 @@
-
 {
   "compileOnSave": false,
   "include": [
     "src/**/*.ts",
     //"cypress/Home.cy.ts"
   ], 
-  "compilerOptions": {
-    "types": ["jest", "node"],   
+  "compilerOptions": {  
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

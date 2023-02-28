@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"log"
 	"net/http"
@@ -9,25 +10,39 @@ import (
 	"os/signal"
 	"time"
 
+	jwtmiddleware "github.com/auth0/go-jwt-middleware/v2"
+	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 
 	"GatorLeasing/gator-leasing-server/config"
+	"GatorLeasing/gator-leasing-server/entity"
 	"GatorLeasing/gator-leasing-server/handler"
+	"GatorLeasing/gator-leasing-server/server/middleware"
+	"GatorLeasing/gator-leasing-server/service"
 )
 
 type Server struct {
-	config       *config.ServerConfig
-	leaseHandler *handler.LeaseHandler
+	config            *config.ServerConfig
+	leaseHandler      *handler.LeaseHandler
+	tenantUserService service.ITenantUserService
+	userContext       *entity.UserContext
 }
 
-func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler) *Server {
+func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler, tenantUserService service.ITenantUserService, userContext *entity.UserContext) *Server {
 	return &Server{
-		config:       config,
-		leaseHandler: leaseHandler,
+		config:            config,
+		leaseHandler:      leaseHandler,
+		tenantUserService: tenantUserService,
+		userContext:       userContext,
 	}
 }
 
 func (s *Server) Run() {
+	if err := godotenv.Load("../.env"); err != nil {
+		log.Fatalf("Error loading the .env file: %v", err)
+	}
+
 	var wait time.Duration
 	flag.DurationVar(&wait, "graceful-timeout", time.Second*15, "the duration for which the server gracefully waits for existing connections to finish -e.g. 15s or 1m")
 
@@ -62,12 +77,12 @@ func (s *Server) Run() {
 func (s *Server) handler() *mux.Router {
 	r := mux.NewRouter()
 
-	r.Use(corsMiddleware)
+	r.Use(middleware.CorsMiddleware)
 
-	get(r, "/leases", s.leaseHandler.GetAllLeases)
-	post(r, "/leases", s.leaseHandler.PostLease)
-	put(r, "/leases/{id}", s.leaseHandler.PutLease)
-	delete(r, "/leases/{id}", s.leaseHandler.DeleteLease)
+	s.handle(r, "/leases", "GET", s.leaseHandler.GetAllLeases, false)
+	s.handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
+	s.handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
+	s.handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
 
 	r.PathPrefix("/").HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -78,35 +93,34 @@ func (s *Server) handler() *mux.Router {
 	return r
 }
 
-// Wrap the router for GET method
-func get(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("GET")
+func (s *Server) handle(router *mux.Router, path string, method string, f func(w http.ResponseWriter, r *http.Request), requiresAuth bool) {
+	if requiresAuth {
+		router.Handle(path, middleware.EnsureValidToken()(http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				err := s.setUserContext(r, s.userContext)
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					errorJson, _ := json.Marshal(map[string]string{"error": err.Error()})
+					w.Write([]byte(errorJson))
+				}
+				f(w, r)
+			},
+		))).Methods(method)
+	} else {
+		router.Handle(path, http.HandlerFunc(f)).Methods(method)
+	}
 }
 
-// Wrap the router for POST method
-func post(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("POST")
-}
+func (s *Server) setUserContext(r *http.Request, userContext *entity.UserContext) error {
+	claims := r.Context().Value(jwtmiddleware.ContextKey{}).(*validator.ValidatedClaims)
+	userContext.UserID = claims.RegisteredClaims.Subject
+	tenantUser, err := s.tenantUserService.GetOrCreateUser()
+	if err != nil {
+		return err
+	}
 
-// Wrap the router for PUT method
-func put(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("PUT")
-}
+	userContext.ID = tenantUser.ID
+	userContext.InvitedAs = tenantUser.InvitedAs
 
-// Wrap the router for DELETE method
-func delete(router *mux.Router, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	router.HandleFunc(path, f).Methods("DELETE")
-}
-
-func corsMiddleware(h http.Handler) http.Handler {
-	return http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			if r.Method == "OPTIONS" {
-				w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-				w.WriteHeader(http.StatusOK)
-				return
-			}
-			h.ServeHTTP(w, r)
-		})
+	return nil
 }

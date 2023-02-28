@@ -36,4 +36,10 @@ func (d *Database) GetConnection(dbConfig *config.DBConfig) error {
 
 func (d *Database) AutoMigrate() {
 	d.DB.AutoMigrate(&model.Lease{})
+	d.DB.AutoMigrate(&model.Tenant{})
+	d.DB.AutoMigrate((&model.TenantUser{}))
+}
+
+func (d *Database) Generate() {
+
 }

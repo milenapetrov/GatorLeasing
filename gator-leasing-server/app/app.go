@@ -3,6 +3,7 @@ package app
 import (
 	"GatorLeasing/gator-leasing-server/config"
 	"GatorLeasing/gator-leasing-server/database"
+	"GatorLeasing/gator-leasing-server/entity"
 	"GatorLeasing/gator-leasing-server/handler"
 	"GatorLeasing/gator-leasing-server/repository"
 	"GatorLeasing/gator-leasing-server/server"
@@ -25,13 +26,21 @@ func (a *App) Initialize() {
 	if err := db.GetConnection(a.config.DB); err != nil {
 		panic(err)
 	}
-	db.AutoMigrate()
+	if a.config.DB.Migrate {
+		db.AutoMigrate()
+	}
+	if a.config.DB.Populate {
 
+	}
+
+	userContext := entity.NewUserContext()
+	tenantUserRepository := repository.NewTenantUserRepository(db.DB)
+	tenantUserService := service.NewTenantUserService(userContext, tenantUserRepository)
 	leaseRepository := repository.NewLeaseRepository(db.DB)
-	leaseService := service.NewLeaseService(leaseRepository)
+	leaseService := service.NewLeaseService(userContext, leaseRepository)
 	leaseHandler := handler.NewLeaseHandler(leaseService)
 
-	a.server = server.NewServer(a.config.Server, leaseHandler)
+	a.server = server.NewServer(a.config.Server, leaseHandler, tenantUserService, userContext)
 }
 
 func (a *App) Run() {

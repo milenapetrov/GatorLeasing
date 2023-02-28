@@ -11,6 +11,7 @@ export class LeaseService {
   constructor(private http : HttpClient) { }
 
   getLeases(): Observable<Lease[]> {
+    console.log("get leases")
     return this.http.get<Lease[]>("http://localhost:8080/leases");
   }
 

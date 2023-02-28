@@ -7,11 +7,15 @@ import (
 )
 
 type LeaseService struct {
-	repository repository.ILeaseRepository
+	userContext *entity.UserContext
+	repository  repository.ILeaseRepository
 }
 
-func NewLeaseService(repository repository.ILeaseRepository) *LeaseService {
-	return &LeaseService{repository: repository}
+func NewLeaseService(userContext *entity.UserContext, repository repository.ILeaseRepository) *LeaseService {
+	return &LeaseService{
+		userContext: userContext,
+		repository:  repository,
+	}
 }
 
 func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
@@ -24,14 +28,14 @@ func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	leaseEntities := []*entity.Lease{}
 
 	for _, l := range leaseModels {
-		leaseEntities = append(leaseEntities, &entity.Lease{ID: l.ID, Name: l.Name})
+		leaseEntities = append(leaseEntities, &entity.Lease{ID: l.ID, Name: l.Name, OwnerID: l.OwnerID})
 	}
 
 	return leaseEntities, nil
 }
 
 func (s *LeaseService) CreateLease(request *entity.CreateLeaseRequest) (uint, error) {
-	lease := &model.Lease{Name: request.Name}
+	lease := &model.Lease{Name: request.Name, OwnerID: s.userContext.ID}
 	id, err := s.repository.CreateLease(lease)
 	return id, err
 }
@@ -43,7 +47,7 @@ func (s *LeaseService) EditLease(request *entity.EditLeaseRequest) error {
 }
 
 func (s *LeaseService) DeleteLease(request *entity.DeleteLeaseRequest) error {
-	lease := &model.Lease{ID: request.ID, Name: request.Name}
+	lease := &model.Lease{ID: request.ID}
 	err := s.repository.DeleteLease(lease)
 	return err
 }

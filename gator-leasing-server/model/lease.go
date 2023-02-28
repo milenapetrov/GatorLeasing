@@ -12,4 +12,6 @@ type Lease struct {
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Name      string
+	OwnerID   uint       `gorm:"not null"`
+	Owner     TenantUser `gorm:"foreignKey:OwnerID"`
 }

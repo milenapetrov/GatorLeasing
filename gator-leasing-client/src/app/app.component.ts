@@ -1,9 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-import { LeaseService } from './services/lease.service';
-import { Lease } from './models/lease';
-import { Post } from './models/post';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,25 +8,7 @@ import { Post } from './models/post';
 })
 
 export class AppComponent {
-  leases: Lease[] = [];
-  title = 'Leases';
-
-  constructor(private leaseService:LeaseService, private cd: ChangeDetectorRef){
-    this.loadLeases();
+  constructor() {
   }
-
-  loadLeases(){
-    this.leaseService.getLeases().subscribe((leases) => { this.leases = leases});
-  }
-
-  
-  //sends input to server and adds it to lease array
-  /*postLease(newPost: string){
-    /*var leas = <Lease>{};
-    leas.name = newPost;
-    this.leases.push(leas);
-    this.leaseService.createPost(newPost);
-  }*/
-
 }
 

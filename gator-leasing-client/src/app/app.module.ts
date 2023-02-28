@@ -26,8 +26,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
 
+import { ComponentsModule } from './components/components.module';
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment as env } from 'src/environments/environment';
+import { MyLeasesComponent } from './my-leases/my-leases.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 
 @NgModule({
@@ -35,15 +39,12 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     PostComponent,
     HomeComponent,
-    LoginComponent,
+    MyLeasesComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([
-      {path: 'home', component: HomeComponent},
-      {path: 'post', component: PostComponent},
-      {path: 'login', component: LoginComponent}
-    ]),
+    RouterModule,
     AppRoutingModule,
     HttpClientModule, 
     FormsModule, BrowserAnimationsModule, MatSlideToggleModule, MatButtonModule,
@@ -54,7 +55,14 @@ import { LoginComponent } from './login/login.component';
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    ComponentsModule,
+    AuthModule.forRoot({
+      ...env.auth,
+      httpInterceptor: {
+        ...env.httpInterceptor
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

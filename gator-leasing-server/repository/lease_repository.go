@@ -18,7 +18,7 @@ type LeaseRepository struct {
 	DB *gorm.DB
 }
 
-func NewLeaseRepository(db *gorm.DB) *LeaseRepository {
+func NewLeaseRepository(db *gorm.DB) ILeaseRepository {
 	return &LeaseRepository{DB: db}
 }
 
@@ -41,6 +41,7 @@ func (r *LeaseRepository) EditLease(lease *model.Lease) error {
 	}
 
 	oldLease.Name = lease.Name
+	oldLease.OwnerID = lease.OwnerID
 
 	err = r.DB.Save(&oldLease).Error
 	return err
