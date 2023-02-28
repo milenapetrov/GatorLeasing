@@ -6,6 +6,14 @@ import (
 	"GatorLeasing/gator-leasing-server/repository"
 )
 
+//go:generate mockery --name ILeaseService
+type ILeaseService interface {
+	GetAllLeases() ([]*entity.Lease, error)
+	CreateLease(request *entity.CreateLeaseRequest) (uint, error)
+	EditLease(request *entity.EditLeaseRequest) error
+	DeleteLease(request *entity.DeleteLeaseRequest) error
+}
+
 type LeaseService struct {
 	userContext *entity.UserContext
 	repository  repository.ILeaseRepository

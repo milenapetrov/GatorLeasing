@@ -12,13 +12,11 @@ import (
 )
 
 type LeaseHandler struct {
-	leaseService *service.LeaseService
+	leaseService service.ILeaseService
 }
 
-func NewLeaseHandler(leaseService *service.LeaseService) *LeaseHandler {
-	return &LeaseHandler{
-		leaseService: leaseService,
-	}
+func NewLeaseHandler(leaseService service.ILeaseService) *LeaseHandler {
+	return &LeaseHandler{leaseService: leaseService}
 }
 
 func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
