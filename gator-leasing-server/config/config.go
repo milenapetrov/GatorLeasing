@@ -11,6 +11,8 @@ type DBConfig struct {
 	Name     string
 	Charset  string
 	Address  string
+	Migrate  bool
+	Populate bool
 }
 
 type ServerConfig struct {
@@ -25,6 +27,8 @@ func GetConfig() *Config {
 			Name:     "releasedb",
 			Charset:  "utf8",
 			Address:  "127.0.0.1:3306",
+			Migrate:  true,
+			Populate: true,
 		},
 		Server: &ServerConfig{
 			Address: "0.0.0.0:8080",

@@ -1,0 +1,10 @@
+{
+    "domain": "dev-nkzmwy1mucvvl5xb.us.auth0.com",
+    "clientId": "ZtioYD3lsjTW5mHyd7Xq5UDH9jGoOc53",
+    "authorizationParams": {
+      "audience": "http://localhost:8080"
+    },
+    "apiUri": "http://localhost:8080",
+    "appUri": "http://localhost:4200",
+    "errorPath": "/error"
+  }

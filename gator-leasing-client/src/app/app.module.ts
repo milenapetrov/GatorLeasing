@@ -26,6 +26,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { HomeComponent } from './home/home.component';
 
+import { ComponentsModule } from './components/components.module';
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment as env } from 'src/environments/environment';
+import { MyLeasesComponent } from './my-leases/my-leases.component';
 
 
 @NgModule({
@@ -35,6 +39,7 @@ import { HomeComponent } from './home/home.component';
     DashboardComponent,
     NavigationComponent,
     HomeComponent,
+    MyLeasesComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,14 @@ import { HomeComponent } from './home/home.component';
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    ComponentsModule,
+    AuthModule.forRoot({
+      ...env.auth,
+      httpInterceptor: {
+        ...env.httpInterceptor
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

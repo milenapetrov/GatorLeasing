@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"log"
 	"net/http"
@@ -9,23 +10,31 @@ import (
 	"os/signal"
 	"time"
 
+	jwtmiddleware "github.com/auth0/go-jwt-middleware/v2"
+	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
 	"GatorLeasing/gator-leasing-server/config"
+	"GatorLeasing/gator-leasing-server/entity"
 	"GatorLeasing/gator-leasing-server/handler"
 	"GatorLeasing/gator-leasing-server/server/middleware"
+	"GatorLeasing/gator-leasing-server/service"
 )
 
 type Server struct {
-	config       *config.ServerConfig
-	leaseHandler *handler.LeaseHandler
+	config            *config.ServerConfig
+	leaseHandler      *handler.LeaseHandler
+	tenantUserService service.ITenantUserService
+	userContext       *entity.UserContext
 }
 
-func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler) *Server {
+func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler, tenantUserService service.ITenantUserService, userContext *entity.UserContext) *Server {
 	return &Server{
-		config:       config,
-		leaseHandler: leaseHandler,
+		config:            config,
+		leaseHandler:      leaseHandler,
+		tenantUserService: tenantUserService,
+		userContext:       userContext,
 	}
 }
 
@@ -70,10 +79,10 @@ func (s *Server) handler() *mux.Router {
 
 	r.Use(middleware.CorsMiddleware)
 
-	handle(r, "/leases", "GET", s.leaseHandler.GetAllLeases, false)
-	handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
-	handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
-	handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
+	s.handle(r, "/leases", "GET", s.leaseHandler.GetAllLeases, false)
+	s.handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
+	s.handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
+	s.handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
 
 	r.PathPrefix("/").HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -84,10 +93,34 @@ func (s *Server) handler() *mux.Router {
 	return r
 }
 
-func handle(router *mux.Router, path string, method string, f func(w http.ResponseWriter, r *http.Request), requiresAuth bool) {
+func (s *Server) handle(router *mux.Router, path string, method string, f func(w http.ResponseWriter, r *http.Request), requiresAuth bool) {
 	if requiresAuth {
-		router.Handle(path, middleware.EnsureValidToken()(http.HandlerFunc(f))).Methods(method)
+		router.Handle(path, middleware.EnsureValidToken()(http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				err := s.setUserContext(r, s.userContext)
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					errorJson, _ := json.Marshal(map[string]string{"error": err.Error()})
+					w.Write([]byte(errorJson))
+				}
+				f(w, r)
+			},
+		))).Methods(method)
 	} else {
 		router.Handle(path, http.HandlerFunc(f)).Methods(method)
 	}
+}
+
+func (s *Server) setUserContext(r *http.Request, userContext *entity.UserContext) error {
+	claims := r.Context().Value(jwtmiddleware.ContextKey{}).(*validator.ValidatedClaims)
+	userContext.UserID = claims.RegisteredClaims.Subject
+	tenantUser, err := s.tenantUserService.GetOrCreateUser()
+	if err != nil {
+		return err
+	}
+
+	userContext.ID = tenantUser.ID
+	userContext.InvitedAs = tenantUser.InvitedAs
+
+	return nil
 }

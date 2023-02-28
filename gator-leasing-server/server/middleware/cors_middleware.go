@@ -9,7 +9,7 @@ func CorsMiddleware(h http.Handler) http.Handler {
 		func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			if r.Method == "OPTIONS" {
-				w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+				w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 				w.WriteHeader(http.StatusOK)
 				return
 			}

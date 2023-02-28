@@ -15,11 +15,11 @@ import (
 func TestGetAllLeasesOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	leases := []model.Lease{
-		{Name: "Lease"},
+		{ID: 0, Name: "Lease", OwnerID: 0},
 	}
 	mockLeaseRepository.On("GetAllLeases").Return(leases, nil)
 
-	leaseService := NewLeaseService(mockLeaseRepository)
+	leaseService := NewLeaseService(entity.NewUserContext(), mockLeaseRepository)
 
 	resultLeases, err := leaseService.GetAllLeases()
 
@@ -30,13 +30,11 @@ func TestGetAllLeasesOK(t *testing.T) {
 
 func TestGetAllLeasesErr(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
-	leases := []model.Lease{
-		{Name: "Lease"},
-	}
+	leases := []model.Lease{}
 	err := errors.New("error")
 	mockLeaseRepository.On("GetAllLeases").Return(leases, err)
 
-	leaseService := NewLeaseService(mockLeaseRepository)
+	leaseService := NewLeaseService(entity.NewUserContext(), mockLeaseRepository)
 
 	resultLeases, resultErr := leaseService.GetAllLeases()
 
@@ -49,7 +47,7 @@ func TestCreateLeaseOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("CreateLease", mock.AnythingOfType("*model.Lease")).Return(uint(1), nil)
 
-	leaseService := NewLeaseService(mockLeaseRepository)
+	leaseService := NewLeaseService(entity.NewUserContext(), mockLeaseRepository)
 
 	request := entity.CreateLeaseRequest{Name: "lease"}
 	resultID, resultErr := leaseService.CreateLease(&request)
@@ -63,7 +61,7 @@ func TestEditLeaseOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("EditLease", mock.AnythingOfType("*model.Lease")).Return(nil)
 
-	leaseService := NewLeaseService(mockLeaseRepository)
+	leaseService := NewLeaseService(entity.NewUserContext(), mockLeaseRepository)
 
 	request := entity.EditLeaseRequest{ID: 0, Name: "lease"}
 	resultErr := leaseService.EditLease(&request)
@@ -76,9 +74,9 @@ func TestDeleteLeaseOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("DeleteLease", mock.AnythingOfType("*model.Lease")).Return(nil)
 
-	leaseService := NewLeaseService(mockLeaseRepository)
+	leaseService := NewLeaseService(entity.NewUserContext(), mockLeaseRepository)
 
-	request := entity.DeleteLeaseRequest{ID: 0, Name: "lease"}
+	request := entity.DeleteLeaseRequest{ID: 0}
 	resultErr := leaseService.DeleteLease(&request)
 
 	mockLeaseRepository.AssertExpectations(t)
