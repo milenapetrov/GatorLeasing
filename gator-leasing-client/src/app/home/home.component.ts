@@ -10,8 +10,6 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class HomeComponent implements OnInit {
 
-  isLoggedIn = false;
-
   constructor(private leaseService:LeaseService, public auth: AuthService) {}
 
   ngOnInit(): void {}
