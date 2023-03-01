@@ -74,9 +74,9 @@ func TestPutLeaseOK(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPut, "/leases/1", CreateBody(request))
-	r := mux.NewRouter()
-	r.HandleFunc("/leases/{id}", leaseHandler.PutLease)
-	r.ServeHTTP(rr, req)
+	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+
+	leaseHandler.PutLease(rr, req)
 
 	mockLeaseService.AssertExpectations(t)
 	assert.Equal(t, http.StatusNoContent, rr.Code)
@@ -93,9 +93,9 @@ func TestDeleteLeaseOK(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodDelete, "/leases/1", CreateBody(request))
-	r := mux.NewRouter()
-	r.HandleFunc("/leases/{id}", leaseHandler.DeleteLease)
-	r.ServeHTTP(rr, req)
+	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+
+	leaseHandler.DeleteLease(rr, req)
 
 	mockLeaseService.AssertExpectations(t)
 	assert.Equal(t, http.StatusNoContent, rr.Code)
