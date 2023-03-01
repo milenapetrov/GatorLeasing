@@ -12,12 +12,7 @@
     </div>
  </section>
 
- <br> <br>
-      <h2> Current Listings: </h2>
-
-    <div *ngFor="let lease of leases">
-        <p><a href="#lease:{{lease.name}}"> {{ lease.name }} </a></p>
-    </div>
+ <app-display-leases></app-display-leases>
 
  <!--(blur)= "addPost(p.value); p.value='' "
 (keyup.enter)= "addPost(p.value)"-->
