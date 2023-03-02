@@ -1,7 +1,17 @@
 import { LoginComponent } from './login.component'
 
-/*describe('LoginComponent', () => {
+import { AuthModule, AuthService } from '@auth0/auth0-angular';
+import { HttpClientTestingModule} from '@angular/common/http/testing';
+
+describe('LoginComponent', () => {
   it('should mount', () => {
-    //cy.mount(LoginComponent)
+    cy.mount(LoginComponent, {
+      providers: [AuthService],
+      imports: [AuthModule.forRoot({
+        domain: 'auth0.domain',
+        clientId: 'autho0.client'
+      })]
+    })
+    cy.get('a')
   })
-})*/
+})

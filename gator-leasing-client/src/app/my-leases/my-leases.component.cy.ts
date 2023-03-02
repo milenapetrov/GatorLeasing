@@ -1,7 +1,7 @@
 import { MyLeasesComponent } from './my-leases.component'
 
-/*describe('MyLeasesComponent', () => {
+describe('MyLeasesComponent', () => {
   it('should mount', () => {
     cy.mount(MyLeasesComponent)
   })
-})*/
+})

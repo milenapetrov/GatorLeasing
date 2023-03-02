@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "include": [
-    "src/**/*.ts",
+    "**/*.ts",
     //"cypress/Home.cy.ts"
   ], 
   "compilerOptions": {  
@@ -13,6 +13,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
+    "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
