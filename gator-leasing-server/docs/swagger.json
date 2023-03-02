@@ -34,6 +34,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Auth0": []
+                    }
+                ],
                 "description": "post a lease",
                 "consumes": [
                     "application/json"
@@ -74,6 +79,11 @@
         },
         "/leases/{id}": {
             "put": {
+                "security": [
+                    {
+                        "Auth0": []
+                    }
+                ],
                 "description": "update a lease by id",
                 "consumes": [
                     "application/json"
@@ -113,6 +123,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Auth0": []
+                    }
+                ],
                 "description": "delete a lease by id",
                 "tags": [
                     "leases"
@@ -183,7 +198,7 @@
         }
     },
     "securityDefinitions": {
-        "OAuth2Application": {
+        "Auth0": {
             "description": "Auth0 protects our endpoints",
             "type": "oauth2",
             "flow": "application",

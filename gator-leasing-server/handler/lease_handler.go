@@ -51,6 +51,7 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500
 //	@Failure		400
 //	@Router			/leases [post]
+//	@Security		Auth0
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	var request entity.CreateLeaseRequest
 
@@ -82,6 +83,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500
 //	@Failure		400
 //	@Router			/leases/{id} [put]
+//	@Security		Auth0
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id"], 10, 32)
@@ -117,6 +119,7 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500
 //	@Failure		400
 //	@Router			/leases/{id} [delete]
+//	@Security		Auth0
 func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id"], 10, 32)

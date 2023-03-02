@@ -70,6 +70,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Auth0: []
       summary: Create a lease
       tags:
       - leases
@@ -89,6 +91,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Auth0: []
       summary: Delete a lease
       tags:
       - leases
@@ -115,11 +119,13 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - Auth0: []
       summary: Update a lease
       tags:
       - leases
 securityDefinitions:
-  OAuth2Application:
+  Auth0:
     description: Auth0 protects our endpoints
     flow: application
     tokenUrl: https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token

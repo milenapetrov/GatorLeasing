@@ -41,6 +41,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Auth0": []
+                    }
+                ],
                 "description": "post a lease",
                 "consumes": [
                     "application/json"
@@ -81,6 +86,11 @@ const docTemplate = `{
         },
         "/leases/{id}": {
             "put": {
+                "security": [
+                    {
+                        "Auth0": []
+                    }
+                ],
                 "description": "update a lease by id",
                 "consumes": [
                     "application/json"
@@ -120,6 +130,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Auth0": []
+                    }
+                ],
                 "description": "delete a lease by id",
                 "tags": [
                     "leases"
@@ -190,7 +205,7 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "OAuth2Application": {
+        "Auth0": {
             "description": "Auth0 protects our endpoints",
             "type": "oauth2",
             "flow": "application",
