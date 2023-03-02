@@ -2,6 +2,7 @@
 
 #### Backend
 
+- Documentation located at gator-leasing-server/docs
 - Unit testing
 - User authentication
     - Create user table
