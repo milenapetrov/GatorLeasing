@@ -14,6 +14,7 @@ import (
 	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger"
 
 	"GatorLeasing/gator-leasing-server/config"
 	"GatorLeasing/gator-leasing-server/entity"
@@ -83,6 +84,10 @@ func (s *Server) handler() *mux.Router {
 	s.handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
 	s.handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
 	s.handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
+
+	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
+		httpSwagger.URL(os.Getenv("HOST_URL") + "/swagger/doc.json"), //The url pointing to API definition
+	)).Methods(http.MethodGet)
 
 	r.PathPrefix("/").HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
