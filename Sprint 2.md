@@ -39,11 +39,7 @@
 
 #### Documentation
 
-<iframe width="100%" src="https://github.com/milenapetrov/GatorLeasing/blob/main/gator-leasing-server/docs/api-documentation.pdf">
-
-
-
-
+- Documentation pdf: https://github.com/joeymich/SVC-Visualization/blob/main/sample.png
 
 
 
