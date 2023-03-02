@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	model "GatorLeasing/gator-leasing-server/model"
+	model "github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
 
 	mock "github.com/stretchr/testify/mock"
 )

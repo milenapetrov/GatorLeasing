@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"GatorLeasing/gator-leasing-server/enums"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
 )
 
 type TenantUser struct {

@@ -14,13 +14,14 @@ import (
 	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	_ "github.com/milenapetrov/GatorLeasing/gator-leasing-server/docs"
 	httpSwagger "github.com/swaggo/http-swagger"
 
-	"GatorLeasing/gator-leasing-server/config"
-	"GatorLeasing/gator-leasing-server/entity"
-	"GatorLeasing/gator-leasing-server/handler"
-	"GatorLeasing/gator-leasing-server/server/middleware"
-	"GatorLeasing/gator-leasing-server/service"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/handler"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/server/middleware"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
 )
 
 type Server struct {

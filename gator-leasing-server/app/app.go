@@ -1,13 +1,13 @@
 package app
 
 import (
-	"GatorLeasing/gator-leasing-server/config"
-	"GatorLeasing/gator-leasing-server/database"
-	"GatorLeasing/gator-leasing-server/entity"
-	"GatorLeasing/gator-leasing-server/handler"
-	"GatorLeasing/gator-leasing-server/repository"
-	"GatorLeasing/gator-leasing-server/server"
-	"GatorLeasing/gator-leasing-server/service"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/database"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/handler"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/server"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
 )
 
 type App struct {

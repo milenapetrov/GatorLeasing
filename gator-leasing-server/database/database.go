@@ -7,8 +7,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"GatorLeasing/gator-leasing-server/config"
-	"GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
 )
 
 type Database struct {

@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	entity "GatorLeasing/gator-leasing-server/entity"
+	entity "github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 
 	mock "github.com/stretchr/testify/mock"
 )

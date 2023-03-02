@@ -151,6 +151,9 @@ const docTemplate = `{
     "definitions": {
         "entity.CreateLeaseRequest": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "name": {
                     "type": "string"
@@ -159,6 +162,9 @@ const docTemplate = `{
         },
         "entity.EditLeaseRequest": {
             "type": "object",
+            "required": [
+                "id"
+            ],
             "properties": {
                 "id": {
                     "type": "integer"

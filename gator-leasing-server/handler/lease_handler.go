@@ -7,8 +7,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"GatorLeasing/gator-leasing-server/entity"
-	"GatorLeasing/gator-leasing-server/service"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
 )
 
 type LeaseHandler struct {
@@ -20,6 +20,7 @@ func NewLeaseHandler(leaseService service.ILeaseService) *LeaseHandler {
 }
 
 // GetAllLeases godoc
+//
 //	@Summary		List leases
 //	@Description	get all leases
 //	@Tags			leases
@@ -39,6 +40,7 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 }
 
 // PostLease godoc
+//
 //	@Summary		Create a lease
 //	@Description	post a lease
 //	@Tags			leases
@@ -69,6 +71,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 }
 
 // PutLease godoc
+//
 //	@Summary		Update a lease
 //	@Description	update a lease by id
 //	@Tags			leases
@@ -105,6 +108,7 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteLease godoc
+//
 //	@Summary		Delete a lease
 //	@Description	delete a lease by id
 //	@Tags			leases
