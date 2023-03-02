@@ -37,12 +37,9 @@
 - Edit a sublease:
     - Will implement the put and delete requests once we decide on a final design for the web page; deciding how the user will edit their post.
 
+#### Documentation
 
-
-
-
-
-
+- Documentation pdf: https://github.com/milenapetrov/GatorLeasing/blob/main/gator-leasing-server/docs/api-documentation.pdf
 
 
 
