@@ -39,7 +39,7 @@
 
 #### Documentation
 
-- Documentation pdf: https://github.com/joeymich/SVC-Visualization/blob/main/sample.png
+- Documentation pdf: https://github.com/milenapetrov/GatorLeasing/blob/main/gator-leasing-server/docs/api-documentation.pdf
 
 
 
