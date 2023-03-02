@@ -7,8 +7,8 @@ import (
 	"github.com/bxcodec/faker/v4"
 	"gorm.io/gorm"
 
-	"GatorLeasing/gator-leasing-server/constants"
-	"GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/constants"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
 )
 
 func CreateTenants(db *gorm.DB) {

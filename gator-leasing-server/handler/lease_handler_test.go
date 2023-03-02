@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"GatorLeasing/gator-leasing-server/entity"
-	"GatorLeasing/gator-leasing-server/service/mocks"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service/mocks"
 )
 
 func CreateBody(request interface{}) *bytes.Reader {

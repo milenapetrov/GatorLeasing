@@ -1,5 +1,5 @@
 package entity
 
 type DeleteLeaseRequest struct {
-	ID uint `json:"id"`
+	ID uint `json:"id" validate:"required"`
 }

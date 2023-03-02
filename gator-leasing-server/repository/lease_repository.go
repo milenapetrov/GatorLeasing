@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
 
 	"gorm.io/gorm"
 )

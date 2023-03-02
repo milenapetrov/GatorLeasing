@@ -144,6 +144,9 @@
     "definitions": {
         "entity.CreateLeaseRequest": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "name": {
                     "type": "string"
@@ -152,6 +155,9 @@
         },
         "entity.EditLeaseRequest": {
             "type": "object",
+            "required": [
+                "id"
+            ],
             "properties": {
                 "id": {
                     "type": "integer"

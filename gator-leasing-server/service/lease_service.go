@@ -1,9 +1,9 @@
 package service
 
 import (
-	"GatorLeasing/gator-leasing-server/entity"
-	"GatorLeasing/gator-leasing-server/model"
-	"GatorLeasing/gator-leasing-server/repository"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
 )
 
 //go:generate mockery --name ILeaseService

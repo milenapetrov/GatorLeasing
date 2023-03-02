@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
 )
 
 //go:generate mockery - name IUserRepository
