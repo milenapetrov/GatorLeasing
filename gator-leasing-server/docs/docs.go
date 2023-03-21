@@ -30,7 +30,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.Lease"
+                                "$ref": "#/definitions/viewModel.Lease"
                             }
                         }
                     },
@@ -63,7 +63,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.CreateLeaseRequest"
+                            "$ref": "#/definitions/viewModel.CreateLeaseRequest"
                         }
                     }
                 ],
@@ -112,7 +112,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.EditLeaseRequest"
+                            "$ref": "#/definitions/viewModel.EditLeaseRequest"
                         }
                     }
                 ],
@@ -163,7 +163,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entity.CreateLeaseRequest": {
+        "viewModel.CreateLeaseRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -174,7 +174,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.EditLeaseRequest": {
+        "viewModel.EditLeaseRequest": {
             "type": "object",
             "required": [
                 "id"
@@ -188,7 +188,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Lease": {
+        "viewModel.Lease": {
             "type": "object",
             "properties": {
                 "id": {

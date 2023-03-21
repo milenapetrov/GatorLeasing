@@ -16,7 +16,8 @@ type DBConfig struct {
 }
 
 type ServerConfig struct {
-	Address string
+	Address          string
+	ApiDocumentation bool
 }
 
 func GetConfig() *Config {
@@ -31,7 +32,8 @@ func GetConfig() *Config {
 			Populate: true,
 		},
 		Server: &ServerConfig{
-			Address: "0.0.0.0:8080",
+			Address:          "0.0.0.0:8080",
+			ApiDocumentation: true,
 		},
 	}
 }

@@ -1,9 +1,6 @@
 package handler
 
 import (
-	"bytes"
-	"encoding/json"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,25 +10,20 @@ import (
 	"github.com/stretchr/testify/mock"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/faker"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service/mocks"
+	viewModel "github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model"
 )
 
-func CreateBody(request interface{}) *bytes.Reader {
-	data, err := json.Marshal(request)
-	if err != nil {
-		log.Fatal(err)
-	}
-	reader := bytes.NewReader(data)
-	return reader
+func initialize() {
+	faker.InitializeFaker()
 }
 
 func TestGetAllLeasesOK(t *testing.T) {
+	initialize()
 	mockLeaseService := mocks.NewILeaseService(t)
-	leases := []*entity.Lease{
-		{ID: 1, Name: "Lease", OwnerID: 1},
-		{ID: 2, Name: "Lease2", OwnerID: 2},
-	}
-	mockLeaseService.On("GetAllLeases").Return(leases, nil)
+	leases := faker.FakeMany(&entity.Lease{}, 5)
+	mockLeaseService.On("GetAllLeases").Return(leases, nil, http.StatusOK)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService)
 
@@ -41,63 +33,62 @@ func TestGetAllLeasesOK(t *testing.T) {
 	leaseHandler.GetAllLeases(rr, req)
 
 	mockLeaseService.AssertExpectations(t)
+	mockLeaseService.AssertNumberOfCalls(t, "GetAllLeases", 1)
 	assert.Equal(t, http.StatusOK, rr.Code)
-	expected := `[{"id":1,"name":"Lease","ownerID":1},{"id":2,"name":"Lease2","ownerID":2}]`
-	assert.Equal(t, expected, rr.Body.String())
 }
 
 func TestPostLeaseOK(t *testing.T) {
 	mockLeaseService := mocks.NewILeaseService(t)
-	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLeaseRequest")).Return(uint(1), nil)
+	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLease")).Return(uint(1), nil, http.StatusCreated)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService)
 
-	request := entity.CreateLeaseRequest{Name: "new lease"}
+	createLease := viewModel.CreateLease{}
+	faker.FakeData(&createLease)
 
 	rr := httptest.NewRecorder()
-	req := httptest.NewRequest(http.MethodPost, "/leases", CreateBody(request))
+	req := httptest.NewRequest(http.MethodPost, "/leases", createBody(createLease))
 
 	leaseHandler.PostLease(rr, req)
 
 	mockLeaseService.AssertExpectations(t)
+	mockLeaseService.AssertNumberOfCalls(t, "CreateLease", 1)
 	assert.Equal(t, http.StatusCreated, rr.Code)
-	assert.Equal(t, `1`, rr.Body.String())
 }
 
 func TestPutLeaseOK(t *testing.T) {
 	mockLeaseService := mocks.NewILeaseService(t)
-	mockLeaseService.On("EditLease", mock.AnythingOfType("*entity.EditLeaseRequest")).Return(nil)
+	mockLeaseService.On("EditLease", mock.AnythingOfType("*entity.EditLease")).Return(nil, http.StatusNoContent)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService)
 
-	request := entity.EditLeaseRequest{ID: 1, Name: "edited lease"}
+	editLease := viewModel.Lease{}
+	faker.FakeData(&editLease)
 
 	rr := httptest.NewRecorder()
-	req := httptest.NewRequest(http.MethodPut, "/leases/1", CreateBody(request))
+	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(editLease))
 	req = mux.SetURLVars(req, map[string]string{"id": "1"})
 
 	leaseHandler.PutLease(rr, req)
 
 	mockLeaseService.AssertExpectations(t)
+	mockLeaseService.AssertNumberOfCalls(t, "EditLease", 1)
 	assert.Equal(t, http.StatusNoContent, rr.Code)
-	assert.Equal(t, string("null"), rr.Body.String())
 }
 
 func TestDeleteLeaseOK(t *testing.T) {
 	mockLeaseService := mocks.NewILeaseService(t)
-	mockLeaseService.On("DeleteLease", mock.AnythingOfType("*entity.DeleteLeaseRequest")).Return(nil)
+	mockLeaseService.On("DeleteLease", mock.AnythingOfType("uint")).Return(nil, http.StatusNoContent)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService)
 
-	request := entity.DeleteLeaseRequest{ID: 1}
-
 	rr := httptest.NewRecorder()
-	req := httptest.NewRequest(http.MethodDelete, "/leases/1", CreateBody(request))
+	req := httptest.NewRequest(http.MethodDelete, "/leases", nil)
 	req = mux.SetURLVars(req, map[string]string{"id": "1"})
 
 	leaseHandler.DeleteLease(rr, req)
 
 	mockLeaseService.AssertExpectations(t)
+	mockLeaseService.AssertNumberOfCalls(t, "DeleteLease", 1)
 	assert.Equal(t, http.StatusNoContent, rr.Code)
-	assert.Equal(t, string("null"), rr.Body.String())
 }

@@ -3,11 +3,11 @@ package app
 import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/database"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/handler"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/server"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
 
 type App struct {
@@ -30,10 +30,10 @@ func (a *App) Initialize() {
 		db.AutoMigrate()
 	}
 	if a.config.DB.Populate {
-
+		db.Generate()
 	}
 
-	userContext := entity.NewUserContext()
+	userContext := shared.NewUserContext()
 	tenantUserRepository := repository.NewTenantUserRepository(db.DB)
 	tenantUserService := service.NewTenantUserService(userContext, tenantUserRepository)
 	leaseRepository := repository.NewLeaseRepository(db.DB)

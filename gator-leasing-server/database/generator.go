@@ -1,44 +1,33 @@
 package database
 
 import (
-	"math/rand"
-	"reflect"
-
 	"github.com/bxcodec/faker/v4"
-	"gorm.io/gorm"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/constants"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 )
 
-func CreateTenants(db *gorm.DB) {
-	tenant := model.Tenant{}
+func (d *Database) createTenants() {
+	tenant := dto.Tenant{}
+	tenant.ID = constants.TENANT_ID
 	faker.FakeData(tenant)
-	db.Create(&tenant)
+	d.DB.Create(&tenant)
 }
 
-func CreateTenantUsers(db *gorm.DB) {
+func (d *Database) createTenantUsers() {
+	tenantUser := &dto.TenantUser{}
+	faker.FakeData(tenantUser)
 
 	for i := 1; i <= 5; i++ {
-		tenantUser := model.TenantUser{}
+		tenantUser = &dto.TenantUser{}
 		faker.FakeData(tenantUser)
 		tenantUser.ID = uint(i)
-		db.Create(&tenantUser)
+		d.DB.Create(&tenantUser)
 	}
 }
 
-func CreateLeases(db *gorm.DB) {
+func (d *Database) createLeases() {
 	for i := 0; i < 1000; i++ {
 
 	}
-}
-
-func Generate() {
-	_ = faker.AddProvider("tenantIdFaker", func(v reflect.Value) (interface{}, error) {
-		return constants.TENANT_ID, nil
-	})
-
-	_ = faker.AddProvider("ownerIdFaker", func(v reflect.Value) (interface{}, error) {
-		return rand.Intn(5) + 1, nil
-	})
 }

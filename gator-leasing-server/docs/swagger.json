@@ -24,7 +24,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.Lease"
+                                "$ref": "#/definitions/viewModel.Lease"
                             }
                         }
                     },
@@ -57,7 +57,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.CreateLeaseRequest"
+                            "$ref": "#/definitions/viewModel.CreateLeaseRequest"
                         }
                     }
                 ],
@@ -106,7 +106,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.EditLeaseRequest"
+                            "$ref": "#/definitions/viewModel.EditLeaseRequest"
                         }
                     }
                 ],
@@ -157,7 +157,7 @@
         }
     },
     "definitions": {
-        "entity.CreateLeaseRequest": {
+        "viewModel.CreateLeaseRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -168,7 +168,7 @@
                 }
             }
         },
-        "entity.EditLeaseRequest": {
+        "viewModel.EditLeaseRequest": {
             "type": "object",
             "required": [
                 "id"
@@ -182,7 +182,7 @@
                 }
             }
         },
-        "entity.Lease": {
+        "viewModel.Lease": {
             "type": "object",
             "properties": {
                 "id": {

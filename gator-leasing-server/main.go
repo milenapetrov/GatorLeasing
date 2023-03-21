@@ -11,9 +11,9 @@ import (
 
 //	@host	localhost:8080
 
-// @securitydefinitions.oauth2.application	Auth0
-// @tokenUrl								https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
-// @description							Auth0 protects our endpoints
+//	@securitydefinitions.oauth2.application	Auth0
+//	@tokenUrl								https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
+//	@description							Auth0 protects our endpoints
 func main() {
 	app := app.NewApp(config.GetConfig())
 	app.Initialize()

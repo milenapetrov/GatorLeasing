@@ -6,8 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type Lease struct {
-	ID            uint
+type CreateLease struct {
 	Name          string
 	OwnerID       uint
 	Address       Address
@@ -16,7 +15,6 @@ type Lease struct {
 	Rent          decimal.Decimal
 	Utilities     decimal.Decimal
 	ParkingCost   decimal.Decimal
-	TotalCost     decimal.Decimal
 	SquareFootage uint
 	Furnished     bool
 	Parking       bool
@@ -25,5 +23,4 @@ type Lease struct {
 	Amenities     string
 	Appliances    string
 	Description   string
-	Contacts      []Contact `faker:"contactsEntityFaker"`
 }
