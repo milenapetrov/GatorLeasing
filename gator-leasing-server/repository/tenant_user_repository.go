@@ -5,13 +5,13 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 )
 
 //go:generate mockery - name IUserRepository
 type ITenantUserRepository interface {
-	GetTenantUserByUserID(userId string, tenantId uint) (*model.TenantUser, error)
-	CreateTenantUser(tenantUser *model.TenantUser) (uint, error)
+	GetTenantUserByUserID(userId string, tenantId uint) (*dto.TenantUser, error)
+	CreateTenantUser(tenantUser *dto.TenantUser) (uint, error)
 }
 
 type TenantUserRepository struct {
@@ -22,8 +22,8 @@ func NewTenantUserRepository(db *gorm.DB) ITenantUserRepository {
 	return &TenantUserRepository{DB: db}
 }
 
-func (r *TenantUserRepository) GetTenantUserByUserID(userId string, tenantId uint) (*model.TenantUser, error) {
-	tenantUser := model.TenantUser{}
+func (r *TenantUserRepository) GetTenantUserByUserID(userId string, tenantId uint) (*dto.TenantUser, error) {
+	tenantUser := dto.TenantUser{}
 	err := r.DB.Where("user_id = ? AND tenant_id = ?", userId, tenantId).First(&tenantUser).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
@@ -34,7 +34,7 @@ func (r *TenantUserRepository) GetTenantUserByUserID(userId string, tenantId uin
 	return &tenantUser, nil
 }
 
-func (r *TenantUserRepository) CreateTenantUser(tenantUser *model.TenantUser) (uint, error) {
+func (r *TenantUserRepository) CreateTenantUser(tenantUser *dto.TenantUser) (uint, error) {
 	err := r.DB.Create(tenantUser).Error
 	return tenantUser.ID, err
 }

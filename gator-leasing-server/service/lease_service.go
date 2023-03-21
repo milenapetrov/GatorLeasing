@@ -1,61 +1,105 @@
 package service
 
 import (
+	"net/http"
+
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
 
 //go:generate mockery --name ILeaseService
 type ILeaseService interface {
-	GetAllLeases() ([]*entity.Lease, error)
-	CreateLease(request *entity.CreateLeaseRequest) (uint, error)
-	EditLease(request *entity.EditLeaseRequest) error
-	DeleteLease(request *entity.DeleteLeaseRequest) error
+	GetAllLeases() ([]*entity.Lease, error, int)
+	CreateLease(leaseToCreate *entity.CreateLease) (uint, error, int)
+	EditLease(leaseToEdit *entity.EditLease) (error, int)
+	DeleteLease(id uint) (error, int)
+	GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error, int)
 }
 
 type LeaseService struct {
-	userContext *entity.UserContext
+	userContext *shared.UserContext
 	repository  repository.ILeaseRepository
 }
 
-func NewLeaseService(userContext *entity.UserContext, repository repository.ILeaseRepository) *LeaseService {
+func NewLeaseService(userContext *shared.UserContext, repository repository.ILeaseRepository) ILeaseService {
 	return &LeaseService{
 		userContext: userContext,
 		repository:  repository,
 	}
 }
 
-func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
-	leaseModels, err := s.repository.GetAllLeases()
-
+func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error, int) {
+	leaseDtos, err := s.repository.GetAllLeases()
 	if err != nil {
-		return nil, err
+		return nil, err, http.StatusInternalServerError
 	}
 
-	leaseEntities := []*entity.Lease{}
-
-	for _, l := range leaseModels {
-		leaseEntities = append(leaseEntities, &entity.Lease{ID: l.ID, Name: l.Name, OwnerID: l.OwnerID})
+	mapper := mapper.NewMapper(&dto.Lease{}, &entity.Lease{})
+	leaseEntities, err := mapper.MapSlice(leaseDtos)
+	if err != nil {
+		return nil, err, http.StatusInternalServerError
 	}
 
-	return leaseEntities, nil
+	return leaseEntities, nil, http.StatusOK
 }
 
-func (s *LeaseService) CreateLease(request *entity.CreateLeaseRequest) (uint, error) {
-	lease := &model.Lease{Name: request.Name, OwnerID: s.userContext.ID}
+func (s *LeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, error, int) {
+	leaseToCreate.OwnerID = s.userContext.ID
+
+	mapper := mapper.NewMapper(&entity.CreateLease{}, &dto.Lease{})
+	lease, err := mapper.Map(leaseToCreate)
+	if err != nil {
+		return 0, err, http.StatusInternalServerError
+	}
+
 	id, err := s.repository.CreateLease(lease)
-	return id, err
+	if err != nil {
+		return 0, err, http.StatusInternalServerError
+	}
+
+	return id, nil, http.StatusCreated
 }
 
-func (s *LeaseService) EditLease(request *entity.EditLeaseRequest) error {
-	lease := &model.Lease{ID: request.ID, Name: request.Name}
-	err := s.repository.EditLease(lease)
-	return err
+func (s *LeaseService) EditLease(leaseToEdit *entity.EditLease) (error, int) {
+	mapper := mapper.NewMapper(&entity.EditLease{}, &dto.Lease{})
+	lease, err := mapper.Map(leaseToEdit)
+	if err != nil {
+		return err, http.StatusInternalServerError
+	}
+
+	err = s.repository.EditLease(lease)
+	if err != nil {
+		return err, http.StatusInternalServerError
+	}
+
+	return nil, http.StatusNoContent
 }
 
-func (s *LeaseService) DeleteLease(request *entity.DeleteLeaseRequest) error {
-	lease := &model.Lease{ID: request.ID}
+func (s *LeaseService) DeleteLease(id uint) (error, int) {
+	lease := &dto.Lease{ID: id}
+
 	err := s.repository.DeleteLease(lease)
-	return err
+	if err != nil {
+		return err, http.StatusInternalServerError
+	}
+
+	return nil, http.StatusNoContent
+}
+
+func (s *LeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error, int) {
+	leaseDtos, paginationToken, count, err := s.repository.GetPaginatedLeases(paginatedLeasesRequest.PageSize, paginatedLeasesRequest.SortToken, paginatedLeasesRequest.PaginationToken, paginatedLeasesRequest.SortDirection)
+	if err != nil {
+		return nil, "", 0, err, http.StatusInternalServerError
+	}
+
+	mapper := mapper.NewMapper(&dto.Lease{}, &entity.Lease{})
+	leaseEntities, err := mapper.MapSlice(leaseDtos)
+	if err != nil {
+		return nil, "", 0, err, http.StatusInternalServerError
+	}
+
+	return leaseEntities, paginationToken, count, nil, http.StatusOK
 }

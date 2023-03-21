@@ -5,8 +5,10 @@ go 1.19
 require (
 	github.com/auth0/go-jwt-middleware/v2 v2.1.0
 	github.com/bxcodec/faker/v4 v4.0.0-beta.3
+	github.com/dranikpg/dto-mapper v0.1.1
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.4.0
+	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.1
 	github.com/swaggo/http-swagger v1.3.3
 	github.com/swaggo/swag v1.8.10

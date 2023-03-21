@@ -15,10 +15,10 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	_ "github.com/milenapetrov/GatorLeasing/gator-leasing-server/docs"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 	httpSwagger "github.com/swaggo/http-swagger"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/handler"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/server/middleware"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
@@ -28,10 +28,10 @@ type Server struct {
 	config            *config.ServerConfig
 	leaseHandler      *handler.LeaseHandler
 	tenantUserService service.ITenantUserService
-	userContext       *entity.UserContext
+	userContext       *shared.UserContext
 }
 
-func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler, tenantUserService service.ITenantUserService, userContext *entity.UserContext) *Server {
+func NewServer(config *config.ServerConfig, leaseHandler *handler.LeaseHandler, tenantUserService service.ITenantUserService, userContext *shared.UserContext) *Server {
 	return &Server{
 		config:            config,
 		leaseHandler:      leaseHandler,
@@ -85,10 +85,13 @@ func (s *Server) handler() *mux.Router {
 	s.handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
 	s.handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
 	s.handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
+	s.handle(r, "/leases/paged", "GET", s.leaseHandler.GetPaginatedLeases, false)
 
-	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL(os.Getenv("HOST_URL") + "/swagger/doc.json"), //The url pointing to API definition
-	)).Methods(http.MethodGet)
+	if s.config.ApiDocumentation {
+		r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
+			httpSwagger.URL(os.Getenv("HOST_URL") + "/swagger/doc.json"), //The url pointing to API definition
+		)).Methods(http.MethodGet)
+	}
 
 	r.PathPrefix("/").HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +120,7 @@ func (s *Server) handle(router *mux.Router, path string, method string, f func(w
 	}
 }
 
-func (s *Server) setUserContext(r *http.Request, userContext *entity.UserContext) error {
+func (s *Server) setUserContext(r *http.Request, userContext *shared.UserContext) error {
 	claims := r.Context().Value(jwtmiddleware.ContextKey{}).(*validator.ValidatedClaims)
 	userContext.UserID = claims.RegisteredClaims.Subject
 	tenantUser, err := s.tenantUserService.GetOrCreateUser()

@@ -1,4 +1,4 @@
-package model
+package dto
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 )
 
 type Tenant struct {
-	ID        uint `gorm:"primarykey" faker:"tenantIdFaker"`
+	ID        uint `gorm:"primarykey" faker:"-"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`

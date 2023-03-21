@@ -2,10 +2,11 @@ package service
 
 import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/constants"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
 
 type ITenantUserService interface {
@@ -13,11 +14,11 @@ type ITenantUserService interface {
 }
 
 type TenantUserService struct {
-	userContext *entity.UserContext
+	userContext *shared.UserContext
 	repository  repository.ITenantUserRepository
 }
 
-func NewTenantUserService(userContext *entity.UserContext, repository repository.ITenantUserRepository) ITenantUserService {
+func NewTenantUserService(userContext *shared.UserContext, repository repository.ITenantUserRepository) ITenantUserService {
 	return &TenantUserService{
 		userContext: userContext,
 		repository:  repository,
@@ -30,7 +31,7 @@ func (s *TenantUserService) GetOrCreateUser() (*entity.TenantUser, error) {
 		return nil, err
 	}
 	if tenantUserModel == nil {
-		tenantUserModel = &model.TenantUser{
+		tenantUserModel = &dto.TenantUser{
 			UserID:    s.userContext.UserID,
 			TenantID:  constants.TENANT_ID,
 			InvitedAs: enums.Member,

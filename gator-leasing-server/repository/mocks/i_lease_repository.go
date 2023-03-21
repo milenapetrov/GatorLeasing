@@ -3,7 +3,8 @@
 package mocks
 
 import (
-	model "github.com/milenapetrov/GatorLeasing/gator-leasing-server/model"
+	dto "github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
+	enums "github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -14,21 +15,21 @@ type ILeaseRepository struct {
 }
 
 // CreateLease provides a mock function with given fields: lease
-func (_m *ILeaseRepository) CreateLease(lease *model.Lease) (uint, error) {
+func (_m *ILeaseRepository) CreateLease(lease *dto.Lease) (uint, error) {
 	ret := _m.Called(lease)
 
 	var r0 uint
 	var r1 error
-	if rf, ok := ret.Get(0).(func(*model.Lease) (uint, error)); ok {
+	if rf, ok := ret.Get(0).(func(*dto.Lease) (uint, error)); ok {
 		return rf(lease)
 	}
-	if rf, ok := ret.Get(0).(func(*model.Lease) uint); ok {
+	if rf, ok := ret.Get(0).(func(*dto.Lease) uint); ok {
 		r0 = rf(lease)
 	} else {
 		r0 = ret.Get(0).(uint)
 	}
 
-	if rf, ok := ret.Get(1).(func(*model.Lease) error); ok {
+	if rf, ok := ret.Get(1).(func(*dto.Lease) error); ok {
 		r1 = rf(lease)
 	} else {
 		r1 = ret.Error(1)
@@ -38,11 +39,11 @@ func (_m *ILeaseRepository) CreateLease(lease *model.Lease) (uint, error) {
 }
 
 // DeleteLease provides a mock function with given fields: lease
-func (_m *ILeaseRepository) DeleteLease(lease *model.Lease) error {
+func (_m *ILeaseRepository) DeleteLease(lease *dto.Lease) error {
 	ret := _m.Called(lease)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*model.Lease) error); ok {
+	if rf, ok := ret.Get(0).(func(*dto.Lease) error); ok {
 		r0 = rf(lease)
 	} else {
 		r0 = ret.Error(0)
@@ -52,11 +53,11 @@ func (_m *ILeaseRepository) DeleteLease(lease *model.Lease) error {
 }
 
 // EditLease provides a mock function with given fields: lease
-func (_m *ILeaseRepository) EditLease(lease *model.Lease) error {
+func (_m *ILeaseRepository) EditLease(lease *dto.Lease) error {
 	ret := _m.Called(lease)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*model.Lease) error); ok {
+	if rf, ok := ret.Get(0).(func(*dto.Lease) error); ok {
 		r0 = rf(lease)
 	} else {
 		r0 = ret.Error(0)
@@ -66,19 +67,19 @@ func (_m *ILeaseRepository) EditLease(lease *model.Lease) error {
 }
 
 // GetAllLeases provides a mock function with given fields:
-func (_m *ILeaseRepository) GetAllLeases() ([]model.Lease, error) {
+func (_m *ILeaseRepository) GetAllLeases() ([]*dto.Lease, error) {
 	ret := _m.Called()
 
-	var r0 []model.Lease
+	var r0 []*dto.Lease
 	var r1 error
-	if rf, ok := ret.Get(0).(func() ([]model.Lease, error)); ok {
+	if rf, ok := ret.Get(0).(func() ([]*dto.Lease, error)); ok {
 		return rf()
 	}
-	if rf, ok := ret.Get(0).(func() []model.Lease); ok {
+	if rf, ok := ret.Get(0).(func() []*dto.Lease); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]model.Lease)
+			r0 = ret.Get(0).([]*dto.Lease)
 		}
 	}
 
@@ -89,6 +90,72 @@ func (_m *ILeaseRepository) GetAllLeases() ([]model.Lease, error) {
 	}
 
 	return r0, r1
+}
+
+// GetLeaseById provides a mock function with given fields: id
+func (_m *ILeaseRepository) GetLeaseById(id uint) (*dto.Lease, error) {
+	ret := _m.Called(id)
+
+	var r0 *dto.Lease
+	var r1 error
+	if rf, ok := ret.Get(0).(func(uint) (*dto.Lease, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(uint) *dto.Lease); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*dto.Lease)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetPaginatedLeases provides a mock function with given fields: pageSize, sortToken, paginationToken, sortDirection
+func (_m *ILeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection) ([]*dto.Lease, string, int64, error) {
+	ret := _m.Called(pageSize, sortToken, paginationToken, sortDirection)
+
+	var r0 []*dto.Lease
+	var r1 string
+	var r2 int64
+	var r3 error
+	if rf, ok := ret.Get(0).(func(uint, string, string, enums.SortDirection) ([]*dto.Lease, string, int64, error)); ok {
+		return rf(pageSize, sortToken, paginationToken, sortDirection)
+	}
+	if rf, ok := ret.Get(0).(func(uint, string, string, enums.SortDirection) []*dto.Lease); ok {
+		r0 = rf(pageSize, sortToken, paginationToken, sortDirection)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*dto.Lease)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uint, string, string, enums.SortDirection) string); ok {
+		r1 = rf(pageSize, sortToken, paginationToken, sortDirection)
+	} else {
+		r1 = ret.Get(1).(string)
+	}
+
+	if rf, ok := ret.Get(2).(func(uint, string, string, enums.SortDirection) int64); ok {
+		r2 = rf(pageSize, sortToken, paginationToken, sortDirection)
+	} else {
+		r2 = ret.Get(2).(int64)
+	}
+
+	if rf, ok := ret.Get(3).(func(uint, string, string, enums.SortDirection) error); ok {
+		r3 = rf(pageSize, sortToken, paginationToken, sortDirection)
+	} else {
+		r3 = ret.Error(3)
+	}
+
+	return r0, r1, r2, r3
 }
 
 type mockConstructorTestingTNewILeaseRepository interface {

@@ -1,4 +1,4 @@
-package entity
+package shared
 
 import "github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
 

@@ -1,12 +1,12 @@
 definitions:
-  entity.CreateLeaseRequest:
+  viewModel.CreateLeaseRequest:
     properties:
       name:
         type: string
     required:
     - name
     type: object
-  entity.EditLeaseRequest:
+  viewModel.EditLeaseRequest:
     properties:
       id:
         type: integer
@@ -15,7 +15,7 @@ definitions:
     required:
     - id
     type: object
-  entity.Lease:
+  viewModel.Lease:
     properties:
       id:
         type: integer
@@ -41,7 +41,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Lease'
+              $ref: '#/definitions/viewModel.Lease'
             type: array
         "500":
           description: Internal Server Error
@@ -58,7 +58,7 @@ paths:
         name: createLeaseRequest
         required: true
         schema:
-          $ref: '#/definitions/entity.CreateLeaseRequest'
+          $ref: '#/definitions/viewModel.CreateLeaseRequest'
       produces:
       - text/plain
       responses:
@@ -111,7 +111,7 @@ paths:
         name: editLeaseRequest
         required: true
         schema:
-          $ref: '#/definitions/entity.EditLeaseRequest'
+          $ref: '#/definitions/viewModel.EditLeaseRequest'
       responses:
         "204":
           description: No Content
