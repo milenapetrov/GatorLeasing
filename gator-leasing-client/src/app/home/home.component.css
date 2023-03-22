@@ -1,3 +1,10 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
+.sect1 {
+  height: 650 px;
+  background-color: #ff1124;
+}
+
+.center {
+  display: flex;
+  height: 300px;
+  justify-content: center;
+}

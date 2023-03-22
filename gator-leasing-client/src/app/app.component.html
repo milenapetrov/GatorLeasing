@@ -1,13 +1,16 @@
-<p>
-    <mat-toolbar color="primary">
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span class="example-spacer"></span>
-      <span routerLink="/home">ReLease</span>
-      <span class="example-spacer"></span>
-      <a mat-stroked-button ><app-login></app-login></a>
-    </mat-toolbar>
-  </p>
-
+<div>
+  <mat-toolbar color="primary">
+    <button mat-stroked-button routerLink="/post">My Leases </button>
+    <button mat-stroked-button routerLink="/messages">Messages</button>
+    <span class="spacer"></span>
+    <span class="spacer2" routerLink="/home">ReLease</span>
+    <span class="spacer"></span>
+    <a mat-stroked-button ><app-login></app-login></a>
+    <a mat-stroked-button routerLink="/profile">Profile </a>
+  </mat-toolbar>
+</div>
+<br>
+<br>
+<br>
+<br>
 <router-outlet></router-outlet>

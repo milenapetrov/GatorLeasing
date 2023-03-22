@@ -21,10 +21,10 @@ export class PostComponent {
   //for displaying input read in this component in the parent app component
   @Output() newPost = new EventEmitter<string>(); 
 
-  addPost(name: string) {
+  /*addPost(name: string) {
     this.newPost.emit(name);
     this.leaseService.createPost(name);
-  };
+  };*/
 
 }
 

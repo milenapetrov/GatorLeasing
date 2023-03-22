@@ -1,3 +1,13 @@
-<!--<app-login></app-login>-->
-<app-navigation></app-navigation>
-<!--<app-display-leases></app-display-leases>-->
+<div id="sect1" class="container center"> 
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+        <input matInput placeholder="Search" name= "search" [(ngModel)]= "search">
+        <button matSuffix mat-button routerLink="/my-leases"><mat-icon >search</mat-icon></button>
+        </mat-form-field>
+    </form>
+    </div>
+    
+    <div class = "center">
+    <button mat-stroked-button routerLink="/create"> Post a Lease </button>
+</div>
+    <!--(click)="loginOrRoute('/create')"-->
