@@ -7,12 +7,13 @@ const docTemplate = `{
     "schemes": {{ marshal .Schemes }},
     "swagger": "2.0",
     "info": {
-        "description": "Server for subleasing website ReLease",
-        "title": "ReLease API",
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
         "contact": {},
-        "version": "1.0"
+        "version": "{{.Version}}"
     },
-    "host": "localhost:8080",
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
     "paths": {
         "/leases": {
             "get": {
@@ -58,12 +59,12 @@ const docTemplate = `{
                 "summary": "Create a lease",
                 "parameters": [
                     {
-                        "description": "create lease request",
+                        "description": "create lease",
                         "name": "createLeaseRequest",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/viewModel.CreateLeaseRequest"
+                            "$ref": "#/definitions/viewModel.CreateLease"
                         }
                     }
                 ],
@@ -112,7 +113,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/viewModel.EditLeaseRequest"
+                            "$ref": "#/definitions/viewModel.EditLease"
                         }
                     }
                 ],
@@ -163,34 +164,194 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "viewModel.CreateLeaseRequest": {
+        "viewModel.Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "roomNumber": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zipCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "viewModel.Contact": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/viewModel.Address"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "leaseID": {
+                    "type": "integer"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "salutation": {
+                    "type": "string"
+                }
+            }
+        },
+        "viewModel.CreateLease": {
             "type": "object",
             "required": [
                 "name"
             ],
             "properties": {
+                "address": {
+                    "$ref": "#/definitions/viewModel.Address"
+                },
+                "amenities": {
+                    "type": "string"
+                },
+                "appliances": {
+                    "type": "string"
+                },
+                "baths": {
+                    "type": "number"
+                },
+                "beds": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "furnished": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
+                },
+                "parking": {
+                    "type": "boolean"
+                },
+                "parkingCost": {
+                    "type": "number"
+                },
+                "rent": {
+                    "type": "number"
+                },
+                "squareFootage": {
+                    "type": "integer"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "utilities": {
+                    "type": "number"
                 }
             }
         },
-        "viewModel.EditLeaseRequest": {
+        "viewModel.EditLease": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
+                "address": {
+                    "$ref": "#/definitions/viewModel.Address"
+                },
+                "amenities": {
+                    "type": "string"
+                },
+                "appliances": {
+                    "type": "string"
+                },
+                "baths": {
+                    "type": "number"
+                },
+                "beds": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "furnished": {
+                    "type": "boolean"
+                },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
                     "type": "string"
+                },
+                "parking": {
+                    "type": "boolean"
+                },
+                "parkingCost": {
+                    "type": "number"
+                },
+                "rent": {
+                    "type": "number"
+                },
+                "squareFootage": {
+                    "type": "integer"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "utilities": {
+                    "type": "number"
                 }
             }
         },
         "viewModel.Lease": {
             "type": "object",
             "properties": {
+                "address": {
+                    "$ref": "#/definitions/viewModel.Address"
+                },
+                "amenities": {
+                    "type": "string"
+                },
+                "appliances": {
+                    "type": "string"
+                },
+                "baths": {
+                    "type": "number"
+                },
+                "beds": {
+                    "type": "integer"
+                },
+                "contacts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/viewModel.Contact"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "furnished": {
+                    "type": "boolean"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -199,6 +360,27 @@ const docTemplate = `{
                 },
                 "ownerID": {
                     "type": "integer"
+                },
+                "parking": {
+                    "type": "boolean"
+                },
+                "parkingCost": {
+                    "type": "number"
+                },
+                "rent": {
+                    "type": "number"
+                },
+                "squareFootage": {
+                    "type": "integer"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "totalCost": {
+                    "type": "number"
+                },
+                "utilities": {
+                    "type": "number"
                 }
             }
         }

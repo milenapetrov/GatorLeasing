@@ -1,28 +1,148 @@
 definitions:
-  viewModel.CreateLeaseRequest:
+  viewModel.Address:
     properties:
+      city:
+        type: string
+      roomNumber:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      zipCode:
+        type: string
+    type: object
+  viewModel.Contact:
+    properties:
+      address:
+        $ref: '#/definitions/viewModel.Address'
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+      leaseID:
+        type: integer
+      phoneNumber:
+        type: string
+      salutation:
+        type: string
+    type: object
+  viewModel.CreateLease:
+    properties:
+      address:
+        $ref: '#/definitions/viewModel.Address'
+      amenities:
+        type: string
+      appliances:
+        type: string
+      baths:
+        type: number
+      beds:
+        type: integer
+      description:
+        type: string
+      endDate:
+        type: string
+      furnished:
+        type: boolean
       name:
         type: string
+      parking:
+        type: boolean
+      parkingCost:
+        type: number
+      rent:
+        type: number
+      squareFootage:
+        type: integer
+      startDate:
+        type: string
+      utilities:
+        type: number
     required:
     - name
     type: object
-  viewModel.EditLeaseRequest:
+  viewModel.EditLease:
     properties:
+      address:
+        $ref: '#/definitions/viewModel.Address'
+      amenities:
+        type: string
+      appliances:
+        type: string
+      baths:
+        type: number
+      beds:
+        type: integer
+      description:
+        type: string
+      endDate:
+        type: string
+      furnished:
+        type: boolean
       id:
         type: integer
       name:
         type: string
-    required:
-    - id
+      parking:
+        type: boolean
+      parkingCost:
+        type: number
+      rent:
+        type: number
+      squareFootage:
+        type: integer
+      startDate:
+        type: string
+      utilities:
+        type: number
     type: object
   viewModel.Lease:
     properties:
+      address:
+        $ref: '#/definitions/viewModel.Address'
+      amenities:
+        type: string
+      appliances:
+        type: string
+      baths:
+        type: number
+      beds:
+        type: integer
+      contacts:
+        items:
+          $ref: '#/definitions/viewModel.Contact'
+        type: array
+      description:
+        type: string
+      endDate:
+        type: string
+      furnished:
+        type: boolean
       id:
         type: integer
       name:
         type: string
       ownerID:
         type: integer
+      parking:
+        type: boolean
+      parkingCost:
+        type: number
+      rent:
+        type: number
+      squareFootage:
+        type: integer
+      startDate:
+        type: string
+      totalCost:
+        type: number
+      utilities:
+        type: number
     type: object
 host: localhost:8080
 info:
@@ -53,12 +173,12 @@ paths:
       - application/json
       description: post a lease
       parameters:
-      - description: create lease request
+      - description: create lease
         in: body
         name: createLeaseRequest
         required: true
         schema:
-          $ref: '#/definitions/viewModel.CreateLeaseRequest'
+          $ref: '#/definitions/viewModel.CreateLease'
       produces:
       - text/plain
       responses:
@@ -111,7 +231,7 @@ paths:
         name: editLeaseRequest
         required: true
         schema:
-          $ref: '#/definitions/viewModel.EditLeaseRequest'
+          $ref: '#/definitions/viewModel.EditLease'
       responses:
         "204":
           description: No Content

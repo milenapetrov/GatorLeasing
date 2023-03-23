@@ -10,9 +10,6 @@ type Mapper[T, U any] struct {
 
 func NewMapper[T, U any](*T, *U) *Mapper[T, U] {
 	mapper := &Mapper[T, U]{Mapper: dto.Mapper{}}
-	// mapper.Mapper.AddInspectFunc(func(lease *entity.Lease, mapper *dto.Mapper) error {
-	// 	return nil
-	// })
 	return mapper
 }
 
