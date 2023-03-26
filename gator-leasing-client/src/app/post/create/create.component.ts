@@ -4,6 +4,7 @@ import { LeaseService } from 'src/app/services/lease.service';
 import { Lease } from 'src/app/models/lease';
 import { Post } from 'src/app/models/post';
 import { timeInterval } from 'rxjs';
+import { Address } from 'src/app/models/address'
 
 const today = new Date();
 const month = today.getMonth();
@@ -17,15 +18,23 @@ const year = today.getFullYear();
 
 export class CreateComponent {
   date: Date = new Date();
+  addy: Address = {
+    street: '',
+    roomNumber: '',
+    city: '',
+    state: '',
+    zipCode: ''
+  };
 
   post: Post = {
     name: '', 
+    address: this.addy,
     rent: 0.0,
-    start_date: this.date,
-    end_date: this.date,
+    startDate: this.date,
+    endDate: this.date,
     utilities: 0.0,
-    parking_cost: 0.0,
-    square_footage: 0,
+    parkingCost: 0.0,
+    squareFootage: 0,
     furnished: false,
     parking: false,
     beds: 0,
@@ -40,7 +49,17 @@ export class CreateComponent {
   }
 
   onSubmit(post:Post) {
-    console.warn("date: ", this.post.start_date)
     this.leaseService.createPost(this.post);
   };
+
+  /*checked(){
+    var checkBox = document.getElementById("myCheck");
+    var text = document.getElementById("text");
+
+    if (this.post.parking == true){
+      text.style.display = "block";
+    } else {
+      text.style.display = "none";
+    }
+  }*/
 }

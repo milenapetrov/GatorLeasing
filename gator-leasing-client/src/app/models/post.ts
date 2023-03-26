@@ -1,11 +1,13 @@
+import {Address} from './address'
 export interface Post {
     name: string;
-    start_date: Date;
-    end_date: Date;
+    address: Address;
+    startDate: Date;
+    endDate: Date;
     rent: number;
     utilities: number;
-    parking_cost: number;
-    square_footage: number;
+    parkingCost: number;
+    squareFootage: number;
     furnished: boolean;
     parking: boolean;
     beds: number;

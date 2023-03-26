@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
-import { ColDef, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
 import { Observable } from 'rxjs';
+import { GridCellComponent, MyCellParams } from '../grid-cell/grid-cell.component';
 
 @Component({
   selector: 'app-display-leases',
@@ -20,14 +21,37 @@ export class DisplayLeasesComponent implements OnInit {
 
   columnDefs = [
     {field: "name" }, 
-    {field: "start_date"}, 
-    {field: "end_date"},
-    {field: "rent"},
+    {field: "startDate",
+            cellRenderer: (params: ICellRendererParams) => {
+            return params.value.substring(0,10)
+            }},
+    {field: "endDate",
+            cellRenderer: (params: ICellRendererParams) => {
+            return params.value.substring(0,10)
+            }},
+    {field: "rent",
+            cellRenderer: (params: ICellRendererParams) => {
+            return `$${params.value} `
+            }},
     {field: "utilities"},
-    {field: "parking_cost"},
-    {field: "square_footage"},
-    {field: "furnished"},
-    {field: "parking"},
+    {field: "parkingCost"},
+    {field: "squareFootage"},
+    {field: "furnished",
+            cellRenderer: (params: ICellRendererParams) => {
+            if(params.value) {
+              return `<b> yes </b>`
+            }else{
+              return `<b> no </b>`
+            }
+      }},
+    {field: "parking",
+            cellRenderer: (params: ICellRendererParams) => {
+              if(params.value) {
+                return `<b> yes </b>`
+              }else{
+                return `<b> no </b>`
+              }
+            }},
     {field: 'beds'},
     {field: "baths"}
   ];
