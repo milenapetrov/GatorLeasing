@@ -1,8 +1,16 @@
-.sect1 {
-  height: 650 px;
-  background-color: #ff1124;
+
+.example img {
+  position:relative;
+  width: 10000px;
+  height: 330px;
+  background-image: url(../../assets/images/house2.jpg);
+  background-size: 1350px 330px;
 }
 
+.example overlay {
+  position: absolute;
+  justify-content: center;
+}
 .center {
   display: flex;
   height: 300px;

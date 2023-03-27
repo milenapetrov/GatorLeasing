@@ -1,13 +1,24 @@
-<div id="sect1" class="container center"> 
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
+<head>
+    <base href="/">
+</head>
+<!--<div class="container center">-->
+<mat-card id="card" style="text-align: center;">
+<div class="example">
+    <img class="background-image">
+    <!--<form class="example-form">-->
+    <div class="overlay">
+        <mat-form-field>
         <input matInput placeholder="Search" name= "search" [(ngModel)]= "search">
         <button matSuffix mat-button routerLink="/my-leases"><mat-icon >search</mat-icon></button>
         </mat-form-field>
-    </form>
+    <!--</form>-->
     </div>
-    
+</div>
+</mat-card>
+
+    <br>
+    <br>
     <div class = "center">
     <button mat-stroked-button routerLink="/create"> Post a Lease </button>
-</div>
+    </div>
     <!--(click)="loginOrRoute('/create')"-->

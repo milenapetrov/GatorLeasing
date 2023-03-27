@@ -76,13 +76,14 @@
 
     <mat-checkbox name="furn" class="example-margin" [(ngModel)]="post.furnished"> Furnished </mat-checkbox>
     <br>
-    <mat-checkbox name="park" class="example-margin" [(ngModel)]="post.parking"> Parking </mat-checkbox>
+    <mat-checkbox name="parking" class="example-margin" [(ngModel)]="post.parking"> Parking </mat-checkbox>
     <br>
-    <!--try to display only when checkbox clicked-->
-    <!--<mat-form-field id="text" style="display:none">
-      <mat-label > Cost of parking </mat-label>
-      <input id="myCheck" onClick="checked()" name="parkCost" matInput [(ngModel)]="post.parkingCost">
-    </mat-form-field>-->
+    <div *ngIf="post.parking">
+      <mat-form-field >
+        <mat-label>Cost of Parking</mat-label> 
+        <input name="parkCost"  matInput [(ngModel)]="post.parkingCost">
+      </mat-form-field>
+    </div>
     <br>
 
    <mat-form-field class="example-full-width">

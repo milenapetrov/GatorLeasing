@@ -52,14 +52,4 @@ export class CreateComponent {
     this.leaseService.createPost(this.post);
   };
 
-  /*checked(){
-    var checkBox = document.getElementById("myCheck");
-    var text = document.getElementById("text");
-
-    if (this.post.parking == true){
-      text.style.display = "block";
-    } else {
-      text.style.display = "none";
-    }
-  }*/
 }
