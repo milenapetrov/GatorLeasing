@@ -1,14 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
-import { LeaseService } from '../services/lease.service';
-import { HttpClientTestingModule} from '@angular/common/http/testing';
 
 
 describe('Home Component', () => {
   it('playground', () => {
     cy.mount(HomeComponent)
+
+    cy.get('button')
+    cy.get('button')
+    cy.click()
+    
   })
+
 })
 /*
 describe('HomeComponent', () => {

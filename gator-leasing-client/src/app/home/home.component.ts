@@ -11,7 +11,7 @@ import { AuthService } from '@auth0/auth0-angular';
 export class HomeComponent implements OnInit {
   search: String = "";
   
-  constructor(private leaseService:LeaseService, public auth: AuthService) {}
+  //constructor(private leaseService:LeaseService, public auth: AuthService) {}
 
   ngOnInit(): void {}
 }
