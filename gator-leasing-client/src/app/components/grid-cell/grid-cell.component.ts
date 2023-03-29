@@ -9,6 +9,9 @@ export interface MyCellParams {
 @Component({
   selector: 'app-grid-cell',
   templateUrl: './grid-cell.component.html',
+  /*template: `
+    <button routerLink="/update"> {{buttonText}}</button>
+  `,*/
   styleUrls: ['./grid-cell.component.css']
 })
 export class GridCellComponent {
@@ -25,7 +28,9 @@ export class GridCellComponent {
   }
 
   onClick(event: any){
-    alert('Cell value is ' + this.value);
+    //this.params.clicked(this.params.value);
+    alert('does not work yet lolll');
+    
   }
 
   ngOnInit(): void {
