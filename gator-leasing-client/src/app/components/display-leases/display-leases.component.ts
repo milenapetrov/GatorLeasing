@@ -20,7 +20,11 @@ export class DisplayLeasesComponent implements OnInit {
   }
 
   columnDefs = [
-    {field: "name" }, 
+    {field: "name",
+            cellRenderer: GridCellComponent,
+            cellRendererParams: {
+              buttonText: 'Update'
+            } as MyCellParams},
     {field: "startDate",
             cellRenderer: (params: ICellRendererParams) => {
             return params.value.substring(0,10)

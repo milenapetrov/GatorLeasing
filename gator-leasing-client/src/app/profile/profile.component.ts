@@ -34,7 +34,7 @@ export class ProfileComponent {
   }
 
   onSubmit(contact:Contact) {
-    //this.leaseService.createContact(this.contact);
+    this.leaseService.createContact(this.contact);
   };
 
 }

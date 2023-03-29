@@ -63,6 +63,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
       {path: 'post', component: PostComponent},
       {path: 'login', component: LoginComponent},
       {path: 'create', component: CreateComponent},
+      {path: 'update', component: UpdateComponent},
       {path:'messages', component: MessagesComponent},
       {path:"profile", component: ProfileComponent},
     ]),
