@@ -4,14 +4,31 @@ import { HomeComponent } from './home.component';
 
 
 describe('Home Component', () => {
-  it('playground', () => {
+  it('can mount', () => {
     cy.mount(HomeComponent)
-    cy.get('input[name="search"]').should(String)
-    cy.get('button[name="s"]').click()
-    cy.get('button[name="post"]')
   })
-
 })
+
+describe('Search', () => {
+  it('is string', () => {
+    cy.get('input[name="search"]').should(String)
+  })
+})
+
+describe('Search Button', () => {
+  it('can click', () => {
+    cy.mount(HomeComponent)
+    cy.get('button[name="s"]').click()
+  })
+})
+
+describe('Post Button', () => {
+  it('can click', () => {
+    cy.mount(HomeComponent)
+    cy.get('button[name="post"]').click()
+  })
+})
+
 /*
 describe('HomeComponent', () => {
   let component: HomeComponent;
