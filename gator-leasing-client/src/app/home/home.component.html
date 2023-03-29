@@ -2,23 +2,23 @@
     <base href="/">
 </head>
 <!--<div class="container center">-->
-<mat-card id="card" style="text-align: center;">
-<div class="example">
-    <!--<img class="background-image">-->
-    <!--<form class="example-form">-->
-    <div class="overlay">
-        <mat-form-field>
-        <input matInput placeholder="Search" name= "search" [(ngModel)]= "search">
-        <button name="s" matSuffix mat-button routerLink="/my-leases"><mat-icon >search</mat-icon></button>
-        </mat-form-field>
-    <!--</form>-->
+<mat-card id="card" class="bg" style="text-align: center; background-color: transparent">
+    <div class="example">
+        <!--<img class="background-image">-->
+        <!--<form class="example-form">-->
+        <div div class="overlay" style="margin-top: 300px">
+            <mat-form-field>
+                <input matInput placeholder="Search" name="search" [(ngModel)]="search">
+                <button name="s" matSuffix mat-button routerLink="/my-leases"><mat-icon>search</mat-icon></button>
+            </mat-form-field>
+            <!--</form>-->
+        </div>
     </div>
-</div>
 </mat-card>
 
-    <br>
-    <br>
-    <div class = "center">
+<br>
+<br>
+<div class="center">
     <button name="post" mat-stroked-button routerLink="/create"> Post a Lease </button>
-    </div>
-    <!--(click)="loginOrRoute('/create')"-->
+</div>
+<!--(click)="loginOrRoute('/create')"-->

@@ -1,6 +1,5 @@
-
 .example img {
-  position:relative;
+  position: relative;
   width: 10000px;
   height: 330px;
   background-image: url(../../assets/images/house2.jpg);
@@ -11,8 +10,17 @@
   position: absolute;
   justify-content: center;
 }
+
 .center {
   display: flex;
   height: 300px;
   justify-content: center;
+}
+
+.bg {
+  background-image: url("../../assets/images/house2.jpg");
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
