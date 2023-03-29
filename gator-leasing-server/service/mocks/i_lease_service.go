@@ -13,13 +13,12 @@ type ILeaseService struct {
 }
 
 // CreateLease provides a mock function with given fields: leaseToCreate
-func (_m *ILeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, error, int) {
+func (_m *ILeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, error) {
 	ret := _m.Called(leaseToCreate)
 
 	var r0 uint
 	var r1 error
-	var r2 int
-	if rf, ok := ret.Get(0).(func(*entity.CreateLease) (uint, error, int)); ok {
+	if rf, ok := ret.Get(0).(func(*entity.CreateLease) (uint, error)); ok {
 		return rf(leaseToCreate)
 	}
 	if rf, ok := ret.Get(0).(func(*entity.CreateLease) uint); ok {
@@ -34,71 +33,44 @@ func (_m *ILeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, e
 		r1 = ret.Error(1)
 	}
 
-	if rf, ok := ret.Get(2).(func(*entity.CreateLease) int); ok {
-		r2 = rf(leaseToCreate)
-	} else {
-		r2 = ret.Get(2).(int)
-	}
-
-	return r0, r1, r2
+	return r0, r1
 }
 
 // DeleteLease provides a mock function with given fields: id
-func (_m *ILeaseService) DeleteLease(id uint) (error, int) {
+func (_m *ILeaseService) DeleteLease(id uint) error {
 	ret := _m.Called(id)
 
 	var r0 error
-	var r1 int
-	if rf, ok := ret.Get(0).(func(uint) (error, int)); ok {
-		return rf(id)
-	}
 	if rf, ok := ret.Get(0).(func(uint) error); ok {
 		r0 = rf(id)
 	} else {
 		r0 = ret.Error(0)
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) int); ok {
-		r1 = rf(id)
-	} else {
-		r1 = ret.Get(1).(int)
-	}
-
-	return r0, r1
+	return r0
 }
 
 // EditLease provides a mock function with given fields: leaseToEdit
-func (_m *ILeaseService) EditLease(leaseToEdit *entity.EditLease) (error, int) {
+func (_m *ILeaseService) EditLease(leaseToEdit *entity.EditLease) error {
 	ret := _m.Called(leaseToEdit)
 
 	var r0 error
-	var r1 int
-	if rf, ok := ret.Get(0).(func(*entity.EditLease) (error, int)); ok {
-		return rf(leaseToEdit)
-	}
 	if rf, ok := ret.Get(0).(func(*entity.EditLease) error); ok {
 		r0 = rf(leaseToEdit)
 	} else {
 		r0 = ret.Error(0)
 	}
 
-	if rf, ok := ret.Get(1).(func(*entity.EditLease) int); ok {
-		r1 = rf(leaseToEdit)
-	} else {
-		r1 = ret.Get(1).(int)
-	}
-
-	return r0, r1
+	return r0
 }
 
 // GetAllLeases provides a mock function with given fields:
-func (_m *ILeaseService) GetAllLeases() ([]*entity.Lease, error, int) {
+func (_m *ILeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	ret := _m.Called()
 
 	var r0 []*entity.Lease
 	var r1 error
-	var r2 int
-	if rf, ok := ret.Get(0).(func() ([]*entity.Lease, error, int)); ok {
+	if rf, ok := ret.Get(0).(func() ([]*entity.Lease, error)); ok {
 		return rf()
 	}
 	if rf, ok := ret.Get(0).(func() []*entity.Lease); ok {
@@ -115,25 +87,18 @@ func (_m *ILeaseService) GetAllLeases() ([]*entity.Lease, error, int) {
 		r1 = ret.Error(1)
 	}
 
-	if rf, ok := ret.Get(2).(func() int); ok {
-		r2 = rf()
-	} else {
-		r2 = ret.Get(2).(int)
-	}
-
-	return r0, r1, r2
+	return r0, r1
 }
 
 // GetPaginatedLeases provides a mock function with given fields: paginatedLeasesRequest
-func (_m *ILeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error, int) {
+func (_m *ILeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
 	ret := _m.Called(paginatedLeasesRequest)
 
 	var r0 []*entity.Lease
 	var r1 string
 	var r2 int64
 	var r3 error
-	var r4 int
-	if rf, ok := ret.Get(0).(func(*entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error, int)); ok {
+	if rf, ok := ret.Get(0).(func(*entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error)); ok {
 		return rf(paginatedLeasesRequest)
 	}
 	if rf, ok := ret.Get(0).(func(*entity.PaginatedLeasesRequest) []*entity.Lease); ok {
@@ -162,13 +127,7 @@ func (_m *ILeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.Pagin
 		r3 = ret.Error(3)
 	}
 
-	if rf, ok := ret.Get(4).(func(*entity.PaginatedLeasesRequest) int); ok {
-		r4 = rf(paginatedLeasesRequest)
-	} else {
-		r4 = ret.Get(4).(int)
-	}
-
-	return r0, r1, r2, r3, r4
+	return r0, r1, r2, r3
 }
 
 type mockConstructorTestingTNewILeaseService interface {

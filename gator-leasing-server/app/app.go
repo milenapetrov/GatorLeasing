@@ -8,6 +8,7 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/server"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/validator"
 )
 
 type App struct {
@@ -33,12 +34,13 @@ func (a *App) Initialize() {
 		db.Generate()
 	}
 
+	validator := validator.New()
 	userContext := shared.NewUserContext()
 	tenantUserRepository := repository.NewTenantUserRepository(db.DB)
 	tenantUserService := service.NewTenantUserService(userContext, tenantUserRepository)
 	leaseRepository := repository.NewLeaseRepository(db.DB)
 	leaseService := service.NewLeaseService(userContext, leaseRepository)
-	leaseHandler := handler.NewLeaseHandler(leaseService)
+	leaseHandler := handler.NewLeaseHandler(leaseService, validator)
 
 	a.server = server.NewServer(a.config.Server, leaseHandler, tenantUserService, userContext)
 }

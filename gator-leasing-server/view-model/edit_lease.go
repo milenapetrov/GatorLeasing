@@ -7,7 +7,7 @@ import (
 )
 
 type EditLease struct {
-	ID            uint            `json:"id"`
+	ID            int             `json:"id"`
 	Name          string          `json:"name"`
 	Address       Address         `json:"address"`
 	StartDate     time.Time       `json:"startDate"`
@@ -15,10 +15,10 @@ type EditLease struct {
 	Rent          decimal.Decimal `json:"rent"`
 	Utilities     decimal.Decimal `json:"utilities"`
 	ParkingCost   decimal.Decimal `json:"parkingCost"`
-	SquareFootage uint            `json:"squareFootage"`
+	SquareFootage int             `json:"squareFootage"`
 	Furnished     bool            `json:"furnished"`
 	Parking       bool            `json:"parking"`
-	Beds          uint            `json:"beds"`
+	Beds          int             `json:"beds"`
 	Baths         decimal.Decimal `json:"baths"`
 	Amenities     string          `json:"amenities"`
 	Appliances    string          `json:"appliances"`

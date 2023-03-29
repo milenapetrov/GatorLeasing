@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"net/http"
 	"testing"
 
@@ -22,29 +21,29 @@ func TestGetAllLeasesOK(t *testing.T) {
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
-	resultLeases, resultErr, resultStatus := leaseService.GetAllLeases()
+	resultLeases, resultErr := leaseService.GetAllLeases()
 
 	mockLeaseRepository.AssertExpectations(t)
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetAllLeases", 1)
 	assert.NotEmpty(t, resultLeases)
 	assert.Nil(t, resultErr)
-	assert.Equal(t, resultStatus, http.StatusOK)
 }
 
 func TestGetAllLeasesErr(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	leases := []*dto.Lease{}
-	err := errors.New("error")
+	err := &shared.InternalServerError{}
 	mockLeaseRepository.On("GetAllLeases").Return(leases, err)
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
-	resultLeases, resultErr, resultStatus := leaseService.GetAllLeases()
+	resultLeases, resultErr := leaseService.GetAllLeases()
 
 	mockLeaseRepository.AssertExpectations(t)
 	assert.Nil(t, resultLeases)
 	assert.NotNil(t, resultErr)
-	assert.Equal(t, resultStatus, http.StatusInternalServerError)
+	_, ok := resultErr.(*shared.InternalServerError)
+	assert.True(t, ok)
 }
 
 func TestCreateLeaseOK(t *testing.T) {
@@ -55,12 +54,11 @@ func TestCreateLeaseOK(t *testing.T) {
 
 	request := &entity.CreateLease{}
 	faker.FakeData(request)
-	resultID, resultErr, resultStatus := leaseService.CreateLease(request)
+	resultID, resultErr := leaseService.CreateLease(request)
 
 	mockLeaseRepository.AssertExpectations(t)
 	assert.NotNil(t, resultID)
 	assert.Nil(t, resultErr)
-	assert.Equal(t, resultStatus, http.StatusCreated)
 }
 
 func TestEditLeaseOK(t *testing.T) {
@@ -71,11 +69,10 @@ func TestEditLeaseOK(t *testing.T) {
 
 	request := &entity.EditLease{}
 	faker.FakeData(request)
-	resultErr, resultStatus := leaseService.EditLease(request)
+	resultErr := leaseService.EditLease(request)
 
 	mockLeaseRepository.AssertExpectations(t)
 	assert.Nil(t, resultErr)
-	assert.Equal(t, resultStatus, http.StatusNoContent)
 }
 
 func TestDeleteLeaseOK(t *testing.T) {
@@ -84,9 +81,8 @@ func TestDeleteLeaseOK(t *testing.T) {
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
-	resultErr, resultStatus := leaseService.DeleteLease(0)
+	resultErr := leaseService.DeleteLease(0)
 
 	mockLeaseRepository.AssertExpectations(t)
 	assert.Nil(t, resultErr)
-	assert.Equal(t, resultStatus, http.StatusNoContent)
 }
