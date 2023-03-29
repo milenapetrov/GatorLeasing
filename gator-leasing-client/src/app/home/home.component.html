@@ -9,7 +9,7 @@
     <div class="overlay">
         <mat-form-field>
         <input matInput placeholder="Search" name= "search" [(ngModel)]= "search">
-        <button matSuffix mat-button routerLink="/my-leases"><mat-icon >search</mat-icon></button>
+        <button name="s" matSuffix mat-button routerLink="/my-leases"><mat-icon >search</mat-icon></button>
         </mat-form-field>
     <!--</form>-->
     </div>
@@ -19,6 +19,6 @@
     <br>
     <br>
     <div class = "center">
-    <button mat-stroked-button routerLink="/create"> Post a Lease </button>
+    <button name="post" mat-stroked-button routerLink="/create"> Post a Lease </button>
     </div>
     <!--(click)="loginOrRoute('/create')"-->

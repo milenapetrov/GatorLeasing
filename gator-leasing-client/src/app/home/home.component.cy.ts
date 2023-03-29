@@ -6,11 +6,9 @@ import { HomeComponent } from './home.component';
 describe('Home Component', () => {
   it('playground', () => {
     cy.mount(HomeComponent)
-
-    cy.get('button')
-    cy.get('button')
-    cy.click()
-    
+    cy.get('input[name="search"]').should(String)
+    cy.get('button[name="s"]').click()
+    cy.get('button[name="post"]')
   })
 
 })
