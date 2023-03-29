@@ -1,11 +1,3 @@
-.example img {
-  position: relative;
-  width: 10000px;
-  height: 330px;
-  background-image: url(../../assets/images/house2.jpg);
-  background-size: 1350px 330px;
-}
-
 .example overlay {
   position: absolute;
   justify-content: center;
