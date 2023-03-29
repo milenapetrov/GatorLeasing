@@ -18,6 +18,11 @@ export class LeaseService {
     return this.http.get<Lease[]>(`${this.BASEURL}${this.LEASEURL}`);
   }
 
+  getLease(id: number): Observable<Lease> {
+    console.log(`get lease ${id}`)
+    return this.http.get<Lease>(`${this.BASEURL}${this.LEASEURL}/${id}`)
+  }
+
   createPost(post: Post){
     this.http.post<Post>(`${this.BASEURL}${this.LEASEURL}`, post).subscribe(response =>{ 
       console.log(response);  })  
