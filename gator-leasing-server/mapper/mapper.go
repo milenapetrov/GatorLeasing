@@ -2,6 +2,7 @@ package mapper
 
 import (
 	"github.com/dranikpg/dto-mapper"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
 
 type Mapper[T, U any] struct {
@@ -16,7 +17,10 @@ func NewMapper[T, U any](*T, *U) *Mapper[T, U] {
 func (m *Mapper[T, U]) Map(from *T) (*U, error) {
 	to := new(U)
 	err := m.Mapper.Map(to, from)
-	return to, err
+	if err != nil {
+		return nil, &shared.InternalServerError{Msg: err.Error()}
+	}
+	return to, nil
 }
 
 func (m *Mapper[T, U]) MapSlice(fromSlice []*T) ([]*U, error) {
@@ -28,5 +32,6 @@ func (m *Mapper[T, U]) MapSlice(fromSlice []*T) ([]*U, error) {
 		}
 		toSlice = append(toSlice, to)
 	}
+
 	return toSlice, nil
 }

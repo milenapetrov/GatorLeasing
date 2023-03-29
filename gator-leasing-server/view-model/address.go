@@ -1,9 +1,9 @@
 package viewModel
 
 type Address struct {
-	Street     string `json:"street"`
-	RoomNumber string `json:"roomNumber"`
-	City       string `json:"city"`
-	State      string `json:"state"`
-	ZipCode    string `json:"zipCode"`
+	Street     string `json:"street" validate:"required"`
+	RoomNumber string `json:"roomNumber" validate:"required"`
+	City       string `json:"city" validate:"required"`
+	State      string `json:"state" validate:"required"`
+	ZipCode    string `json:"zipCode" validate:"required"`
 }

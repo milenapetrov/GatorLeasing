@@ -12,6 +12,7 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/faker"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service/mocks"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/validator"
 	viewModel "github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model"
 )
 
@@ -23,9 +24,9 @@ func TestGetAllLeasesOK(t *testing.T) {
 	initialize()
 	mockLeaseService := mocks.NewILeaseService(t)
 	leases := faker.FakeMany(&entity.Lease{}, 5)
-	mockLeaseService.On("GetAllLeases").Return(leases, nil, http.StatusOK)
+	mockLeaseService.On("GetAllLeases").Return(leases, nil)
 
-	leaseHandler := NewLeaseHandler(mockLeaseService)
+	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodGet, "/leases", nil)
@@ -39,9 +40,9 @@ func TestGetAllLeasesOK(t *testing.T) {
 
 func TestPostLeaseOK(t *testing.T) {
 	mockLeaseService := mocks.NewILeaseService(t)
-	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLease")).Return(uint(1), nil, http.StatusCreated)
+	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLease")).Return(uint(1), nil)
 
-	leaseHandler := NewLeaseHandler(mockLeaseService)
+	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
 
 	createLease := viewModel.CreateLease{}
 	faker.FakeData(&createLease)
@@ -58,9 +59,9 @@ func TestPostLeaseOK(t *testing.T) {
 
 func TestPutLeaseOK(t *testing.T) {
 	mockLeaseService := mocks.NewILeaseService(t)
-	mockLeaseService.On("EditLease", mock.AnythingOfType("*entity.EditLease")).Return(nil, http.StatusNoContent)
+	mockLeaseService.On("EditLease", mock.AnythingOfType("*entity.EditLease")).Return(nil)
 
-	leaseHandler := NewLeaseHandler(mockLeaseService)
+	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
 
 	editLease := viewModel.Lease{}
 	faker.FakeData(&editLease)
@@ -78,9 +79,9 @@ func TestPutLeaseOK(t *testing.T) {
 
 func TestDeleteLeaseOK(t *testing.T) {
 	mockLeaseService := mocks.NewILeaseService(t)
-	mockLeaseService.On("DeleteLease", mock.AnythingOfType("uint")).Return(nil, http.StatusNoContent)
+	mockLeaseService.On("DeleteLease", mock.AnythingOfType("uint")).Return(nil)
 
-	leaseHandler := NewLeaseHandler(mockLeaseService)
+	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodDelete, "/leases", nil)

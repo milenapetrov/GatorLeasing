@@ -10,15 +10,18 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/validator"
 	viewModel "github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model"
 )
 
 type LeaseHandler struct {
 	leaseService service.ILeaseService
+	validator    *validator.Validator
 }
 
-func NewLeaseHandler(leaseService service.ILeaseService) *LeaseHandler {
-	return &LeaseHandler{leaseService: leaseService}
+func NewLeaseHandler(leaseService service.ILeaseService, validator *validator.Validator) *LeaseHandler {
+	return &LeaseHandler{leaseService: leaseService, validator: validator}
 }
 
 // GetAllLeases godoc
@@ -31,20 +34,20 @@ func NewLeaseHandler(leaseService service.ILeaseService) *LeaseHandler {
 //	@Failure		500
 //	@Router			/leases [get]
 func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
-	leaseEntities, err, status := h.leaseService.GetAllLeases()
+	leaseEntities, err := h.leaseService.GetAllLeases()
 	if err != nil {
-		respondError(w, status, err.Error())
+		respondError(w, err)
 		return
 	}
 
 	mapper := mapper.NewMapper(&entity.Lease{}, &viewModel.Lease{})
 	leaseViewModels, err := mapper.MapSlice(leaseEntities)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, err)
 		return
 	}
 
-	respondJson(w, status, leaseViewModels)
+	respondJson(w, http.StatusOK, leaseViewModels)
 }
 
 // PostLease godoc
@@ -63,26 +66,30 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(createLeaseRequest)
-	if err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+	if err := decoder.Decode(createLeaseRequest); err != nil {
+		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		return
+	}
+
+	if errs := h.validator.Struct(createLeaseRequest); errs != nil && len(errs) > 0 {
+		respondErrors(w, errs)
 		return
 	}
 
 	mapper := mapper.NewMapper(&viewModel.CreateLease{}, &entity.CreateLease{})
 	leaseToCreate, err := mapper.Map(createLeaseRequest)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, err)
 		return
 	}
 
-	id, err, status := h.leaseService.CreateLease(leaseToCreate)
+	id, err := h.leaseService.CreateLease(leaseToCreate)
 	if err != nil {
-		respondError(w, status, err.Error())
+		respondError(w, err)
 		return
 	}
 
-	respondJson(w, status, id)
+	respondJson(w, http.StatusCreated, id)
 }
 
 // PutLease godoc
@@ -102,31 +109,30 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id"], 10, 32)
 	if err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, &shared.BadRequestError{Msg: err.Error()})
 		return
 	}
 
-	editLeaseRequest := &viewModel.EditLease{ID: uint(id)}
+	editLeaseRequest := &viewModel.EditLease{ID: int(id)}
 	decoder := json.NewDecoder(r.Body)
 	if err = decoder.Decode(editLeaseRequest); err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, &shared.BadRequestError{Msg: err.Error()})
 		return
 	}
 
 	mapper := mapper.NewMapper(&viewModel.EditLease{}, &entity.EditLease{})
 	leaseToEdit, err := mapper.Map(editLeaseRequest)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, err)
 		return
 	}
 
-	err, status := h.leaseService.EditLease(leaseToEdit)
-	if err != nil {
-		respondError(w, status, err.Error())
+	if err := h.leaseService.EditLease(leaseToEdit); err != nil {
+		respondError(w, err)
 		return
 	}
 
-	respondJson(w, status, nil)
+	respondJson(w, http.StatusNoContent, nil)
 }
 
 // DeleteLease godoc
@@ -144,17 +150,15 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id"], 10, 32)
 	if err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, &shared.BadRequestError{Msg: err.Error()})
 		return
 	}
 
-	err, status := h.leaseService.DeleteLease(uint(id))
-	if err != nil {
-		respondError(w, status, err.Error())
-		return
+	if err := h.leaseService.DeleteLease(uint(id)); err != nil {
+		respondError(w, err)
 	}
 
-	respondJson(w, status, nil)
+	respondJson(w, http.StatusNoContent, nil)
 }
 
 // GetPaginatedLeases godoc
@@ -168,27 +172,27 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(paginatedLeasesViewModel)
 	if err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, &shared.BadRequestError{Msg: err.Error()})
 		return
 	}
 
 	requestMapper := mapper.NewMapper(&viewModel.PaginatedLeasesRequest{}, &entity.PaginatedLeasesRequest{})
 	paginatedLeasesRequest, err := requestMapper.Map(paginatedLeasesViewModel)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, err)
 		return
 	}
 
-	leases, paginationToken, count, err, status := h.leaseService.GetPaginatedLeases(paginatedLeasesRequest)
+	leases, paginationToken, count, err := h.leaseService.GetPaginatedLeases(paginatedLeasesRequest)
 	if err != nil {
-		respondError(w, status, err.Error())
+		respondError(w, err)
 		return
 	}
 
 	leasesMapper := mapper.NewMapper(&entity.Lease{}, &viewModel.Lease{})
 	leasesResult, err := leasesMapper.MapSlice(leases)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, err)
 		return
 	}
 
