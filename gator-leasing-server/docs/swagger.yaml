@@ -1,4 +1,12 @@
 definitions:
+  enums.SortDirection:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - Ascending
+    - Descending
   viewModel.Address:
     properties:
       city:
@@ -154,6 +162,17 @@ definitions:
       utilities:
         type: number
     type: object
+  viewModel.PaginatedLeasesRequest:
+    properties:
+      pageSize:
+        type: integer
+      paginationToken:
+        type: string
+      sortDirection:
+        $ref: '#/definitions/enums.SortDirection'
+      sortToken:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -257,6 +276,13 @@ paths:
   /leases/paged:
     get:
       description: get paged leases
+      parameters:
+      - description: get paginated lease request
+        in: body
+        name: getPaginatedLeasesRequest
+        required: true
+        schema:
+          $ref: '#/definitions/viewModel.PaginatedLeasesRequest'
       produces:
       - application/json
       responses:

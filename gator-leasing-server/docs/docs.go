@@ -94,6 +94,17 @@ const docTemplate = `{
                     "leases"
                 ],
                 "summary": "get paged leases",
+                "parameters": [
+                    {
+                        "description": "get paginated lease request",
+                        "name": "getPaginatedLeasesRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/viewModel.PaginatedLeasesRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -190,6 +201,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "enums.SortDirection": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "Ascending",
+                "Descending"
+            ]
+        },
         "viewModel.Address": {
             "type": "object",
             "required": [
@@ -418,6 +440,23 @@ const docTemplate = `{
                 },
                 "utilities": {
                     "type": "number"
+                }
+            }
+        },
+        "viewModel.PaginatedLeasesRequest": {
+            "type": "object",
+            "properties": {
+                "pageSize": {
+                    "type": "integer"
+                },
+                "paginationToken": {
+                    "type": "string"
+                },
+                "sortDirection": {
+                    "$ref": "#/definitions/enums.SortDirection"
+                },
+                "sortToken": {
+                    "type": "string"
                 }
             }
         }

@@ -166,6 +166,7 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 //	@Summary		get paged leases
 //	@Description	get paged leases
 //	@Tags			leases
+//	@Param			getPaginatedLeasesRequest	body	viewModel.PaginatedLeasesRequest	true	"get paginated lease request"
 //	@Produce		json
 //	@Success		200	{array}	viewModel.Lease
 //	@Failure		500
