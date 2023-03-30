@@ -1,0 +1,55 @@
+<!--// first name last name email phone address -->
+<form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm.value)">
+    <mat-card>
+    <mat-form-field class="example-full-width">
+        <mat-label>First Name</mat-label>
+        <input name="firstName" matInput [(ngModel)]="contact.firstName">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <mat-label>Last Name</mat-label>
+        <input name="lastName" matInput [(ngModel)]="contact.lastName">
+    </mat-form-field>
+    
+    <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input name="email" matInput [(ngModel)]="contact.email">
+    </mat-form-field>
+    
+    <mat-form-field class="example-full-width">
+        <mat-label>Phone Number</mat-label>
+        <input name="phoneNumber" matInput [(ngModel)]="contact.phoneNumber">
+    </mat-form-field>
+    
+    <table class="example-full-width" cellspacing="0"><tr>
+        <mat-form-field class="example-full-width">
+          <mat-label>Address</mat-label>
+          <input name="street" matInput [(ngModel)]="contact.address.street">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Apt. # (optional)</mat-label>
+          <input name="roomNum" matInput [(ngModel)]="contact.address.roomNumber">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>City</mat-label>
+          <input name="city" matInput placeholder="Ex. San Francisco" [(ngModel)]="contact.address.city">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>State</mat-label>
+          <input name="state" matInput placeholder="Ex. California" [(ngModel)]="contact.address.state">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Postal Code</mat-label>
+          <input name="zip" matInput #postalCode maxlength="5" placeholder="Ex. 94105" [(ngModel)]="contact.address.zipCode">
+          <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+        </mat-form-field>
+      </tr></table>
+    
+    </mat-card>
+
+    <br>
+    <mat-card-footer>
+      <button mat-stroked-button type="submit">Update Profile</button>
+    </mat-card-footer>
+
+<form>

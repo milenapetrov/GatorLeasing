@@ -4,10 +4,26 @@ import { AppComponent } from './app.component';
 
 describe('App Component', () => {
   it('Should mount', () => {
-    cy.mount(AppComponent, RouterTestingModule)
+    cy.mount(AppComponent)
     cy.get('mat-toolbar')
     cy.get('span')
     cy.get('app-login').invoke('show')
+  })
+})
+
+describe('Toolbar Buttons', () => {
+  it('should click', () => {
+    cy.mount(AppComponent)
+    cy.get('button[name="mylease"]').click()
+    cy.get('button[name="messages"]').click()
+  })
+})
+
+describe('Non-buttons', () => {
+  it('should click', () => {
+    cy.mount(AppComponent)
+    cy.get('span[name="home"]').click()
+    cy.get('a[name="profile"]').click()
   })
 })
 /*

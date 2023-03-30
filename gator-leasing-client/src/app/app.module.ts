@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AgGridModule } from 'ag-grid-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +35,13 @@ import { environment as env } from 'src/environments/environment';
 import { MyLeasesComponent } from './my-leases/my-leases.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { MessagesComponent } from './messages/messages.component';
+import { CreateComponent } from './post/create/create.component';
+import { UpdateComponent } from './post/update/update.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -41,14 +50,22 @@ import { LoginComponent } from './components/login/login.component';
     PostComponent,
     HomeComponent,
     MyLeasesComponent,
-    NavigationComponent
+    NavigationComponent,
+    ProfileComponent,
+    MessagesComponent,
+    CreateComponent,
+    UpdateComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
       {path: 'home', component: HomeComponent},
       {path: 'post', component: PostComponent},
-      {path: 'login', component: LoginComponent}
+      {path: 'login', component: LoginComponent},
+      {path: 'create', component: CreateComponent},
+      {path: 'update', component: UpdateComponent},
+      {path:'messages', component: MessagesComponent},
+      {path:"profile", component: ProfileComponent},
     ]),
     AppRoutingModule,
     HttpClientModule, 
@@ -60,8 +77,11 @@ import { LoginComponent } from './components/login/login.component';
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
+    MatCheckboxModule,
     MatListModule,
     ComponentsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     AuthModule.forRoot({
       ...env.auth,
       httpInterceptor: {

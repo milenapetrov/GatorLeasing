@@ -10,12 +10,37 @@ describe('PostComponent', () => {
       providers: [LeaseService],
       imports: [HttpClientTestingModule]
     })
-    cy.get('input').type("New Post!")
-    cy.get('button').click()
+  })
+})
+
+/*
+describe('Post Title Input', () => {
+  it('is string', () => {
+    cy.get('input[name="postName"]').should(String)
+  })
+}) */
+
+describe('Input', () => {
+  it('is new post', () => {
+    cy.mount(PostComponent, {
+      providers: [LeaseService],
+      imports: [HttpClientTestingModule]
+    })
+    //cy.get('input').type("New Post!")
   })
 
 })
 
+describe('Button', () => {
+  it('can click', () => {
+    cy.mount(PostComponent, {
+      providers: [LeaseService],
+      imports: [HttpClientTestingModule]
+    })
+    //cy.get('button').click()
+  })
+
+})
 /*describe('PostComponent', () => {
   let component: PostComponent;
   let fixture: ComponentFixture<PostComponent>;

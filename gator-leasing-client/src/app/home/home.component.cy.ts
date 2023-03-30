@@ -1,15 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
-import { LeaseService } from '../services/lease.service';
-import { HttpClientTestingModule} from '@angular/common/http/testing';
+//import { AuthModule, AuthService } from '@auth0/auth0-angular';
 
 
 describe('Home Component', () => {
-  it('playground', () => {
+  it('can mount', () => {
     cy.mount(HomeComponent)
   })
 })
+
+describe('Search', () => {
+  it('is string', () => {
+    cy.get('input[name="search"]').should(String)
+  })
+})
+
+describe('Search Button', () => {
+  it('can click', () => {
+    cy.mount(HomeComponent)
+    cy.get('button[name="s"]').click()
+  })
+})
+
+describe('Post Button', () => {
+  it('can click', () => {
+    cy.mount(HomeComponent)
+    cy.get('button[name="post"]').click()
+  })
+})
+
 /*
 describe('HomeComponent', () => {
   let component: HomeComponent;

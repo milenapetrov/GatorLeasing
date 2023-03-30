@@ -4,7 +4,7 @@ import { AuthModule, AuthService } from '@auth0/auth0-angular';
 import { HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('LoginComponent', () => {
-  it('should mount', () => {
+  it('can mount', () => {
     cy.mount(LoginComponent, {
       providers: [AuthService],
       imports: [AuthModule.forRoot({

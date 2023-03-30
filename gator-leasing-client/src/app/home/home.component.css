@@ -1,3 +1,18 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
+.example overlay {
+  position: absolute;
+  justify-content: center;
+}
+
+.center {
+  display: flex;
+  height: 300px;
+  justify-content: center;
+}
+
+.bg {
+  background-image: url("../../assets/images/house2.jpg");
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
