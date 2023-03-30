@@ -11,6 +11,12 @@ definitions:
         type: string
       zipCode:
         type: string
+    required:
+    - city
+    - roomNumber
+    - state
+    - street
+    - zipCode
     type: object
   viewModel.Contact:
     properties:
@@ -50,6 +56,8 @@ definitions:
       furnished:
         type: boolean
       name:
+        maxLength: 20
+        minLength: 3
         type: string
       parking:
         type: boolean
@@ -64,7 +72,9 @@ definitions:
       utilities:
         type: number
     required:
+    - address
     - name
+    - rent
     type: object
   viewModel.EditLease:
     properties:
@@ -242,6 +252,23 @@ paths:
       security:
       - Auth0: []
       summary: Update a lease
+      tags:
+      - leases
+  /leases/paged:
+    get:
+      description: get paged leases
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/viewModel.Lease'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: get paged leases
       tags:
       - leases
 securityDefinitions:

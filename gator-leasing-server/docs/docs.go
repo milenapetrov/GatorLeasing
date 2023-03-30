@@ -84,6 +84,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/leases/paged": {
+            "get": {
+                "description": "get paged leases",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "leases"
+                ],
+                "summary": "get paged leases",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/viewModel.Lease"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/leases/{id}": {
             "put": {
                 "security": [
@@ -166,6 +192,13 @@ const docTemplate = `{
     "definitions": {
         "viewModel.Address": {
             "type": "object",
+            "required": [
+                "city",
+                "roomNumber",
+                "state",
+                "street",
+                "zipCode"
+            ],
             "properties": {
                 "city": {
                     "type": "string"
@@ -216,7 +249,9 @@ const docTemplate = `{
         "viewModel.CreateLease": {
             "type": "object",
             "required": [
-                "name"
+                "address",
+                "name",
+                "rent"
             ],
             "properties": {
                 "address": {
@@ -244,7 +279,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
                 },
                 "parking": {
                     "type": "boolean"

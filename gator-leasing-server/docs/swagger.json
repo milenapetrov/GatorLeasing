@@ -77,6 +77,32 @@
                 }
             }
         },
+        "/leases/paged": {
+            "get": {
+                "description": "get paged leases",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "leases"
+                ],
+                "summary": "get paged leases",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/viewModel.Lease"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/leases/{id}": {
             "put": {
                 "security": [
@@ -159,6 +185,13 @@
     "definitions": {
         "viewModel.Address": {
             "type": "object",
+            "required": [
+                "city",
+                "roomNumber",
+                "state",
+                "street",
+                "zipCode"
+            ],
             "properties": {
                 "city": {
                     "type": "string"
@@ -209,7 +242,9 @@
         "viewModel.CreateLease": {
             "type": "object",
             "required": [
-                "name"
+                "address",
+                "name",
+                "rent"
             ],
             "properties": {
                 "address": {
@@ -237,7 +272,9 @@
                     "type": "boolean"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
                 },
                 "parking": {
                     "type": "boolean"

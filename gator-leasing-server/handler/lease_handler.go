@@ -162,11 +162,14 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetPaginatedLeases godoc
-// @Summary Get paged leases
-// @Description get paged leases
-// @Tags leases
-// @Param getPaginatedLeasesRequest body viewModel.PaginatedLeasesRequest true
-
+//
+//	@Summary		get paged leases
+//	@Description	get paged leases
+//	@Tags			leases
+//	@Produce		json
+//	@Success		200	{array}	viewModel.Lease
+//	@Failure		500
+//	@Router			/leases/paged [get]
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
