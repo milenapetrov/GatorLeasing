@@ -23,7 +23,7 @@
     - Get commands used for simulating input and validating existence of types
     - Button clicks simulated
     - Home: Checks if it can mount; if search input is string; if search button can click; if post button can click
-    - Profile: Checks if it can mount; if first name, last name, phone number, & email address input is string; if update button can click
+    - Profile: Checks if it can mount; if first name, last name, phone number, email, & address input is string; if update button can click
 - Navigation between pages:
     - Top navigation bar separates existing functionalities between different browsers. 
     - Directs to home page when title is clicked
