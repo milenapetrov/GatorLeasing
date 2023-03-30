@@ -24,12 +24,15 @@
     - Button clicks simulated
     - Home: Checks if it can mount; if search input is string; if search button can click; if post button can click
     - Profile: Checks if it can mount; if first name, last name, phone number, email, & address input is string; if update button can click
+    - App: checks if each button in navigation bar can be accessed and clicked
 - Navigation between pages:
     - Top navigation bar separates existing functionalities between different browsers. 
     - Directs to home page when title is clicked
     - Login/logout
     - My leases displays post information
     - Home page post a lease direct to post creation
+    - Working on fixing bugs that occur when making pages only accessible if the user is logged in
+    - Added picture to home page, working on how the website will look
 - Post a sublease: 
     - A post request is sent to the backend when a post is created
     - Can only create a post if logged in
@@ -38,6 +41,11 @@
 - Profile: 
     - Form input created
     - Includes all user characteristics like name, email, & phone number 
+-Display leases:
+    -Implements a grid to display lease information and apply paging from the backend
+    -Syncs rows to properties in a lease and displays based on the field defined in the column
+    -Fields manipulated to represent more readable data
+    -Will eventually be able to update each post after clicking the button in the grid
 
 #### Documentation
 
