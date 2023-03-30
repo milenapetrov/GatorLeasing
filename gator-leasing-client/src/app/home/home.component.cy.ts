@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
+//import { AuthModule, AuthService } from '@auth0/auth0-angular';
 
 
 describe('Home Component', () => {

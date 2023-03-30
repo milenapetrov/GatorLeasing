@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { LeaseService } from '../services/lease.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay, take } from 'rxjs/operators';
 import { AuthService } from '@auth0/auth0-angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +14,28 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class HomeComponent implements OnInit {
   search: String = "";
-  
-  //constructor(private leaseService:LeaseService, public auth: AuthService) {}
 
+  /*isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
+
+  constructor(private breakpointObserver: BreakpointObserver, public auth: AuthService, private router: Router) {}
+
+  loginOrRoute(requested: string) {
+    this.auth.isAuthenticated$.pipe(take(1)).subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.router.navigate(['/my-leases'])
+      }
+      else {
+        this.auth.loginWithRedirect({
+          appState: {
+            target: requested
+          }
+        })
+      }
+    })
+  }*/
   ngOnInit(): void {}
 }
