@@ -173,7 +173,7 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
 	}
 
-	return leases, newPaginationToken, count, nil
+	return leases[:len(leases)-1], newPaginationToken, count, nil
 }
 
 func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
