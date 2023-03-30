@@ -1,4 +1,4 @@
-# Sprint 2
+# Sprint 3
 
 #### Backend
 
@@ -19,9 +19,11 @@
 #### Frontend
 
 - Cypress Unit Testing:
-    - Mounts each component, imports lease and user authentication services for components that send requests to either service. 
+    - Mounts each component, imports lease and user authentication services for components that send requests to either service 
     - Get commands used for simulating input and validating existence of types
     - Button clicks simulated
+    - Home: Checks if it can mount; if search input is string; if search button can click; if post button can click
+    - Profile: Checks if it can mount; if first name, last name, phone number, email, & address input is string; if update button can click
 - Navigation between pages:
     - Top navigation bar separates existing functionalities between different browsers. 
     - Directs to home page when title is clicked
@@ -35,6 +37,7 @@
     - Input requesting the cost of parking only appears if user indicates that their lease includes parking
 - Profile: 
     - Form input created
+    - Includes all user characteristics like name, email, & phone number 
 
 #### Documentation
 
