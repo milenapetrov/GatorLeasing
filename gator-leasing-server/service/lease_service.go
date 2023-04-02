@@ -62,8 +62,10 @@ func (s *LeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, err
 }
 
 func (s *LeaseService) EditLease(leaseToEdit *entity.EditLease) error {
+	lease, err := s.repository.GetLeaseById(leaseToEdit.ID)
+
 	mapper := mapper.NewMapper(&entity.EditLease{}, &dto.Lease{})
-	lease, err := mapper.Map(leaseToEdit)
+	lease, err = mapper.Map(leaseToEdit)
 	if err != nil {
 		return err
 	}

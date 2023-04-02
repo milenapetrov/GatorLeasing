@@ -72,6 +72,7 @@ func (r *LeaseRepository) EditLease(lease *dto.Lease) error {
 	}
 
 	oldLease.Name = lease.Name
+	oldLease.Address = lease.Address
 	oldLease.StartDate = lease.StartDate
 	oldLease.EndDate = lease.EndDate
 	oldLease.Rent = lease.Rent
@@ -117,7 +118,7 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	leases := []*dto.Lease{}
 
-	query := r.DB.Preload("Address")
+	query := r.DB.Joins("Address")
 
 	if sortToken == "created_at" {
 		if sortDirection == enums.Ascending {

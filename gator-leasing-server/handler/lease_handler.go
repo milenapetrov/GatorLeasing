@@ -58,7 +58,7 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		plain
 //	@Param			createLeaseRequest	body		viewModel.CreateLease	true	"create lease"
-//	@Success		201					{object}	uint64						"id of created lease"
+//	@Success		201					{object}	uint64					"id of created lease"
 //	@Failure		500
 //	@Failure		400
 //	@Router			/leases [post]
@@ -98,7 +98,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //	@Description	update a lease by id
 //	@Tags			leases
 //	@Accept			json
-//	@Param			id					path	uint64					true	"lease id"
+//	@Param			id					path	uint64				true	"lease id"
 //	@Param			editLeaseRequest	body	viewModel.EditLease	true	"edit lease request"
 //	@Success		204
 //	@Failure		500
@@ -162,11 +162,15 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetPaginatedLeases godoc
-// @Summary Get paged leases
-// @Description get paged leases
-// @Tags leases
-// @Param getPaginatedLeasesRequest body viewModel.PaginatedLeasesRequest true
-
+//
+//	@Summary		Get paged leases
+//	@Description	get paged leases
+//	@Tags			leases
+//	@Param			getPaginatedLeasesRequest	body		viewModel.PaginatedLeasesRequest	true	"page size, column to sort on, pagination token, sort direction, filter"
+//	@Success		200							{object}	viewModel.PaginatedLeasesResult
+//	@Failure		500
+//	@Failure		400
+//	@Router			/leases/paged [get]
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
@@ -203,4 +207,8 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 	}
 
 	respondJson(w, http.StatusOK, result)
+}
+
+func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
+
 }

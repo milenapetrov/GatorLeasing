@@ -82,10 +82,12 @@ func (s *Server) handler() *mux.Router {
 	r.Use(middleware.CorsMiddleware)
 
 	s.handle(r, "/leases", "GET", s.leaseHandler.GetAllLeases, false)
+	// s.handle(r, "/leases/{id[0-9]+}", )
 	s.handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
-	s.handle(r, "/leases/{id}", "PUT", s.leaseHandler.PutLease, true)
-	s.handle(r, "/leases/{id}", "DELETE", s.leaseHandler.DeleteLease, true)
+	s.handle(r, "/leases/{id[0-9]+}", "PUT", s.leaseHandler.PutLease, true)
+	s.handle(r, "/leases/{id[0-9]+}", "DELETE", s.leaseHandler.DeleteLease, true)
 	s.handle(r, "/leases/paged", "GET", s.leaseHandler.GetPaginatedLeases, false)
+	s.handle(r, "/myleases", "GET", s.leaseHandler.GetMyLeases, true)
 
 	if s.config.ApiDocumentation {
 		r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(

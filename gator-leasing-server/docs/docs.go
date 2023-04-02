@@ -84,6 +84,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/leases/paged": {
+            "get": {
+                "description": "get paged leases",
+                "tags": [
+                    "leases"
+                ],
+                "summary": "Get paged leases",
+                "parameters": [
+                    {
+                        "description": "page size, column to sort on, pagination token, sort direction, filter",
+                        "name": "getPaginatedLeasesRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/viewModel.PaginatedLeasesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/viewModel.PaginatedLeasesResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/leases/{id}": {
             "put": {
                 "security": [
@@ -164,8 +198,26 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "enums.SortDirection": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "Ascending",
+                "Descending"
+            ]
+        },
         "viewModel.Address": {
             "type": "object",
+            "required": [
+                "city",
+                "roomNumber",
+                "state",
+                "street",
+                "zipCode"
+            ],
             "properties": {
                 "city": {
                     "type": "string"
@@ -216,7 +268,9 @@ const docTemplate = `{
         "viewModel.CreateLease": {
             "type": "object",
             "required": [
-                "name"
+                "address",
+                "name",
+                "rent"
             ],
             "properties": {
                 "address": {
@@ -244,7 +298,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
                 },
                 "parking": {
                     "type": "boolean"
@@ -381,6 +437,43 @@ const docTemplate = `{
                 },
                 "utilities": {
                     "type": "number"
+                }
+            }
+        },
+        "viewModel.PaginatedLeasesRequest": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "type": "string"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "paginationToken": {
+                    "type": "string"
+                },
+                "sortDirection": {
+                    "$ref": "#/definitions/enums.SortDirection"
+                },
+                "sortToken": {
+                    "type": "string"
+                }
+            }
+        },
+        "viewModel.PaginatedLeasesResult": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "leases": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/viewModel.Lease"
+                    }
+                },
+                "paginationToken": {
+                    "type": "string"
                 }
             }
         }
