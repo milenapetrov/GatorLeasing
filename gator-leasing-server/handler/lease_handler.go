@@ -71,6 +71,8 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	println("start date:" + createLeaseRequest.StartDate.String())
+	println("end date:" + createLeaseRequest.EndDate.String())
 	if errs := h.validator.Struct(createLeaseRequest); errs != nil && len(errs) > 0 {
 		respondErrors(w, errs)
 		return
@@ -163,7 +165,6 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 
 // GetPaginatedLeases godoc
 //
-<<<<<<< HEAD
 //	@Summary		Get paged leases
 //	@Description	get paged leases
 //	@Tags			leases
@@ -171,15 +172,6 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 //	@Success		200							{object}	viewModel.PaginatedLeasesResult
 //	@Failure		500
 //	@Failure		400
-=======
-//	@Summary		get paged leases
-//	@Description	get paged leases
-//	@Tags			leases
-//	@Param			getPaginatedLeasesRequest	body	viewModel.PaginatedLeasesRequest	true	"get paginated lease request"
-//	@Produce		json
-//	@Success		200	{array}	viewModel.Lease
-//	@Failure		500
->>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
 //	@Router			/leases/paged [get]
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}

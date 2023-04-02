@@ -18,7 +18,6 @@ func TestGetAllLeasesOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	leases := faker.FakeMany(&dto.Lease{}, 5)
 	mockLeaseRepository.On("GetAllLeases").Return(leases, nil, http.StatusOK)
-
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
 	resultLeases, resultErr := leaseService.GetAllLeases()
@@ -34,7 +33,6 @@ func TestGetAllLeasesErr(t *testing.T) {
 	leases := []*dto.Lease{}
 	err := &shared.InternalServerError{}
 	mockLeaseRepository.On("GetAllLeases").Return(leases, err)
-
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
 	resultLeases, resultErr := leaseService.GetAllLeases()
@@ -49,7 +47,6 @@ func TestGetAllLeasesErr(t *testing.T) {
 func TestCreateLeaseOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("CreateLease", mock.AnythingOfType("*dto.Lease")).Return(uint(1), nil)
-
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
 	request := &entity.CreateLease{}
@@ -64,8 +61,13 @@ func TestCreateLeaseOK(t *testing.T) {
 func TestEditLeaseOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("EditLease", mock.AnythingOfType("*dto.Lease")).Return(nil)
-
-	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
+	userContext := shared.NewUserContext()
+	faker.FakeData(userContext)
+	lease := &dto.Lease{}
+	faker.FakeData(lease)
+	lease.OwnerID = userContext.ID
+	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(lease, nil)
+	leaseService := NewLeaseService(userContext, mockLeaseRepository)
 
 	request := &entity.EditLease{}
 	faker.FakeData(request)
@@ -78,7 +80,6 @@ func TestEditLeaseOK(t *testing.T) {
 func TestDeleteLeaseOK(t *testing.T) {
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("DeleteLease", mock.AnythingOfType("*dto.Lease")).Return(nil)
-
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
 	resultErr := leaseService.DeleteLease(0)

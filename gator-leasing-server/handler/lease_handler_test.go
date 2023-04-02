@@ -39,6 +39,7 @@ func TestGetAllLeasesOK(t *testing.T) {
 }
 
 func TestPostLeaseOK(t *testing.T) {
+	initialize()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLease")).Return(uint(1), nil)
 

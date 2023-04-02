@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
@@ -62,10 +63,18 @@ func (s *LeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, err
 }
 
 func (s *LeaseService) EditLease(leaseToEdit *entity.EditLease) error {
-	lease, err := s.repository.GetLeaseById(leaseToEdit.ID)
+	if s.userContext.InvitedAs != enums.Administrator {
+		lease, err := s.repository.GetLeaseById(leaseToEdit.ID)
+		if err != nil {
+			return err
+		}
+		if s.userContext.ID != lease.OwnerID {
+			return &shared.BadRequestError{Msg: "you may only edit leases that belong to you"}
+		}
+	}
 
 	mapper := mapper.NewMapper(&entity.EditLease{}, &dto.Lease{})
-	lease, err = mapper.Map(leaseToEdit)
+	lease, err := mapper.Map(leaseToEdit)
 	if err != nil {
 		return err
 	}
