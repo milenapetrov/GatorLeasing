@@ -4,6 +4,8 @@
 
 - Documentation located at gator-leasing-server/docs
 - Unit testing
+    - OK cases for each handler (GetAllLeases, PostLease, PutLease, DeleteLease) except GetPaginatedLeases
+    - OK and repository error cases for GetAllLeases; OK cases for CreateLease, EditLease, DeleteLease 
 - Lease API (add pagination endpoint)
     - Can select number of elements per page
     - Returns token to get next page
