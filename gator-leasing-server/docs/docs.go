@@ -87,6 +87,7 @@ const docTemplate = `{
         "/leases/paged": {
             "get": {
                 "description": "get paged leases",
+<<<<<<< HEAD
                 "tags": [
                     "leases"
                 ],
@@ -94,6 +95,18 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "page size, column to sort on, pagination token, sort direction, filter",
+=======
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "leases"
+                ],
+                "summary": "get paged leases",
+                "parameters": [
+                    {
+                        "description": "get paginated lease request",
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
                         "name": "getPaginatedLeasesRequest",
                         "in": "body",
                         "required": true,
@@ -106,12 +119,21 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
+<<<<<<< HEAD
                             "$ref": "#/definitions/viewModel.PaginatedLeasesResult"
                         }
                     },
                     "400": {
                         "description": "Bad Request"
                     },
+=======
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/viewModel.Lease"
+                            }
+                        }
+                    },
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
                     "500": {
                         "description": "Internal Server Error"
                     }
@@ -443,9 +465,12 @@ const docTemplate = `{
         "viewModel.PaginatedLeasesRequest": {
             "type": "object",
             "properties": {
+<<<<<<< HEAD
                 "filter": {
                     "type": "string"
                 },
+=======
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
                 "pageSize": {
                     "type": "integer"
                 },
@@ -459,6 +484,7 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+<<<<<<< HEAD
         },
         "viewModel.PaginatedLeasesResult": {
             "type": "object",
@@ -476,6 +502,8 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+=======
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
         }
     },
     "securityDefinitions": {

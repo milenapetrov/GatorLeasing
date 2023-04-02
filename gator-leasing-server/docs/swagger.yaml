@@ -164,8 +164,11 @@ definitions:
     type: object
   viewModel.PaginatedLeasesRequest:
     properties:
+<<<<<<< HEAD
       filter:
         type: string
+=======
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
       pageSize:
         type: integer
       paginationToken:
@@ -175,6 +178,7 @@ definitions:
       sortToken:
         type: string
     type: object
+<<<<<<< HEAD
   viewModel.PaginatedLeasesResult:
     properties:
       count:
@@ -186,6 +190,8 @@ definitions:
       paginationToken:
         type: string
     type: object
+=======
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
 host: localhost:8080
 info:
   contact: {}
@@ -290,23 +296,41 @@ paths:
     get:
       description: get paged leases
       parameters:
+<<<<<<< HEAD
       - description: page size, column to sort on, pagination token, sort direction,
           filter
+=======
+      - description: get paginated lease request
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
         in: body
         name: getPaginatedLeasesRequest
         required: true
         schema:
           $ref: '#/definitions/viewModel.PaginatedLeasesRequest'
+<<<<<<< HEAD
+=======
+      produces:
+      - application/json
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
       responses:
         "200":
           description: OK
           schema:
+<<<<<<< HEAD
             $ref: '#/definitions/viewModel.PaginatedLeasesResult'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
       summary: Get paged leases
+=======
+            items:
+              $ref: '#/definitions/viewModel.Lease'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: get paged leases
+>>>>>>> 6e818e96f8cddbc495c2729888b99d707e55d841
       tags:
       - leases
 securityDefinitions:
