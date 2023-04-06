@@ -31,7 +31,8 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
 )
 
-//go:generate swagger generate spec
+//go:generate swagger generate spec -o ./docs/swag.yaml
+//go:generate swagger generate spec -o ./docs/swag.json
 func main() {
 	app := app.NewApp(config.GetConfig())
 	app.Initialize()
