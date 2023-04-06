@@ -1,3 +1,29 @@
+// Package main ReLease API.
+//
+// # Server for subleasing website ReLease
+//
+// Terms Of Service:
+//
+// there are no TOS at this moment, use at your own risk we take no responsibility
+//
+//	Schemes: http, https
+//	Host: localhost:8080
+//	Version: 1.0
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	SecurityDefinitions:
+//	oauth2:
+//	    type: oauth2
+//	    authorizationUrl: https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
+//	    tokenUrl: https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
+//	    in: header
+//
+// swagger:meta
 package main
 
 import (
@@ -5,15 +31,7 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
 )
 
-//	@title			ReLease API
-//	@version		1.0
-//	@description	Server for subleasing website ReLease
-
-//	@host	localhost:8080
-
-//	@securitydefinitions.oauth2.application	Auth0
-//	@tokenUrl								https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
-//	@description							Auth0 protects our endpoints
+//go:generate swagger generate spec
 func main() {
 	app := app.NewApp(config.GetConfig())
 	app.Initialize()
