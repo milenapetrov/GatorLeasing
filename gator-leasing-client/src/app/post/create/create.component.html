@@ -2,33 +2,33 @@
     <mat-card>
     <mat-form-field class="example-full-width">
       <mat-label >Post Title</mat-label>
-      <input name="name" matInput [(ngModel)]="post.name">
+      <input required name="name" matInput [(ngModel)]="post.name">
     </mat-form-field>
   
     <table class="example-full-width" cellspacing="0"><tr>
-      <td><mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width">
         <mat-label>Set Price</mat-label>
-        <input name="rent" matInput placeholder="$" [(ngModel)]="post.rent">
-      </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
+        <input required name="rent" matInput placeholder="$" [(ngModel)]="post.rent">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
         <mat-label >Start Date</mat-label>
         <input [matDatepicker]="picker1" name="start" matInput [(ngModel)]="post.startDate">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
         <mat-label>End Date</mat-label>
         <input [matDatepicker]="picker2" name="end" matInput [(ngModel)]="post.endDate">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
-      </mat-form-field></td> 
+      </mat-form-field>
 
-      <td><mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width">
         <mat-label>Square footage</mat-label>
         <input type="number" name="squareFootage" matInput [(ngModel)]="post.squareFootage">
-      </mat-form-field></td>
+      </mat-form-field>
     </tr></table>
         
 
@@ -37,10 +37,10 @@
     <table class="example-full-width" cellspacing="0"><tr>
       <mat-form-field class="example-full-width">
         <mat-label>Address</mat-label>
-        <input name="street" matInput [(ngModel)]="post.address.street">
+        <input required name="street" matInput [(ngModel)]="post.address.street">
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <mat-label>Apt. # (optional)</mat-label>
+        <mat-label>Apt. #</mat-label>
         <input name="roomNum" matInput [(ngModel)]="post.address.roomNumber">
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -53,7 +53,7 @@
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Postal Code</mat-label>
-        <input name="zip" matInput #postalCode maxlength="5" placeholder="Ex. 94105" [(ngModel)]="post.address.zipCode">
+        <input required name="zip" matInput #postalCode maxlength="5" placeholder="Ex. 94105" [(ngModel)]="post.address.zipCode">
         <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
       </mat-form-field>
     </tr></table>
@@ -92,16 +92,16 @@
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label> Appliances </mat-label>
-      <input name="appliances" matInput placeholder="dishwasher, laundry, ..."[(ngModel)]="post.amenities">
+      <input name="appliances" matInput placeholder="dishwasher, laundry, ..."[(ngModel)]="post.appliances">
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label> Description </mat-label>
-      <textarea name="description" matInput placeholder="additional info"[(ngModel)]="post.amenities"></textarea>
+      <textarea name="description" matInput placeholder="additional info"[(ngModel)]="post.description"></textarea>
     </mat-form-field>
 
     </mat-card>
     <br>
     <mat-card-footer>
-      <button mat-stroked-button type="submit">Post</button>
+      <button mat-stroked-button type="submit" [disabled]="!postForm.form.valid">Post</button>
     </mat-card-footer>
   </form>

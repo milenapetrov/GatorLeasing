@@ -57,7 +57,8 @@ export class DisplayLeasesComponent implements OnInit {
               }
             }},
     {field: 'beds'},
-    {field: "baths"}
+    {field: "baths"},
+    {field: "id"}
   ];
 
   public defaultColDef: ColDef = {

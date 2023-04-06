@@ -23,7 +23,7 @@ export class NavigationComponent {
   loginOrRoute(requested: string) {
     this.auth.isAuthenticated$.pipe(take(1)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
-        this.router.navigate(['/my-leases'])
+        //this.router.navigate(['/my-leases'])
       }
       else {
         this.auth.loginWithRedirect({

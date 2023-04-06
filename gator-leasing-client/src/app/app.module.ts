@@ -32,16 +32,16 @@ import { HomeComponent } from './home/home.component';
 import { ComponentsModule } from './components/components.module';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from 'src/environments/environment';
-import { MyLeasesComponent } from './my-leases/my-leases.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { MessagesComponent } from './messages/messages.component';
 import { CreateComponent } from './post/create/create.component';
 import { UpdateComponent } from './post/update/update.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { DisplayLeasesComponent } from './components/display-leases/display-leases.component';
+import { MyLeasesComponent } from './my-leases/my-leases.component';
 
 
 @NgModule({
@@ -49,12 +49,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     AppComponent,
     PostComponent,
     HomeComponent,
-    MyLeasesComponent,
     NavigationComponent,
     ProfileComponent,
-    MessagesComponent,
     CreateComponent,
-    UpdateComponent
+    UpdateComponent,
+    MyLeasesComponent
   ],
   imports: [
     BrowserModule,
@@ -64,8 +63,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
       {path: 'login', component: LoginComponent},
       {path: 'create', component: CreateComponent},
       {path: 'update', component: UpdateComponent},
-      {path:'messages', component: MessagesComponent},
-      {path:"profile", component: ProfileComponent},
+      {path:"display", component: DisplayLeasesComponent}
     ]),
     AppRoutingModule,
     HttpClientModule, 

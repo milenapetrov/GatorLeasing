@@ -1,4 +1,4 @@
-<form #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)">
+<form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm.value)">
     <mat-card>
     <mat-form-field class="example-full-width">
       <mat-label >Post Title</mat-label>
@@ -40,7 +40,7 @@
         <input name="street" matInput [(ngModel)]="post.address.street">
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <mat-label>Apt. # (optional)</mat-label>
+        <mat-label>Apt. # </mat-label>
         <input name="roomNum" matInput [(ngModel)]="post.address.roomNumber">
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -102,6 +102,6 @@
     </mat-card>
     <br>
     <mat-card-footer>
-      <button mat-stroked-button type="submit">Update</button>
+      <button mat-stroked-button type="submit" >Update</button>
     </mat-card-footer>
   </form>
