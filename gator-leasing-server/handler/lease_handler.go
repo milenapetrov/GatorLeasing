@@ -24,15 +24,23 @@ func NewLeaseHandler(leaseService service.ILeaseService, validator *validator.Va
 	return &LeaseHandler{leaseService: leaseService, validator: validator}
 }
 
-// GetAllLeases godoc
+// swagger:route GET /leases leases GetAllLeases
 //
-//	@Summary		List leases
-//	@Description	get all leases
-//	@Tags			leases
-//	@Produce		json
-//	@Success		200	{array}	viewModel.Lease
-//	@Failure		500
-//	@Router			/leases [get]
+// List leases.
+//
+// get all leases.
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//
+//	Responses:
+//	  200: viewModel.Lease[]
+//	  500:
 func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 	leaseEntities, err := h.leaseService.GetAllLeases()
 	if err != nil {
@@ -87,6 +95,38 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 //	@Failure		400
 //	@Router			/leases [post]
 //	@Security		Auth0
+//
+// swagger:route POST /leases leases PostLease
+//
+// Create a lease.
+//
+// post a lease
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//	Security:
+//	  oauth2:
+//
+//	Parameters:
+//	  + name: limit
+//	    in: body
+//	    description: create a lease
+//	    required: true
+//	    type: viewModel.CreateLease
+//
+//
+//	Responses:
+//	  201:
+//	  400:
+//	  500:
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
@@ -116,19 +156,43 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusCreated, id)
 }
 
-// PutLease godoc
+// swagger:route PUT /leases/{id} leases PutLease
 //
-//	@Summary		Update a lease
-//	@Description	update a lease by id
-//	@Tags			leases
-//	@Accept			json
-//	@Param			id					path	uint64				true	"lease id"
-//	@Param			editLeaseRequest	body	viewModel.EditLease	true	"edit lease request"
-//	@Success		204
-//	@Failure		500
-//	@Failure		400
-//	@Router			/leases/{id} [put]
-//	@Security		Auth0
+// Update a lease.
+//
+// update a lease by id.
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//	Security:
+//	  oauth2:
+//
+//	Parameters:
+//	  + name: id
+//	    in: query
+//	    description: lease id
+//	    required: true
+//	    type: integer
+//	    format: uint64
+//	  + name: editLeaseRequest
+//	    in: body
+//	    description: edit lease request
+//	    required: true
+//	    type: viewModel.EditLease
+//
+//
+//	Responses:
+//	  204:
+//	  400:
+//	  500:
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
@@ -159,17 +223,38 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusNoContent, nil)
 }
 
-// DeleteLease godoc
+// swagger:route DELETE /leases/{id} leases DeleteLease
 //
-//	@Summary		Delete a lease
-//	@Description	delete a lease by id
-//	@Tags			leases
-//	@Param			id	path	uint64	true	"lease id"
-//	@Success		204
-//	@Failure		500
-//	@Failure		400
-//	@Router			/leases/{id} [delete]
-//	@Security		Auth0
+// Delete a lease.
+//
+// delete a lease by id.
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//	Security:
+//	  oauth2:
+//
+//	Parameters:
+//	  + name: id
+//	    in: path
+//	    description: leaseid
+//	    required: true
+//	    type: integer
+//	    format: uint64
+//
+//
+//	Responses:
+//	  204:
+//	  400:
+//	  500:
 func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
@@ -186,16 +271,37 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusNoContent, nil)
 }
 
-// GetPaginatedLeases godoc
+// swagger:route GET /leases/paged pets users listPets
 //
-//	@Summary		Get paged leases
-//	@Description	get paged leases
-//	@Tags			leases
-//	@Param			getPaginatedLeasesRequest	body		viewModel.PaginatedLeasesRequest	true	"page size, column to sort on, pagination token, sort direction, filter"
-//	@Success		200							{object}	viewModel.PaginatedLeasesResult
-//	@Failure		500
-//	@Failure		400
-//	@Router			/leases/paged [get]
+// Get paged leases.
+//
+// get paged leases.
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//	Security:
+//	  oauth2:
+//
+//	Parameters:
+//	  + name: getPaginatedLeasesRequest
+//	    in: body
+//	    description: page size, column to sort on, pagination token, sort direction, filter
+//	    required: true
+//	    type: viewModel.PaginatedLeasesRequest
+//
+//
+//	Responses:
+//	  200: viewModel.PaginatedLeasesResult
+//	  400:
+//	  500:
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
