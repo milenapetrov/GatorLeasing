@@ -71,8 +71,6 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	println("start date:" + createLeaseRequest.StartDate.String())
-	println("end date:" + createLeaseRequest.EndDate.String())
 	if errs := h.validator.Struct(createLeaseRequest); errs != nil && len(errs) > 0 {
 		respondErrors(w, errs)
 		return
