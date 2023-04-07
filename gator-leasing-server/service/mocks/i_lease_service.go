@@ -50,13 +50,13 @@ func (_m *ILeaseService) DeleteLease(id uint) error {
 	return r0
 }
 
-// EditLease provides a mock function with given fields: leaseToEdit
-func (_m *ILeaseService) EditLease(leaseToEdit *entity.EditLease) error {
-	ret := _m.Called(leaseToEdit)
+// EditLease provides a mock function with given fields: editLease
+func (_m *ILeaseService) EditLease(editLease *entity.EditLease) error {
+	ret := _m.Called(editLease)
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(*entity.EditLease) error); ok {
-		r0 = rf(leaseToEdit)
+		r0 = rf(editLease)
 	} else {
 		r0 = ret.Error(0)
 	}

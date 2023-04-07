@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/iancoleman/strcase"
+
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
@@ -13,7 +15,7 @@ import (
 type ILeaseService interface {
 	GetAllLeases() ([]*entity.Lease, error)
 	CreateLease(leaseToCreate *entity.CreateLease) (uint, error)
-	EditLease(leaseToEdit *entity.EditLease) error
+	EditLease(editLease *entity.EditLease) error
 	DeleteLease(id uint) error
 	GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error)
 }
@@ -62,9 +64,9 @@ func (s *LeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, err
 	return id, nil
 }
 
-func (s *LeaseService) EditLease(leaseToEdit *entity.EditLease) error {
+func (s *LeaseService) EditLease(editLease *entity.EditLease) error {
 	if s.userContext.InvitedAs != enums.Administrator {
-		lease, err := s.repository.GetLeaseById(leaseToEdit.ID)
+		lease, err := s.repository.GetLeaseById(editLease.ID)
 		if err != nil {
 			return err
 		}
@@ -74,7 +76,7 @@ func (s *LeaseService) EditLease(leaseToEdit *entity.EditLease) error {
 	}
 
 	mapper := mapper.NewMapper(&entity.EditLease{}, &dto.Lease{})
-	lease, err := mapper.Map(leaseToEdit)
+	lease, err := mapper.Map(editLease)
 	if err != nil {
 		return err
 	}
@@ -85,12 +87,23 @@ func (s *LeaseService) EditLease(leaseToEdit *entity.EditLease) error {
 
 func (s *LeaseService) DeleteLease(id uint) error {
 	lease := &dto.Lease{ID: id}
+	if s.userContext.InvitedAs != enums.Administrator {
+		lease, err := s.repository.GetLeaseById(id)
+		if err != nil {
+			return err
+		}
+		if s.userContext.ID != lease.OwnerID {
+			return &shared.BadRequestError{Msg: "you may only delete leases that belong to you"}
+		}
+	}
 
 	err := s.repository.DeleteLease(lease)
 	return err
 }
 
 func (s *LeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
+	paginatedLeasesRequest.SortToken = strcase.ToSnake(paginatedLeasesRequest.SortToken)
+
 	leaseDtos, paginationToken, count, err := s.repository.GetPaginatedLeases(paginatedLeasesRequest.PageSize, paginatedLeasesRequest.SortToken, paginatedLeasesRequest.PaginationToken, paginatedLeasesRequest.SortDirection)
 	if err != nil {
 		return nil, "", 0, err

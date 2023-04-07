@@ -121,13 +121,13 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mapper := mapper.NewMapper(&viewModel.EditLease{}, &entity.EditLease{})
-	leaseToEdit, err := mapper.Map(editLeaseRequest)
+	editLease, err := mapper.Map(editLeaseRequest)
 	if err != nil {
 		respondError(w, err)
 		return
 	}
 
-	if err := h.leaseService.EditLease(leaseToEdit); err != nil {
+	if err := h.leaseService.EditLease(editLease); err != nil {
 		respondError(w, err)
 		return
 	}
