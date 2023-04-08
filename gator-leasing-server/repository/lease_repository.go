@@ -20,7 +20,7 @@ type ILeaseRepository interface {
 	CreateLease(lease *dto.Lease) (uint, error)
 	EditLease(lease *dto.Lease) error
 	DeleteLease(lease *dto.Lease) error
-	GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection) ([]*dto.Lease, string, int64, error)
+	GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error)
 }
 
 type LeaseRepository struct {
@@ -33,8 +33,7 @@ func NewLeaseRepository(db *gorm.DB) ILeaseRepository {
 
 func (r *LeaseRepository) GetLeaseById(id uint) (*dto.Lease, error) {
 	lease := &dto.Lease{ID: id}
-	err := r.DB.Preload("Address").First(lease).Error
-	if err != nil {
+	if err := r.DB.Preload("Address").First(lease).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, &shared.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", id)}
 		}
@@ -46,16 +45,14 @@ func (r *LeaseRepository) GetLeaseById(id uint) (*dto.Lease, error) {
 
 func (r *LeaseRepository) GetAllLeases() ([]*dto.Lease, error) {
 	leases := []*dto.Lease{}
-	err := r.DB.Preload("Address").Find(&leases).Error
-	if err != nil {
+	if err := r.DB.Preload("Address").Find(&leases).Error; err != nil {
 		return nil, &shared.InternalServerError{Msg: err.Error()}
 	}
 	return leases, nil
 }
 
 func (r *LeaseRepository) CreateLease(lease *dto.Lease) (uint, error) {
-	err := r.DB.Create(lease).Error
-	if err != nil {
+	if err := r.DB.Create(lease).Error; err != nil {
 		return 0, &shared.InternalServerError{Msg: err.Error()}
 	}
 	return lease.ID, nil
@@ -63,8 +60,7 @@ func (r *LeaseRepository) CreateLease(lease *dto.Lease) (uint, error) {
 
 func (r *LeaseRepository) EditLease(lease *dto.Lease) error {
 	oldLease := &dto.Lease{ID: lease.ID}
-	err := r.DB.Preload("Address").First(oldLease).Error
-	if err != nil {
+	if err := r.DB.Preload("Address").First(oldLease).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &shared.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", lease.ID)}
 		}
@@ -87,34 +83,30 @@ func (r *LeaseRepository) EditLease(lease *dto.Lease) error {
 	oldLease.Appliances = lease.Appliances
 	oldLease.Description = lease.Description
 
-	err = r.DB.Save(oldLease).Error
-	if err != nil {
+	if err := r.DB.Save(oldLease).Error; err != nil {
 		return &shared.InternalServerError{Msg: err.Error()}
 	}
 	return nil
 }
 
 func (r *LeaseRepository) DeleteLease(lease *dto.Lease) error {
-	err := r.DB.First(lease).Error
-	if err != nil {
+	if err := r.DB.First(lease).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &shared.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", lease.ID)}
 		}
 		return &shared.InternalServerError{Msg: err.Error()}
 	}
 
-	err = r.DB.Delete(lease).Error
-	if err != nil {
+	if err := r.DB.Delete(lease).Error; err != nil {
 		return &shared.InternalServerError{Msg: err.Error()}
 	}
 	return nil
 }
 
-func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection) ([]*dto.Lease, string, int64, error) {
+func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error) {
 	if sortToken == "" {
 		sortToken = "created_at"
 	}
-	sortToken = strings.ToLower(sortToken)
 
 	leases := []*dto.Lease{}
 
@@ -156,15 +148,20 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	query.Limit(int(pageSize) + 1)
 
+	if filter != "" {
+		query.Where(filter)
+	}
+
 	err := query.Find(&leases).Error
 	if err != nil {
-		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
+		return nil, "", 0, &shared.BadRequestError{Msg: err.Error()}
 	}
 
 	newPaginationToken := ""
 
 	if len(leases) > int(pageSize) {
 		lastLease := leases[len(leases)-1]
+		leases = leases[:len(leases)-1]
 		newPaginationToken = getPaginationToken(lastLease, sortToken)
 	}
 
@@ -174,7 +171,7 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
 	}
 
-	return leases[:len(leases)-1], newPaginationToken, count, nil
+	return leases, newPaginationToken, count, nil
 }
 
 func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
@@ -183,10 +180,10 @@ func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
 	case "name":
 		paginationToken = lastLease.Name + "|"
 
-	case "startDate":
+	case "start_date":
 		paginationToken = lastLease.StartDate.String() + "|"
 
-	case "endDate":
+	case "end_Date":
 		paginationToken = lastLease.EndDate.String() + "|"
 
 	case "rent":
@@ -195,8 +192,11 @@ func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
 	case "utilities":
 		paginationToken = lastLease.Utilities.String() + "|"
 
-	case "parkingCost":
+	case "parking_cost":
 		paginationToken = lastLease.ParkingCost.String() + "|"
+
+	case "total_cost":
+		paginationToken = lastLease.TotalCost.String() + "|"
 
 	case "beds":
 		paginationToken = strconv.FormatUint(uint64(lastLease.Beds), 10) + "|"
