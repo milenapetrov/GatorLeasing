@@ -17,12 +17,8 @@ import (
 	viewModel "github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model"
 )
 
-func initialize() {
-	faker.InitializeFaker()
-}
-
 func TestGetAllLeasesOK(t *testing.T) {
-	initialize()
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	leases := faker.FakeMany(&entity.Lease{}, 5)
 	mockLeaseService.On("GetAllLeases").Return(leases, nil)
@@ -40,7 +36,7 @@ func TestGetAllLeasesOK(t *testing.T) {
 }
 
 func TestGetAllLeasesServiceErr(t *testing.T) {
-	initialize()
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("GetAllLeases").Return(nil, &shared.InternalServerError{})
 
@@ -57,7 +53,7 @@ func TestGetAllLeasesServiceErr(t *testing.T) {
 }
 
 func TestPostLeaseOK(t *testing.T) {
-	initialize()
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLease")).Return(uint(1), nil)
 
@@ -77,7 +73,7 @@ func TestPostLeaseOK(t *testing.T) {
 }
 
 func TestPostLeaseDecodeErr(t *testing.T) {
-	initialize()
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
@@ -99,7 +95,7 @@ func TestPostLeaseDecodeErr(t *testing.T) {
 }
 
 func TestPostLeaseValidatorErr(t *testing.T) {
-	initialize()
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
@@ -119,7 +115,7 @@ func TestPostLeaseValidatorErr(t *testing.T) {
 }
 
 func TestPostLeaseServiceErr(t *testing.T) {
-	initialize()
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("CreateLease", mock.AnythingOfType("*entity.CreateLease")).Return(uint(0), &shared.InternalServerError{})
 
@@ -139,6 +135,7 @@ func TestPostLeaseServiceErr(t *testing.T) {
 }
 
 func TestPutLeaseOK(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("EditLease", mock.AnythingOfType("*entity.EditLease")).Return(nil)
 
@@ -159,6 +156,7 @@ func TestPutLeaseOK(t *testing.T) {
 }
 
 func TestPutLeaseBadPathParamErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
@@ -178,6 +176,7 @@ func TestPutLeaseBadPathParamErr(t *testing.T) {
 }
 
 func TestPutLeaseDecodeErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
@@ -200,6 +199,7 @@ func TestPutLeaseDecodeErr(t *testing.T) {
 }
 
 func TestPutLeaseServiceErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("EditLease", mock.AnythingOfType("*entity.EditLease")).Return(&shared.InternalServerError{})
 
@@ -220,6 +220,7 @@ func TestPutLeaseServiceErr(t *testing.T) {
 }
 
 func TestDeleteLeaseOK(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("DeleteLease", mock.AnythingOfType("uint")).Return(nil)
 
@@ -237,6 +238,7 @@ func TestDeleteLeaseOK(t *testing.T) {
 }
 
 func TestDeleteLeaseBadPathParamErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
@@ -253,6 +255,7 @@ func TestDeleteLeaseBadPathParamErr(t *testing.T) {
 }
 
 func TestDeleteLeaseServiceErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("DeleteLease", mock.AnythingOfType("uint")).Return(&shared.InternalServerError{})
 
@@ -270,6 +273,7 @@ func TestDeleteLeaseServiceErr(t *testing.T) {
 }
 
 func TestGetPaginatedLeasesOK(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	leases := faker.FakeMany(&entity.Lease{}, 5)
 	mockLeaseService.On("GetPaginatedLeases", mock.AnythingOfType("*entity.PaginatedLeasesRequest")).Return(leases, "paginationToken", int64(10), nil)
@@ -290,6 +294,7 @@ func TestGetPaginatedLeasesOK(t *testing.T) {
 }
 
 func TestGetPaginatedLeasesDecodeErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 
 	leaseHandler := NewLeaseHandler(mockLeaseService, validator.New())
@@ -311,6 +316,7 @@ func TestGetPaginatedLeasesDecodeErr(t *testing.T) {
 }
 
 func TestGetPaginateLeasesServiceErr(t *testing.T) {
+	initializeTest()
 	mockLeaseService := mocks.NewILeaseService(t)
 	mockLeaseService.On("GetPaginatedLeases", mock.AnythingOfType("*entity.PaginatedLeasesRequest")).Return(nil, "", int64(0), &shared.InternalServerError{})
 

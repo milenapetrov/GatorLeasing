@@ -5,6 +5,7 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
@@ -26,26 +27,25 @@ func NewTenantUserService(userContext *shared.UserContext, repository repository
 }
 
 func (s *TenantUserService) GetOrCreateUser() (*entity.TenantUser, error) {
-	tenantUserModel, err := s.repository.GetTenantUserByUserID(s.userContext.UserID, constants.TENANT_ID)
+	tenantUserDto, err := s.repository.GetTenantUserByUserID(s.userContext.UserID, constants.TENANT_ID)
 	if err != nil {
 		return nil, err
 	}
-	if tenantUserModel == nil {
-		tenantUserModel = &dto.TenantUser{
+	if tenantUserDto == nil {
+		tenantUserDto = &dto.TenantUser{
 			UserID:    s.userContext.UserID,
 			TenantID:  constants.TENANT_ID,
 			InvitedAs: enums.Member,
 		}
-		tenantUserModel.ID, err = s.repository.CreateTenantUser(tenantUserModel)
+		tenantUserDto.ID, err = s.repository.CreateTenantUser(tenantUserDto)
 		if err != nil {
 			return nil, err
 		}
 	}
-	tenantUser := &entity.TenantUser{
-		ID:        tenantUserModel.ID,
-		UserID:    tenantUserModel.UserID,
-		TenantID:  tenantUserModel.TenantID,
-		InvitedAs: tenantUserModel.InvitedAs,
+	mapper := mapper.NewMapper(&dto.TenantUser{}, &entity.TenantUser{})
+	tenantUser, err := mapper.Map(tenantUserDto)
+	if err != nil {
+		return nil, err
 	}
 	return tenantUser, nil
 }
