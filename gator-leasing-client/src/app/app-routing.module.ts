@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { HomeComponent } from './home/home.component';
 import { MyLeasesComponent } from './my-leases/my-leases.component';
+import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.component';
 import { AuthHttpInterceptorExtendedService } from './services/auth-http-interceptor-extended.service';
 
 const routes: Routes = [
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'my-leases',
     component: MyLeasesComponent,
+  },
+  {
+    path: "listings",
+    component: LeaseListingsComponent
   }
 ];
 

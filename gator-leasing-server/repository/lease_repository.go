@@ -122,24 +122,24 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	if sortToken == "created_at" {
 		if sortDirection == enums.Ascending {
-			query.Order("created_at")
+			query.Order("leases.created_at")
 		} else {
-			query.Order("created_at desc")
+			query.Order("leases.created_at desc")
 		}
 	} else {
 		if sortDirection == enums.Ascending {
-			query.Order(sortToken + ", created_at desc")
+			query.Order(sortToken + ", leases.created_at desc")
 		} else {
-			query.Order(sortToken + " desc, created_at desc")
+			query.Order(sortToken + " desc, leases.created_at desc")
 		}
 	}
 
 	if paginationToken != "" {
 		if sortToken == "created_at" {
 			if sortDirection == enums.Ascending {
-				query.Where("created_at >= ?", paginationToken)
+				query.Where("leases.created_at >= ?", paginationToken)
 			} else {
-				query.Where("created_at <= ?", paginationToken)
+				query.Where("leases.created_at <= ?", paginationToken)
 			}
 		} else {
 			splitToken := strings.Split(paginationToken, "|")
@@ -147,9 +147,9 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 			paginationDate := splitToken[1]
 			namedParams := map[string]interface{}{"paginationValue": paginationValue, "paginationDate": paginationDate}
 			if sortDirection == enums.Ascending {
-				query.Where(sortToken+" > @paginationValue OR "+sortToken+" = @paginationValue AND created_at <= @paginationDate", namedParams)
+				query.Where(sortToken+" > @paginationValue OR "+sortToken+" = @paginationValue AND leases.created_at <= @paginationDate", namedParams)
 			} else {
-				query.Where(sortToken+" < @paginationValue OR "+sortToken+" = @paginationValue AND created_at <= @paginationDate", namedParams)
+				query.Where(sortToken+" < @paginationValue OR "+sortToken+" = @paginationValue AND leases.created_at <= @paginationDate", namedParams)
 			}
 		}
 	}
@@ -174,7 +174,7 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
 	}
 
-	return leases[:len(leases)-1], newPaginationToken, count, nil
+	return leases, newPaginationToken, count, nil
 }
 
 func getPaginationToken(lastLease *dto.Lease, sortToken string) string {

@@ -9,6 +9,7 @@ import (
 type Lease struct {
 	ID            int             `json:"id"`
 	Name          string          `json:"name"`
+	CreatedAt     time.Time       `json:"createdAt"`
 	OwnerID       int             `json:"ownerID"`
 	Address       Address         `json:"address"`
 	StartDate     time.Time       `json:"startDate"`

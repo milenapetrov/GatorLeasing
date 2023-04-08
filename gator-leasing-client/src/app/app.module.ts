@@ -42,6 +42,7 @@ import { UpdateComponent } from './post/update/update.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ProfileComponent,
     MessagesComponent,
     CreateComponent,
-    UpdateComponent
+    UpdateComponent,
+    LeaseListingsComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +89,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
       httpInterceptor: {
         ...env.httpInterceptor
       }
-    })
+    }),
+    AgGridModule
   ],
   providers: [],
   bootstrap: [AppComponent]
