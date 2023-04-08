@@ -4,6 +4,7 @@ import {Address} from './address'
 export interface Lease{
     id: number,
     name: string,
+    createdAt: Date,
     ownerID: number,
     address: Address,
     startDate: Date,

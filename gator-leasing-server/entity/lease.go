@@ -9,6 +9,7 @@ import (
 type Lease struct {
 	ID            uint
 	Name          string
+	CreatedAt     time.Time
 	OwnerID       uint
 	Address       Address
 	StartDate     time.Time

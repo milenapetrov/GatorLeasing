@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@ag-grid-enterprise/server-side-row-model": "^29.2.0",
     "@angular/animations": "^15.1.0",
     "@angular/cdk": "^15.1.4",
     "@angular/common": "^15.1.0",
@@ -26,6 +27,7 @@
     "@auth0/auth0-angular": "^2.0.1",
     "ag-grid-angular": "^29.2.0",
     "ag-grid-community": "^29.2.0",
+    "ag-grid-enterprise": "^29.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

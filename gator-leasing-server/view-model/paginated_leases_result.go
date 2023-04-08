@@ -1,7 +1,7 @@
 package viewModel
 
 type PaginatedLeasesResult struct {
-	Leases          []*Lease
-	Count           uint
-	PaginationToken string
+	Leases          []*Lease `json:"leases"`
+	Count           uint     `json:"count"`
+	PaginationToken string   `json:"paginationToken"`
 }

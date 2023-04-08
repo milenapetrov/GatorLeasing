@@ -86,7 +86,7 @@ func (s *Server) handler() *mux.Router {
 	s.handle(r, "/leases", "POST", s.leaseHandler.PostLease, true)
 	s.handle(r, "/leases/{id[0-9]+}", "PUT", s.leaseHandler.PutLease, true)
 	s.handle(r, "/leases/{id[0-9]+}", "DELETE", s.leaseHandler.DeleteLease, true)
-	s.handle(r, "/leases/paged", "GET", s.leaseHandler.GetPaginatedLeases, false)
+	s.handle(r, "/leases/paged", "POST", s.leaseHandler.GetPaginatedLeases, false)
 	s.handle(r, "/myleases", "GET", s.leaseHandler.GetMyLeases, true)
 
 	if s.config.ApiDocumentation {
