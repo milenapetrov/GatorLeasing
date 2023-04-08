@@ -6,25 +6,10 @@ import (
 	"time"
 
 	"github.com/bxcodec/faker/v4"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/shopspring/decimal"
 )
 
 func InitializeFaker() {
-	_ = faker.AddProvider("ownerIdFaker", func(v reflect.Value) (interface{}, error) {
-		return rand.Intn(5) + 1, nil
-	})
-
-	_ = faker.AddProvider("contactsEntityFaker", func(v reflect.Value) (interface{}, error) {
-		fakeContacts := []entity.Contact{}
-		for i := 0; i < 3; i++ {
-			fakeContact := entity.Contact{}
-			faker.FakeData(&fakeContact)
-			fakeContacts = append(fakeContacts, fakeContact)
-		}
-		return fakeContacts, nil
-	})
-
 	_ = faker.AddProvider("createLeaseStartDateFaker", func(v reflect.Value) (interface{}, error) {
 		randomYear, _ := faker.RandomInt(-3, 1, 1)
 		randomMonth, _ := faker.RandomInt(-12, 1, 1)
@@ -41,6 +26,10 @@ func InitializeFaker() {
 
 	_ = faker.AddProvider("createLeaseRentFaker", func(v reflect.Value) (interface{}, error) {
 		return decimal.NewFromFloat(0.01 + rand.Float64()*(10000-0.01)).Round(2), nil
+	})
+
+	_ = faker.AddProvider("filterFaker", func(v reflect.Value) (interface{}, error) {
+		return faker.Word() + " " + faker.Word() + " " + faker.Word(), nil
 	})
 }
 

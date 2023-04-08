@@ -14,6 +14,7 @@ import (
 )
 
 func TestGetAllLeasesOK(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	leases := faker.FakeMany(&dto.Lease{}, 5)
 	mockLeaseRepository.On("GetAllLeases").Return(leases, nil)
@@ -29,6 +30,7 @@ func TestGetAllLeasesOK(t *testing.T) {
 }
 
 func TestGetAllLeasesRepositoryErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("GetAllLeases").Return(nil, &shared.InternalServerError{})
 
@@ -45,6 +47,7 @@ func TestGetAllLeasesRepositoryErr(t *testing.T) {
 }
 
 func TestCreateLeaseOK(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("CreateLease", mock.AnythingOfType("*dto.Lease")).Return(uint(1), nil)
 
@@ -61,6 +64,7 @@ func TestCreateLeaseOK(t *testing.T) {
 }
 
 func TestCreateLeaseRepositoryErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("CreateLease", mock.AnythingOfType("*dto.Lease")).Return(uint(0), &shared.InternalServerError{})
 
@@ -79,6 +83,7 @@ func TestCreateLeaseRepositoryErr(t *testing.T) {
 }
 
 func TestEditLeaseOK(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	lease := &dto.Lease{}
 	faker.FakeData(lease)
@@ -101,6 +106,7 @@ func TestEditLeaseOK(t *testing.T) {
 }
 
 func TestEditLeaseRepositoryErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(nil, &shared.InternalServerError{})
 
@@ -119,6 +125,7 @@ func TestEditLeaseRepositoryErr(t *testing.T) {
 }
 
 func TestEditLeaseMismatchedUserIdErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	lease := &dto.Lease{}
 	faker.FakeData(lease)
@@ -143,6 +150,7 @@ func TestEditLeaseMismatchedUserIdErr(t *testing.T) {
 }
 
 func TestDeleteLeaseOK(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	lease := &dto.Lease{}
 	faker.FakeData(lease)
@@ -162,6 +170,7 @@ func TestDeleteLeaseOK(t *testing.T) {
 }
 
 func TestDeleteLeaseRepositoryErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(nil, &shared.InternalServerError{})
 
@@ -178,6 +187,7 @@ func TestDeleteLeaseRepositoryErr(t *testing.T) {
 }
 
 func TestDeleteLeaseMismatchedUserIdErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	lease := &dto.Lease{}
 	faker.FakeData(lease)
@@ -199,6 +209,7 @@ func TestDeleteLeaseMismatchedUserIdErr(t *testing.T) {
 }
 
 func TestGetPaginatedLeasesOK(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	leases := faker.FakeMany(&dto.Lease{}, 10)
 	mockLeaseRepository.On("GetPaginatedLeases",
@@ -222,7 +233,29 @@ func TestGetPaginatedLeasesOK(t *testing.T) {
 	assert.Nil(t, resultErr)
 }
 
+func TestPaginatedLeasesBadFilterErr(t *testing.T) {
+	initializeTest()
+	mockLeaseRepository := mocks.NewILeaseRepository(t)
+
+	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
+
+	paginatedLeasesRequest := &entity.PaginatedLeasesRequest{}
+	faker.FakeData(paginatedLeasesRequest)
+	paginatedLeasesRequest.Filter = "bad filter"
+	resultLeases, resultPaginationToken, resultCount, resultErr := leaseService.GetPaginatedLeases(paginatedLeasesRequest)
+
+	mockLeaseRepository.AssertExpectations(t)
+	mockLeaseRepository.AssertNotCalled(t, "GetPaginatedLeases", 1)
+	assert.Empty(t, resultLeases)
+	assert.Zero(t, resultPaginationToken)
+	assert.Zero(t, resultCount)
+	assert.NotNil(t, resultErr)
+	_, ok := resultErr.(*shared.BadRequestError)
+	assert.True(t, ok)
+}
+
 func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
+	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
 	mockLeaseRepository.On("GetPaginatedLeases",
 		mock.AnythingOfType("uint"),
