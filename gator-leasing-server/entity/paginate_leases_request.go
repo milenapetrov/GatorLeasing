@@ -7,4 +7,5 @@ type PaginatedLeasesRequest struct {
 	SortToken       string
 	PaginationToken string
 	SortDirection   enums.SortDirection
+	Filter          string
 }

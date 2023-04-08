@@ -205,7 +205,8 @@ func TestGetPaginatedLeasesOK(t *testing.T) {
 		mock.AnythingOfType("uint"),
 		mock.AnythingOfType("string"),
 		mock.AnythingOfType("string"),
-		mock.AnythingOfType("enums.SortDirection")).Return(leases, "paginationToken", int64(10), nil)
+		mock.AnythingOfType("enums.SortDirection"),
+		mock.AnythingOfType("string")).Return(leases, "paginationToken", int64(10), nil)
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
@@ -227,7 +228,8 @@ func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
 		mock.AnythingOfType("uint"),
 		mock.AnythingOfType("string"),
 		mock.AnythingOfType("string"),
-		mock.AnythingOfType("enums.SortDirection")).Return(nil, "", int64(0), &shared.InternalServerError{})
+		mock.AnythingOfType("enums.SortDirection"),
+		mock.AnythingOfType("string")).Return(nil, "", int64(0), &shared.InternalServerError{})
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 

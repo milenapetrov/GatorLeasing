@@ -1,6 +1,9 @@
 package service
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/iancoleman/strcase"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
@@ -104,7 +107,16 @@ func (s *LeaseService) DeleteLease(id uint) error {
 func (s *LeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
 	paginatedLeasesRequest.SortToken = strcase.ToSnake(paginatedLeasesRequest.SortToken)
 
-	leaseDtos, paginationToken, count, err := s.repository.GetPaginatedLeases(paginatedLeasesRequest.PageSize, paginatedLeasesRequest.SortToken, paginatedLeasesRequest.PaginationToken, paginatedLeasesRequest.SortDirection)
+	if paginatedLeasesRequest.Filter != "" {
+		r := regexp.MustCompile("([a-zA-z_.]+) ([a-zA-z<>=]+) (.+)")
+		match := r.FindStringSubmatch(paginatedLeasesRequest.Filter)
+		if match == nil {
+			return nil, "", 0, &shared.BadRequestError{Msg: "invalid filter"}
+		}
+		paginatedLeasesRequest.Filter = strcase.ToSnake(match[1]) + " " + strings.ToUpper(match[2]) + " " + match[3]
+	}
+
+	leaseDtos, paginationToken, count, err := s.repository.GetPaginatedLeases(paginatedLeasesRequest.PageSize, paginatedLeasesRequest.SortToken, paginatedLeasesRequest.PaginationToken, paginatedLeasesRequest.SortDirection, paginatedLeasesRequest.Filter)
 	if err != nil {
 		return nil, "", 0, err
 	}

@@ -20,7 +20,7 @@ type ILeaseRepository interface {
 	CreateLease(lease *dto.Lease) (uint, error)
 	EditLease(lease *dto.Lease) error
 	DeleteLease(lease *dto.Lease) error
-	GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection) ([]*dto.Lease, string, int64, error)
+	GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error)
 }
 
 type LeaseRepository struct {
@@ -103,11 +103,10 @@ func (r *LeaseRepository) DeleteLease(lease *dto.Lease) error {
 	return nil
 }
 
-func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection) ([]*dto.Lease, string, int64, error) {
+func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error) {
 	if sortToken == "" {
 		sortToken = "created_at"
 	}
-	sortToken = strings.ToLower(sortToken)
 
 	leases := []*dto.Lease{}
 
@@ -149,16 +148,20 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	query.Limit(int(pageSize) + 1)
 
+	if filter != "" {
+		query.Where(filter)
+	}
+
 	err := query.Find(&leases).Error
 	if err != nil {
-		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
+		return nil, "", 0, &shared.BadRequestError{Msg: err.Error()}
 	}
 
 	newPaginationToken := ""
 
 	if len(leases) > int(pageSize) {
-		leases = leases[:len(leases)-1]
 		lastLease := leases[len(leases)-1]
+		leases = leases[:len(leases)-1]
 		newPaginationToken = getPaginationToken(lastLease, sortToken)
 	}
 
@@ -177,10 +180,10 @@ func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
 	case "name":
 		paginationToken = lastLease.Name + "|"
 
-	case "startDate":
+	case "start_date":
 		paginationToken = lastLease.StartDate.String() + "|"
 
-	case "endDate":
+	case "end_Date":
 		paginationToken = lastLease.EndDate.String() + "|"
 
 	case "rent":
@@ -189,8 +192,11 @@ func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
 	case "utilities":
 		paginationToken = lastLease.Utilities.String() + "|"
 
-	case "parkingCost":
+	case "parking_cost":
 		paginationToken = lastLease.ParkingCost.String() + "|"
+
+	case "total_cost":
+		paginationToken = lastLease.TotalCost.String() + "|"
 
 	case "beds":
 		paginationToken = strconv.FormatUint(uint64(lastLease.Beds), 10) + "|"
