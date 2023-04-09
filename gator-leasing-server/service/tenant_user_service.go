@@ -27,7 +27,7 @@ func NewTenantUserService(userContext *shared.UserContext, repository repository
 }
 
 func (s *TenantUserService) GetOrCreateUser() (*entity.TenantUser, error) {
-	tenantUserDto, err := s.repository.GetTenantUserByUserID(s.userContext.UserID, constants.TENANT_ID)
+	tenantUserDto, err := s.repository.GetTenantUserByUserId(s.userContext.UserID, constants.TENANT_ID)
 	if err != nil {
 		return nil, err
 	}

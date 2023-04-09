@@ -11,7 +11,7 @@ import (
 
 //go:generate mockery --name ITenantUserRepository
 type ITenantUserRepository interface {
-	GetTenantUserByUserID(userId string, tenantId uint) (*dto.TenantUser, error)
+	GetTenantUserByUserId(userId string, tenantId uint) (*dto.TenantUser, error)
 	CreateTenantUser(tenantUser *dto.TenantUser) (uint, error)
 }
 
@@ -23,7 +23,7 @@ func NewTenantUserRepository(db *gorm.DB) ITenantUserRepository {
 	return &TenantUserRepository{DB: db}
 }
 
-func (r *TenantUserRepository) GetTenantUserByUserID(userId string, tenantId uint) (*dto.TenantUser, error) {
+func (r *TenantUserRepository) GetTenantUserByUserId(userId string, tenantId uint) (*dto.TenantUser, error) {
 	tenantUser := dto.TenantUser{}
 	err := r.DB.Where("user_id = ? AND tenant_id = ?", userId, tenantId).First(&tenantUser).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
