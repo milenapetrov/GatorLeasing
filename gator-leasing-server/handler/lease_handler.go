@@ -50,6 +50,30 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusOK, leaseViewModels)
 }
 
+func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
+	if err != nil {
+		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		return
+	}
+
+	leaseEntity, err := h.leaseService.GetLeaseById(uint(id))
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	mapper := mapper.NewMapper(&entity.Lease{}, &viewModel.Lease{})
+	leaseViewModel, err := mapper.Map(leaseEntity)
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	respondJson(w, http.StatusOK, leaseViewModel)
+}
+
 // PostLease godoc
 //
 //	@Summary		Create a lease
@@ -107,7 +131,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //	@Security		Auth0
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	id, err := strconv.ParseUint(params["id"], 10, 32)
+	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
 	if err != nil {
 		respondError(w, &shared.BadRequestError{Msg: err.Error()})
 		return
@@ -148,7 +172,7 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 //	@Security		Auth0
 func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	id, err := strconv.ParseUint(params["id"], 10, 32)
+	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
 	if err != nil {
 		respondError(w, &shared.BadRequestError{Msg: err.Error()})
 		return
