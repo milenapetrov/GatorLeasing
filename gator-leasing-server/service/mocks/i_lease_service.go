@@ -90,6 +90,32 @@ func (_m *ILeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	return r0, r1
 }
 
+// GetLeaseById provides a mock function with given fields: id
+func (_m *ILeaseService) GetLeaseById(id uint) (*entity.Lease, error) {
+	ret := _m.Called(id)
+
+	var r0 *entity.Lease
+	var r1 error
+	if rf, ok := ret.Get(0).(func(uint) (*entity.Lease, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(uint) *entity.Lease); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*entity.Lease)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetPaginatedLeases provides a mock function with given fields: paginatedLeasesRequest
 func (_m *ILeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
 	ret := _m.Called(paginatedLeasesRequest)

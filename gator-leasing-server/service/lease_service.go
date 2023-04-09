@@ -17,6 +17,7 @@ import (
 //go:generate mockery --name ILeaseService
 type ILeaseService interface {
 	GetAllLeases() ([]*entity.Lease, error)
+	GetLeaseById(id uint) (*entity.Lease, error)
 	CreateLease(leaseToCreate *entity.CreateLease) (uint, error)
 	EditLease(editLease *entity.EditLease) error
 	DeleteLease(id uint) error
@@ -48,6 +49,21 @@ func (s *LeaseService) GetAllLeases() ([]*entity.Lease, error) {
 	}
 
 	return leaseEntities, nil
+}
+
+func (s *LeaseService) GetLeaseById(id uint) (*entity.Lease, error) {
+	leaseDto, err := s.repository.GetLeaseById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	mapper := mapper.NewMapper(&dto.Lease{}, &entity.Lease{})
+	leaseEntity, err := mapper.Map(leaseDto)
+	if err != nil {
+		return nil, err
+	}
+
+	return leaseEntity, nil
 }
 
 func (s *LeaseService) CreateLease(leaseToCreate *entity.CreateLease) (uint, error) {

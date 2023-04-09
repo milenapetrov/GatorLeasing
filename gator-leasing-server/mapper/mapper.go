@@ -6,17 +6,17 @@ import (
 )
 
 type Mapper[T, U any] struct {
-	Mapper dto.Mapper
+	mapper dto.Mapper
 }
 
 func NewMapper[T, U any](*T, *U) *Mapper[T, U] {
-	mapper := &Mapper[T, U]{Mapper: dto.Mapper{}}
+	mapper := &Mapper[T, U]{mapper: dto.Mapper{}}
 	return mapper
 }
 
 func (m *Mapper[T, U]) Map(from *T) (*U, error) {
 	to := new(U)
-	err := m.Mapper.Map(to, from)
+	err := m.mapper.Map(to, from)
 	if err != nil {
 		return nil, &shared.InternalServerError{Msg: err.Error()}
 	}
