@@ -36,8 +36,8 @@ func (_m *ITenantUserRepository) CreateTenantUser(tenantUser *dto.TenantUser) (u
 	return r0, r1
 }
 
-// GetTenantUserByUserID provides a mock function with given fields: userId, tenantId
-func (_m *ITenantUserRepository) GetTenantUserByUserID(userId string, tenantId uint) (*dto.TenantUser, error) {
+// GetTenantUserByUserId provides a mock function with given fields: userId, tenantId
+func (_m *ITenantUserRepository) GetTenantUserByUserId(userId string, tenantId uint) (*dto.TenantUser, error) {
 	ret := _m.Called(userId, tenantId)
 
 	var r0 *dto.TenantUser
