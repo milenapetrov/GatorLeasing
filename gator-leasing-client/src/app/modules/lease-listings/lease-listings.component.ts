@@ -1,9 +1,9 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Grid, GridOptions, IServerSideDatasource } from 'ag-grid-community';
-import { setAriaRowCount } from 'ag-grid-community/dist/lib/utils/aria';
 import 'ag-grid-enterprise';
 import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
+import { format, parseISO } from 'date-fns'
 
 @Component({
   selector: 'app-lease-listings',
@@ -14,9 +14,15 @@ export class LeaseListingsComponent implements AfterViewInit {
   gridOptions : GridOptions<Lease> = {
     columnDefs: [
       { field: 'name', sortable: true },
-      { field: 'createdAt', sortable: false },
-      { field: 'startDate', sortable: true},
-      { field: 'endDate', sortable: true},
+      { field: 'createdAt', sortable: false, cellRenderer: (data) => {
+        return format(parseISO(data.value), 'MM/dd/yyyy')
+      } },
+      { field: 'startDate', sortable: true, cellRenderer: (data) => {
+        return format(parseISO(data.value), 'MM/dd/yyyy')
+      }},
+      { field: 'endDate', sortable: true, cellRenderer: (data) => {
+        return format(parseISO(data.value), 'MM/dd/yyyy')
+      }},
     ],
     rowModelType: 'serverSide', 
     pagination: true,
@@ -50,6 +56,7 @@ export class LeaseListingsComponent implements AfterViewInit {
           if (newSortDirection != this.sortDirection) {
             this.paginationToken = ""
             this.sortDirection = newSortDirection
+            this.gridOptions.api?.setServerSideDatasource(this.getLeaseDatasource())
           }
         } else {
           if (this.sortToken != "") {

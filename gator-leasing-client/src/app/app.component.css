@@ -9,6 +9,5 @@ justify-content: center;
 
 mat-toolbar {
   display:flex;
-  position: fixed;
   justify-content: center;
 }
