@@ -1,6 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
 import {
-  Grid,
   GridOptions,
   IServerSideDatasource,
   IServerSideGetRowsRequest,
@@ -10,6 +9,7 @@ import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
 import { format, parseISO } from 'date-fns';
 import { take } from 'rxjs';
+import { SortDirection } from 'src/enums/sort-direction';
 
 @Component({
   selector: 'app-lease-listings',
@@ -53,7 +53,7 @@ export class LeaseListingsComponent implements AfterViewInit {
   };
 
   sortToken: string = '';
-  sortDirection: number = 1;
+  sortDirection = SortDirection.descending;
   paginationToken: string = '';
   filter: string = '';
 
@@ -84,7 +84,7 @@ export class LeaseListingsComponent implements AfterViewInit {
             this.sortToken = sortModel.colId;
             needsReset = true;
           }
-          const newSortDirection = sortModel.sort == 'asc' ? 0 : 1;
+          const newSortDirection = sortModel.sort == "asc" ? SortDirection.ascending : SortDirection.descending
           if (newSortDirection != this.sortDirection) {
             this.paginationToken = '';
             this.sortDirection = newSortDirection;
@@ -94,7 +94,7 @@ export class LeaseListingsComponent implements AfterViewInit {
           if (this.sortToken != '') {
             this.sortToken = '';
             this.paginationToken = '';
-            this.sortDirection = 1;
+            this.sortDirection = SortDirection.descending;
             needsReset = true;
           }
         }
