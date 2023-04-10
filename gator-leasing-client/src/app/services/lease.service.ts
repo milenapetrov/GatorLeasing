@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { SortDirection } from 'src/enums/sort-direction';
 import { Lease } from '../models/lease';
 import { PaginatedLeasesRequest } from '../models/paginated-leases-request';
 import { PaginatedLeasesResult } from '../models/paginated-leases-result';
@@ -24,9 +25,10 @@ export class LeaseService {
     pageSize: number,
     sortToken: string,
     paginationToken: string,
-    sortDirection: number,
+    sortDirection: SortDirection,
     filters: string
   ): Observable<PaginatedLeasesResult> {
+
     const paginatedLeasesRequest: PaginatedLeasesRequest = {
       pageSize: pageSize,
       sortToken: sortToken,
