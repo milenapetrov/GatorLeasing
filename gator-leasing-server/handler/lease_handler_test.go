@@ -146,7 +146,7 @@ func TestPutLeaseOK(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(editLease))
-	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.PutLease(rr, req)
 
@@ -166,7 +166,7 @@ func TestPutLeaseBadPathParamErr(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(editLease))
-	req = mux.SetURLVars(req, map[string]string{"id": "bad"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "bad"})
 
 	leaseHandler.PutLease(rr, req)
 
@@ -189,7 +189,7 @@ func TestPutLeaseDecodeErr(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(badBody))
-	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.PutLease(rr, req)
 
@@ -210,7 +210,7 @@ func TestPutLeaseServiceErr(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(editLease))
-	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.PutLease(rr, req)
 
@@ -228,7 +228,7 @@ func TestDeleteLeaseOK(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodDelete, "/leases", nil)
-	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.DeleteLease(rr, req)
 
@@ -245,7 +245,7 @@ func TestDeleteLeaseBadPathParamErr(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodDelete, "/leases", nil)
-	req = mux.SetURLVars(req, map[string]string{"id": "bad"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "bad"})
 
 	leaseHandler.DeleteLease(rr, req)
 
@@ -263,7 +263,7 @@ func TestDeleteLeaseServiceErr(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodDelete, "/leases", nil)
-	req = mux.SetURLVars(req, map[string]string{"id": "1"})
+	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.DeleteLease(rr, req)
 

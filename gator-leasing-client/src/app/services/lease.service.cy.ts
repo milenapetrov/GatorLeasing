@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LeaseService } from './lease.service';
-import { HttpClientTestingModule} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Lease service', () => {
   it('playground', () => {
     cy.mount(LeaseService, {
-      imports: [HttpClientTestingModule]
-    })
-  })
-})
+      imports: [HttpClientTestingModule],
+    });
+  });
+});
 
 /*describe('LeaseService', () => {
   let service: LeaseService;

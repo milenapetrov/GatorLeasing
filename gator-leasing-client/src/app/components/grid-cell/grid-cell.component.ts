@@ -12,27 +12,25 @@ export interface MyCellParams {
   /*template: `
     <button routerLink="/update"> {{buttonText}}</button>
   `,*/
-  styleUrls: ['./grid-cell.component.css']
+  styleUrls: ['./grid-cell.component.css'],
 })
 export class GridCellComponent {
   value: any;
   buttonText: string = 'Default';
 
   agInit(params: ICellRendererParams & MyCellParams): void {
-    this.value = params.value
+    this.value = params.value;
     this.buttonText = params.buttonText ?? 'Default';
-   }
+  }
 
-   refresh(params: ICellRendererParams & MyCellParams): boolean {
+  refresh(params: ICellRendererParams & MyCellParams): boolean {
     return false;
   }
 
-  onClick(event: any){
+  onClick(event: any) {
     //this.params.clicked(this.params.value);
     alert('does not work yet lolll');
-    
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

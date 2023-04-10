@@ -20,7 +20,7 @@ type ILeaseRepository interface {
 	CreateLease(lease *dto.Lease) (uint, error)
 	EditLease(lease *dto.Lease) error
 	DeleteLease(lease *dto.Lease) error
-	GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error)
+	GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filters string) ([]*dto.Lease, string, int64, error)
 }
 
 type LeaseRepository struct {
@@ -103,7 +103,7 @@ func (r *LeaseRepository) DeleteLease(lease *dto.Lease) error {
 	return nil
 }
 
-func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error) {
+func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filters string) ([]*dto.Lease, string, int64, error) {
 	if sortToken == "" {
 		sortToken = "created_at"
 	}
@@ -148,8 +148,11 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	query.Limit(int(pageSize) + 1)
 
-	if filter != "" {
-		query.Where(filter)
+	if filters != "" {
+		filtersSplit := strings.Split(filters, ",")
+		for _, filter := range filtersSplit {
+			query.Where(filter)
+		}
 	}
 
 	err := query.Find(&leases).Error
@@ -166,7 +169,16 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 	}
 
 	var count int64
-	err = r.DB.Model(&dto.Lease{}).Count(&count).Error
+	query = r.DB.Model(&dto.Lease{})
+
+	if filters != "" {
+		filtersSplit := strings.Split(filters, ",")
+		for _, filter := range filtersSplit {
+			query.Where(filter)
+		}
+	}
+
+	err = query.Count(&count).Error
 	if err != nil {
 		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
 	}
@@ -183,7 +195,7 @@ func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
 	case "start_date":
 		paginationToken = lastLease.StartDate.String() + "|"
 
-	case "end_Date":
+	case "end_date":
 		paginationToken = lastLease.EndDate.String() + "|"
 
 	case "rent":

@@ -8,31 +8,33 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css']
+  styleUrls: ['./navigation.component.css'],
 })
 export class NavigationComponent {
-
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public auth: AuthService, private router: Router) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    public auth: AuthService,
+    private router: Router
+  ) {}
 
   loginOrRoute(requested: string) {
-    this.auth.isAuthenticated$.pipe(take(1)).subscribe(isLoggedIn => {
+    this.auth.isAuthenticated$.pipe(take(1)).subscribe((isLoggedIn) => {
       if (isLoggedIn) {
-        this.router.navigate(['/my-leases'])
-      }
-      else {
+        this.router.navigate(['/my-leases']);
+      } else {
         this.auth.loginWithRedirect({
           appState: {
-            target: requested
-          }
-        })
+            target: requested,
+          },
+        });
       }
-    })
+    });
   }
-
 }

@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PostComponent } from './post.component';
 import { LeaseService } from '../services/lease.service';
-import { HttpClientTestingModule} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PostComponent', () => {
   it('can mount', () => {
     cy.mount(PostComponent, {
       providers: [LeaseService],
-      imports: [HttpClientTestingModule]
-    })
-  })
-})
+      imports: [HttpClientTestingModule],
+    });
+  });
+});
 
 /*
 describe('Post Title Input', () => {
@@ -24,23 +24,21 @@ describe('Input', () => {
   it('is new post', () => {
     cy.mount(PostComponent, {
       providers: [LeaseService],
-      imports: [HttpClientTestingModule]
-    })
+      imports: [HttpClientTestingModule],
+    });
     //cy.get('input').type("New Post!")
-  })
-
-})
+  });
+});
 
 describe('Button', () => {
   it('can click', () => {
     cy.mount(PostComponent, {
       providers: [LeaseService],
-      imports: [HttpClientTestingModule]
-    })
+      imports: [HttpClientTestingModule],
+    });
     //cy.get('button').click()
-  })
-
-})
+  });
+});
 /*describe('PostComponent', () => {
   let component: PostComponent;
   let fixture: ComponentFixture<PostComponent>;

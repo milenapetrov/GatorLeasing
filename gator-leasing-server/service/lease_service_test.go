@@ -241,7 +241,7 @@ func TestPaginatedLeasesBadFilterErr(t *testing.T) {
 
 	paginatedLeasesRequest := &entity.PaginatedLeasesRequest{}
 	faker.FakeData(paginatedLeasesRequest)
-	paginatedLeasesRequest.Filter = "bad filter"
+	paginatedLeasesRequest.Filters = "bad filter"
 	resultLeases, resultPaginationToken, resultCount, resultErr := leaseService.GetPaginatedLeases(paginatedLeasesRequest)
 
 	mockLeaseRepository.AssertExpectations(t)

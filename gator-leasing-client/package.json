@@ -9,7 +9,8 @@
     "test": "ng test",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "pretty": "prettier \"**/*.{json,md,scss,yaml,yml,js,ts,html}\" --write"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "ag-grid-angular": "^29.2.0",
     "ag-grid-community": "^29.2.0",
     "ag-grid-enterprise": "^29.2.0",
+    "date-fns": "^2.29.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
@@ -47,6 +49,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "prettier": "2.8.7",
     "typescript": "~4.9.4"
   }
 }

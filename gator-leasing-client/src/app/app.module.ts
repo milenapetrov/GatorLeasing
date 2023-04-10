@@ -11,15 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { PostComponent } from './post/post.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -39,11 +39,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { MessagesComponent } from './messages/messages.component';
 import { CreateComponent } from './post/create/create.component';
 import { UpdateComponent } from './post/update/update.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.component';
-
 
 @NgModule({
   declarations: [
@@ -56,23 +55,29 @@ import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.
     MessagesComponent,
     CreateComponent,
     UpdateComponent,
-    LeaseListingsComponent
+    LeaseListingsComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
-      {path: 'home', component: HomeComponent},
-      {path: 'post', component: PostComponent},
-      {path: 'login', component: LoginComponent},
-      {path: 'create', component: CreateComponent},
-      {path: 'update', component: UpdateComponent},
-      {path:'messages', component: MessagesComponent},
-      {path:"profile", component: ProfileComponent},
+      { path: 'home', component: HomeComponent },
+      { path: 'post', component: PostComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'create', component: CreateComponent },
+      { path: 'update', component: UpdateComponent },
+      { path: 'messages', component: MessagesComponent },
+      { path: 'profile', component: ProfileComponent },
     ]),
     AppRoutingModule,
-    HttpClientModule, 
-    FormsModule, BrowserAnimationsModule, MatSlideToggleModule, MatButtonModule,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatRadioModule,
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
@@ -87,12 +92,12 @@ import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.
     AuthModule.forRoot({
       ...env.auth,
       httpInterceptor: {
-        ...env.httpInterceptor
-      }
+        ...env.httpInterceptor,
+      },
     }),
-    AgGridModule
+    AgGridModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

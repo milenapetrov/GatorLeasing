@@ -6,18 +6,8 @@ import { AgGridModule } from 'ag-grid-angular';
 import { GridCellComponent } from './grid-cell/grid-cell.component';
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    DisplayLeasesComponent,
-    GridCellComponent,
-  ],
-  imports: [
-    CommonModule,
-    AgGridModule
-  ],
-  exports: [
-    LoginComponent,
-    DisplayLeasesComponent
-  ]
+  declarations: [LoginComponent, DisplayLeasesComponent, GridCellComponent],
+  imports: [CommonModule, AgGridModule],
+  exports: [LoginComponent, DisplayLeasesComponent],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

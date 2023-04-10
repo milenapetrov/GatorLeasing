@@ -1,12 +1,12 @@
-import { Address } from "./address";
+import { Address } from './address';
 
 export interface Contact {
-    id: number;
-    lastName: string;
-    firstName: string;
-    salutation: string;
-    leaseID: number;
-    phoneNumber: string;
-    email: string;
-    address: Address;
+  id: number;
+  lastName: string;
+  firstName: string;
+  salutation: string;
+  leaseID: number;
+  phoneNumber: string;
+  email: string;
+  address: Address;
 }

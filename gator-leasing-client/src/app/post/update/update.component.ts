@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { FormBuilder} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { LeaseService } from 'src/app/services/lease.service';
 import { Post } from 'src/app/models/post';
-import { Address } from 'src/app/models/address'
+import { Address } from 'src/app/models/address';
 
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
-  styleUrls: ['./update.component.css']
+  styleUrls: ['./update.component.css'],
 })
 export class UpdateComponent {
   date: Date = new Date();
@@ -16,11 +16,11 @@ export class UpdateComponent {
     roomNumber: '',
     city: '',
     state: '',
-    zipCode: ''
+    zipCode: '',
   };
 
   post: Post = {
-    name: '', 
+    name: '',
     address: this.addy,
     rent: 0.0,
     startDate: this.date,
@@ -34,14 +34,15 @@ export class UpdateComponent {
     baths: 0.0,
     amenities: '',
     appliances: '',
-    description: ''
-  }
-
-
-  constructor(private leaseService:LeaseService, private formBuilder: FormBuilder){
-  }
-
-  onSubmit(post:Post) {
-    this.leaseService.updatePost(this.post);
+    description: '',
   };
+
+  constructor(
+    private leaseService: LeaseService,
+    private formBuilder: FormBuilder
+  ) {}
+
+  onSubmit(post: Post) {
+    this.leaseService.updatePost(this.post);
+  }
 }

@@ -1,10 +1,10 @@
 {
   "compileOnSave": false,
   "include": [
-    "**/*.ts",
+    "**/*.ts"
     //"cypress/Home.cy.ts"
-  ], 
-  "compilerOptions": {  
+  ],
+  "compilerOptions": {
     "resolveJsonModule": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -21,14 +21,10 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",   //ES2022
+    "target": "ES2022", //ES2022
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom",
-      "ES5"
-    ]
+    "lib": ["ES2022", "dom", "ES5"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
