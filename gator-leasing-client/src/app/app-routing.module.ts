@@ -10,16 +10,16 @@ import { AuthHttpInterceptorExtendedService } from './services/auth-http-interce
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'my-leases',
     component: MyLeasesComponent,
   },
   {
-    path: "listings",
-    component: LeaseListingsComponent
-  }
+    path: 'listings',
+    component: LeaseListingsComponent,
+  },
 ];
 
 @NgModule({
@@ -33,4 +33,4 @@ const routes: Routes = [
     },
   ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

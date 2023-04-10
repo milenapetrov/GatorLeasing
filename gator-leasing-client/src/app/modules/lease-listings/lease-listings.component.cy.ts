@@ -1,7 +1,7 @@
-import { LeaseListingsComponent } from './lease-listings.component'
+import { LeaseListingsComponent } from './lease-listings.component';
 
 describe('LeaseListingsComponent', () => {
   it('should mount', () => {
-    cy.mount(LeaseListingsComponent)
-  })
-})
+    cy.mount(LeaseListingsComponent);
+  });
+});

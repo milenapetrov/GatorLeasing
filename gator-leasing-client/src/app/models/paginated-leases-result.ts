@@ -1,8 +1,7 @@
-import { Lease } from "./lease";
-
+import { Lease } from './lease';
 
 export interface PaginatedLeasesResult {
-    leases : Lease[]
-    paginationToken : string
-    count : number
+  leases: Lease[];
+  paginationToken: string;
+  count: number;
 }

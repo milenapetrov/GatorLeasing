@@ -7,7 +7,7 @@ import { FormBuilder } from '@angular/forms';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent {
   addy: Address = {
@@ -15,7 +15,7 @@ export class ProfileComponent {
     roomNumber: '',
     city: '',
     state: '',
-    zipCode: ''
+    zipCode: '',
   };
 
   contact: Contact = {
@@ -26,15 +26,15 @@ export class ProfileComponent {
     leaseID: 0,
     phoneNumber: '',
     email: '',
-    address: this.addy
+    address: this.addy,
   };
 
+  constructor(
+    private leaseService: LeaseService,
+    private formBuilder: FormBuilder
+  ) {}
 
-  constructor(private leaseService:LeaseService, private formBuilder: FormBuilder){
-  }
-
-  onSubmit(contact:Contact) {
+  onSubmit(contact: Contact) {
     //this.leaseService.createContact(this.contact);
-  };
-
+  }
 }

@@ -3,23 +3,21 @@ import { Injectable } from '@angular/core';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
 
-
-
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthHttpInterceptorExtendedService extends AuthHttpInterceptor {
-
-  override intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url.endsWith('/leases') && req.method === "GET") {
-      return next.handle(req)
+  override intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    if (req.url.endsWith('/leases') && req.method === 'GET') {
+      return next.handle(req);
     }
-    if (req.url.endsWith('/leases/paged') && req.method=="POST") {
-      return next.handle(req)
-    }
-    else {
-      return super.intercept(req, next)
+    if (req.url.endsWith('/leases/paged') && req.method == 'POST') {
+      return next.handle(req);
+    } else {
+      return super.intercept(req, next);
     }
   }
 }

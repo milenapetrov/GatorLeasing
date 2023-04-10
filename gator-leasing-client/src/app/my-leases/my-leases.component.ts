@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { LeaseService } from '../services/lease.service';
- import { Lease } from '../models/lease';
-
+import { Lease } from '../models/lease';
 
 @Component({
   selector: 'app-my-leases',
   templateUrl: './my-leases.component.html',
-  styleUrls: ['./my-leases.component.css']
+  styleUrls: ['./my-leases.component.css'],
 })
 export class MyLeasesComponent {
   leases: Lease[] = [];

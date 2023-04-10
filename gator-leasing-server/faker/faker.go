@@ -28,7 +28,7 @@ func InitializeFaker() {
 		return decimal.NewFromFloat(0.01 + rand.Float64()*(10000-0.01)).Round(2), nil
 	})
 
-	_ = faker.AddProvider("filterFaker", func(v reflect.Value) (interface{}, error) {
+	_ = faker.AddProvider("filtersFaker", func(v reflect.Value) (interface{}, error) {
 		return faker.Word() + " " + faker.Word() + " " + faker.Word(), nil
 	})
 }

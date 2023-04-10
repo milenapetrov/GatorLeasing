@@ -10,6 +10,7 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/regex"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
@@ -123,16 +124,26 @@ func (s *LeaseService) DeleteLease(id uint) error {
 func (s *LeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
 	paginatedLeasesRequest.SortToken = strcase.ToSnake(paginatedLeasesRequest.SortToken)
 
-	if paginatedLeasesRequest.Filter != "" {
-		r := regexp.MustCompile("([a-zA-z_.]+) ([a-zA-z<>=]+) (.+)")
-		match := r.FindStringSubmatch(paginatedLeasesRequest.Filter)
-		if match == nil {
-			return nil, "", 0, &shared.BadRequestError{Msg: "invalid filter"}
+	if paginatedLeasesRequest.Filters != "" {
+		r := regexp.MustCompile(regex.FILTERS_REGEX)
+		filters := strings.Split(paginatedLeasesRequest.Filters, ",")
+		invalid := []string{}
+		for i, filter := range filters {
+			match := r.FindStringSubmatch(filter)
+			if match == nil {
+				invalid = append(invalid, filter)
+				continue
+			}
+			filters[i] = strcase.ToSnake(match[1]) + " " + strings.ToUpper(match[2]) + " " + match[3] + " " + strings.ToUpper(match[4]) + " " + strcase.ToSnake(match[5]) + " " + strings.ToUpper(match[6]) + " " + match[7]
 		}
-		paginatedLeasesRequest.Filter = strcase.ToSnake(match[1]) + " " + strings.ToUpper(match[2]) + " " + match[3]
+		if len(invalid) > 0 {
+			msg := "Invalid filter(s): " + strings.Join(invalid, ", ")
+			return nil, "", 0, &shared.BadRequestError{Msg: msg}
+		}
+		paginatedLeasesRequest.Filters = strings.Join(filters, ",")
 	}
 
-	leaseDtos, paginationToken, count, err := s.repository.GetPaginatedLeases(paginatedLeasesRequest.PageSize, paginatedLeasesRequest.SortToken, paginatedLeasesRequest.PaginationToken, paginatedLeasesRequest.SortDirection, paginatedLeasesRequest.Filter)
+	leaseDtos, paginationToken, count, err := s.repository.GetPaginatedLeases(paginatedLeasesRequest.PageSize, paginatedLeasesRequest.SortToken, paginatedLeasesRequest.PaginationToken, paginatedLeasesRequest.SortDirection, paginatedLeasesRequest.Filters)
 	if err != nil {
 		return nil, "", 0, err
 	}

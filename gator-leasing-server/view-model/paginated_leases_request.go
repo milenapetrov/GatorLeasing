@@ -7,5 +7,5 @@ type PaginatedLeasesRequest struct {
 	SortToken       string              `json:"sortToken"`
 	PaginationToken string              `json:"paginationToken"`
 	SortDirection   enums.SortDirection `json:"sortDirection"`
-	Filter          string              `json:"filter"`
+	Filters         string              `json:"filters"`
 }
