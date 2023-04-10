@@ -29,7 +29,7 @@ func InitializeFaker() {
 	})
 
 	_ = faker.AddProvider("filtersFaker", func(v reflect.Value) (interface{}, error) {
-		return faker.Word() + " " + faker.Word() + " " + faker.Word(), nil
+		return faker.Word() + " " + faker.Word() + " '" + faker.Word() + "'", nil
 	})
 }
 
