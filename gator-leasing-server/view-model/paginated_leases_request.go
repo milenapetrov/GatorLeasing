@@ -11,8 +11,35 @@ type PaginatedLeasesRequest struct {
 	PageSize        int
 	SortToken       string
 	PaginationToken string
-	SortDirection   enums.SortDirection
-	Filters         string
+	SortDirection   enums.SortDirection `faker:"paginatedLeaseRequestSortDirectionFaker"`
+	Filters         string              `faker:"paginatedLeaseRequestFiltersFaker"`
+}
+
+func (r *PaginatedLeasesRequest) MarshalJSON() ([]byte, error) {
+	enumToString := map[enums.SortDirection]string{
+		enums.Ascending:  "asc",
+		enums.Descending: "desc",
+	}
+	sortDirection, ok := enumToString[r.SortDirection]
+	if !ok {
+		return nil, errors.New("unknown sort direction")
+	}
+
+	request := struct {
+		PageSize        int    `json:"pageSize"`
+		SortToken       string `json:"sortToken"`
+		PaginationToken string `json:"paginationToken"`
+		SortDirection   string `json:"sortDirection"`
+		Filters         string `json:"filters"`
+	}{
+		PageSize:        r.PageSize,
+		SortToken:       r.SortToken,
+		PaginationToken: r.PaginationToken,
+		SortDirection:   sortDirection,
+		Filters:         r.Filters,
+	}
+
+	return json.Marshal(&request)
 }
 
 func (r *PaginatedLeasesRequest) UnmarshalJSON(data []byte) error {
@@ -28,7 +55,7 @@ func (r *PaginatedLeasesRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	toEnum := map[string]enums.SortDirection{
+	stringToEnum := map[string]enums.SortDirection{
 		"asc":  enums.Ascending,
 		"desc": enums.Descending,
 	}
@@ -36,7 +63,7 @@ func (r *PaginatedLeasesRequest) UnmarshalJSON(data []byte) error {
 	r.PageSize = request.PageSize
 	r.SortToken = request.SortToken
 	r.PaginationToken = request.PaginationToken
-	enum, ok := toEnum[request.SortDirection]
+	enum, ok := stringToEnum[request.SortDirection]
 	if !ok {
 		return errors.New("sort direction must be 'asc' or 'desc'")
 	}
