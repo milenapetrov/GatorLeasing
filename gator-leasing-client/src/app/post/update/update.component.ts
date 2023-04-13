@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { LeaseService } from 'src/app/services/lease.service';
 import { Post } from 'src/app/models/post';
 import { Address } from 'src/app/models/address';
+import { Lease } from 'src/app/models/lease';
 
 @Component({
   selector: 'app-update',
@@ -10,6 +11,11 @@ import { Address } from 'src/app/models/address';
   styleUrls: ['./update.component.css'],
 })
 export class UpdateComponent {
+  lease = this.leaseService.getLease(0).subscribe(res => {
+    console.log(res)
+    this.post = res;
+  })
+
   date: Date = new Date();
   addy: Address = {
     street: '',
@@ -19,13 +25,12 @@ export class UpdateComponent {
     zipCode: '',
   };
 
-  post: Post = {
+  post: Lease = {
     name: '',
     address: this.addy,
     rent: 0.0,
     startDate: this.date,
     endDate: this.date,
-    utilities: 0.0,
     parkingCost: 0.0,
     squareFootage: 0,
     furnished: false,
@@ -35,6 +40,12 @@ export class UpdateComponent {
     amenities: '',
     appliances: '',
     description: '',
+    id: 0,
+    createdAt: this.date,
+    ownerID: 0,
+    utilites: 0,
+    totalCost: 0,
+    contacts: this.addy   //add contacts
   };
 
   constructor(
@@ -43,6 +54,6 @@ export class UpdateComponent {
   ) {}
 
   onSubmit(post: Post) {
-    this.leaseService.updatePost(this.post);
+    this.leaseService.updatePost(this.post.id, this.post);
   }
 }

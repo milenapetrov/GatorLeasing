@@ -1,7 +1,15 @@
 <head>
   <base href="/" />
+  <meta charset="utf-8">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Rubik">
+    <style>
+      body {
+        font-family: 'Rubik', serif;
+        font-size: 38px;
+      }
+    </style>  
 </head>
-<!--<div class="container center">-->
 <mat-card
   id="card"
   class="bg"
@@ -27,7 +35,11 @@
 <br />
 <br />
 <div class="center">
-  <button name="post" mat-stroked-button routerLink="/create">
+  <button name="post" mat-stroked-button (click)="loginOrRoute('/create')">
     Post a Lease
   </button>
 </div>
+
+<body>Listings
+<app-lease-listings></app-lease-listings>
+</body>

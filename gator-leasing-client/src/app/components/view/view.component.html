@@ -1,0 +1,33 @@
+<head>
+    <base href="/" />
+    <meta charset="utf-8">
+      <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Catamaran">
+      <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Rubik">
+      <style>
+        mat-card-title {
+          font-family: 'Rubik', serif;
+          font-size: 27px;
+        }
+        mat-card-subtitle {
+          font-family: 'Rubik', serif;
+          font-size: 20px;
+        }
+        mat-card-content {
+            font-family: 'Rubik', serif;
+            font-size: 20px;
+        }
+      </style>  
+</head>
+<mat-card>
+    <mat-card-header class="header">
+        <mat-card-title>{{post.name}}</mat-card-title>
+        <mat-card-subtitle>{{post.address.street}}, Apt {{post.address.roomNumber}}, {{post.address.city}}, {{post.address.state}} {{post.address.zipCode}}</mat-card-subtitle>
+    </mat-card-header>
+    <br>
+    <mat-card-content>${{post.rent}} | {{post.beds}} bd | {{post.baths}} ba | {{post.squareFootage}} sqft</mat-card-content>
+    <br>
+    <mat-card-content>{{post.description}}</mat-card-content>
+</mat-card>
+

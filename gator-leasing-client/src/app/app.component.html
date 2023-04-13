@@ -1,12 +1,22 @@
+<head>
+  <base href="/" />
+  <meta charset="utf-8">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Lobster">
+    <style>
+      span {
+        font-family: 'Lobster', serif;
+        font-size: 35px;
+      }
+    </style>  
+</head>
 <div>
   <mat-toolbar color="primary">
-    <button mat-stroked-button routerLink="/post">My Leases</button>
-    <button mat-stroked-button routerLink="/messages">Messages</button>
+    <button mat-stroked-button (click)="loginOrRoute('/display')">My Leases</button>
     <span class="spacer"></span>
     <span class="spacer2" routerLink="/home">ReLease</span>
     <span class="spacer"></span>
     <a mat-stroked-button><app-login></app-login></a>
-    <a mat-stroked-button routerLink="/profile">Profile </a>
   </mat-toolbar>
 </div>
 <router-outlet></router-outlet>

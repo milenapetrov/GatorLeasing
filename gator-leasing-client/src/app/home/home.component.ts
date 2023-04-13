@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   search: String = '';
 
-  /*isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   loginOrRoute(requested: string) {
     this.auth.isAuthenticated$.pipe(take(1)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
-        this.router.navigate(['/my-leases'])
+        this.router.navigate(['/create'])
       }
       else {
         this.auth.loginWithRedirect({
@@ -36,6 +36,6 @@ export class HomeComponent implements OnInit {
         })
       }
     })
-  }*/
+  }
   ngOnInit(): void {}
 }

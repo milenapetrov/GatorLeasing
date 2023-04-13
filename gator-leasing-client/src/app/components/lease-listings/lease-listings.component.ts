@@ -10,6 +10,8 @@ import { LeaseService } from 'src/app/services/lease.service';
 import { format, parseISO } from 'date-fns';
 import { take } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
+import { GridCellComponent,MyCellParams,} from 'src/app/components/grid-cell/grid-cell.component';
+import { data } from 'cypress/types/jquery';
 
 @Component({
   selector: 'app-lease-listings',
@@ -26,6 +28,10 @@ export class LeaseListingsComponent implements AfterViewInit {
         filterParams: {
           filterOptions: ['contains'],
         },
+        cellRenderer: GridCellComponent,
+        cellRendererParams: {
+          buttonText: `view`,
+        } as MyCellParams,
       },
       {
         field: 'startDate',
@@ -45,6 +51,13 @@ export class LeaseListingsComponent implements AfterViewInit {
           return format(parseISO(data.value), 'MM/dd/yyyy');
         },
       },
+      { 
+        /*field: 'id',
+        cellRenderer: (data) => {
+  
+          return data.value;
+        },*/
+      },
     ],
     rowModelType: 'serverSide',
     pagination: true,
@@ -58,6 +71,12 @@ export class LeaseListingsComponent implements AfterViewInit {
   filter: string = '';
 
   constructor(private leaseService: LeaseService) {}
+
+  getID(): number {
+    return 11;
+  }
+
+  //lease = this.leaseService.getLease(this.getID());
 
   ngAfterViewInit() {
     var datasource = this.getLeaseDatasource();

@@ -2,7 +2,7 @@
   <mat-card>
     <mat-form-field class="example-full-width">
       <mat-label>Post Title</mat-label>
-      <input name="name" matInput [(ngModel)]="post.name" />
+      <input required name="name" matInput [(ngModel)]="post.name" />
     </mat-form-field>
 
     <table class="example-full-width" cellspacing="0">
@@ -10,7 +10,7 @@
         <td>
           <mat-form-field class="example-full-width">
             <mat-label>Set Price</mat-label>
-            <input
+            <input required
               name="rent"
               matInput
               placeholder="$"
@@ -21,7 +21,7 @@
         <td>
           <mat-form-field class="example-full-width">
             <mat-label>Start Date</mat-label>
-            <input
+            <input required
               [matDatepicker]="picker1"
               name="start"
               matInput
@@ -38,7 +38,7 @@
         <td>
           <mat-form-field class="example-full-width">
             <mat-label>End Date</mat-label>
-            <input
+            <input required
               [matDatepicker]="picker2"
               name="end"
               matInput
@@ -56,7 +56,7 @@
         <td>
           <mat-form-field class="example-full-width">
             <mat-label>Square footage</mat-label>
-            <input
+            <input required 
               type="number"
               name="squareFootage"
               matInput
@@ -73,11 +73,11 @@
       <tr>
         <mat-form-field class="example-full-width">
           <mat-label>Address</mat-label>
-          <input name="street" matInput [(ngModel)]="post.address.street" />
+          <input required name="street" matInput [(ngModel)]="post.address.street" />
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <mat-label>Apt. # (optional)</mat-label>
-          <input
+          <mat-label>Apt. # </mat-label>
+          <input required
             name="roomNum"
             matInput
             [(ngModel)]="post.address.roomNumber"
@@ -85,7 +85,7 @@
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <mat-label>City</mat-label>
-          <input
+          <input required
             name="city"
             matInput
             placeholder="Ex. San Francisco"
@@ -94,16 +94,16 @@
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <mat-label>State</mat-label>
-          <input
+          <input required
             name="state"
             matInput
-            placeholder="Ex. California"
+            placeholder="Ex. FL"
             [(ngModel)]="post.address.state"
           />
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <mat-label>Postal Code</mat-label>
-          <input
+          <input required 
             name="zip"
             matInput
             #postalCode
@@ -173,7 +173,7 @@
         name="appliances"
         matInput
         placeholder="dishwasher, laundry, ..."
-        [(ngModel)]="post.amenities"
+        [(ngModel)]="post.appliances"
       />
     </mat-form-field>
     <mat-form-field class="example-full-width">
@@ -182,7 +182,7 @@
         name="description"
         matInput
         placeholder="additional info"
-        [(ngModel)]="post.amenities"
+        [(ngModel)]="post.description"
       ></textarea>
     </mat-form-field>
   </mat-card>

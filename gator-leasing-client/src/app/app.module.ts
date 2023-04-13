@@ -42,7 +42,10 @@ import { UpdateComponent } from './post/update/update.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.component';
+import { LeaseListingsComponent } from './components/lease-listings/lease-listings.component';
+import { ViewComponent } from './components/view/view.component';
+import { GridCellComponent } from 'src/app/components/grid-cell/grid-cell.component';
+import { DisplayLeasesComponent } from './components/display-leases/display-leases.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,7 @@ import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.
     CreateComponent,
     UpdateComponent,
     LeaseListingsComponent,
+    ViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,8 +69,8 @@ import { LeaseListingsComponent } from './modules/lease-listings/lease-listings.
       { path: 'login', component: LoginComponent },
       { path: 'create', component: CreateComponent },
       { path: 'update', component: UpdateComponent },
-      { path: 'messages', component: MessagesComponent },
-      { path: 'profile', component: ProfileComponent },
+      { path: 'view', component: ViewComponent},
+      { path: 'display', component: DisplayLeasesComponent}
     ]),
     AppRoutingModule,
     HttpClientModule,

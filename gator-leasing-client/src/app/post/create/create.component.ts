@@ -5,6 +5,7 @@ import { Lease } from 'src/app/models/lease';
 import { Post } from 'src/app/models/post';
 import { timeInterval } from 'rxjs';
 import { Address } from 'src/app/models/address';
+import { Router } from '@angular/router';
 
 const today = new Date();
 const month = today.getMonth();
@@ -45,10 +46,12 @@ export class CreateComponent {
 
   constructor(
     private leaseService: LeaseService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   onSubmit(post: Post) {
     this.leaseService.createPost(this.post);
+    this.router.navigateByUrl('/home');
   }
 }

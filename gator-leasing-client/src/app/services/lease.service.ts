@@ -55,7 +55,8 @@ export class LeaseService {
       });
   }
 
-  updatePost(post: Post): Observable<any> {
-    return this.http.put(`${this.BASEURL}${this.LEASEURL}`, post);
+  updatePost(id: number, post: Lease): Observable<any> {
+    console.log(`${post.name}`);
+    return this.http.put(`${this.BASEURL}${this.LEASEURL}/${id}`, post);
   }
 }
