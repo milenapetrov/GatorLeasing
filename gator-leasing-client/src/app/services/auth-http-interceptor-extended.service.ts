@@ -14,10 +14,13 @@ export class AuthHttpInterceptorExtendedService extends AuthHttpInterceptor {
     if (req.url.endsWith('/leases') && req.method === 'GET') {
       return next.handle(req);
     }
+    if (req.url.match('[^ ]+\/leases\/[0-9]+)') && req.method == 'GET') {
+      return next.handle(req)
+    }
     if (req.url.endsWith('/leases/paged') && req.method == 'POST') {
       return next.handle(req);
-    } else {
-      return super.intercept(req, next);
     }
+      
+    return super.intercept(req, next);
   }
 }
