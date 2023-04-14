@@ -356,6 +356,23 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 	respondJson(w, http.StatusOK, result)
 }
 
+// swagger:route GET /myleases leases GetMyLeases
+//
+// List leases.
+//
+// get all leases.
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//
+//	Responses:
+//	  200: GetLeaseResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
 	myLeaseEntities, err := h.leaseService.GetMyLeases()
 	if err != nil {
