@@ -134,11 +134,11 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 //	  oauth2:
 //
 //	Parameters:
-//	  + name: limit
+//	  + name: CreateLease
 //	    in: body
 //	    description: create a lease
 //	    required: true
-//	    type: viewModel.CreateLease
+//	    type: CreateLease
 //
 //
 //	Responses:
@@ -193,18 +193,12 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //	Security:
 //	  oauth2:
 //
-//	Parameters:
-//	  + name: id
-//	    in: query
-//	    description: lease id
-//	    required: true
-//	    type: integer
-//	    format: uint64
+//	Parameters:``
 //	  + name: editLeaseRequest
 //	    in: body
 //	    description: edit lease request
 //	    required: true
-//	    type: viewModel.EditLease
+//	    type: EditLease
 //
 //
 //	Responses:
@@ -312,7 +306,7 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 //	    in: body
 //	    description: page size, column to sort on, pagination token, sort direction, filter
 //	    required: true
-//	    type: viewModel.PaginatedLeasesRequest
+//	    type: PaginatedLeasesRequest
 //
 //
 //	Responses:
@@ -390,7 +384,7 @@ func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusOK, leaseViewModels)
 }
 
-// swagger:route POST /leases/paged leases GetPaginatedLeases
+// swagger:route POST /leases/paged leases GetMyLeasesPaged
 //
 // Get my paged leases.
 //
@@ -410,11 +404,11 @@ func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
 //	  oauth2:
 //
 //	Parameters:
-//	  + name: getPaginatedLeasesRequest
+//	  + name: getMyPaginatedLeases
 //	    in: body
 //	    description: page size, column to sort on, pagination token, sort direction, filter
 //	    required: true
-//	    type: viewModel.PaginatedLeasesRequest
+//	    type: PaginatedLeasesRequest
 //
 //
 //	Responses:

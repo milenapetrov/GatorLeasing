@@ -7,12 +7,24 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
 )
 
+// swagger:parameters GetPaginatedLeases GetMyLeasesPaged
 type PaginatedLeasesRequest struct {
-	PageSize        int
-	SortToken       string
+	// the page size
+	// in: body
+	PageSize int
+	// the sort token
+	// in: body
+	SortToken string
+	// the paginated token
+	// in: body
 	PaginationToken string
-	SortDirection   enums.SortDirection `faker:"paginatedLeaseRequestSortDirectionFaker"`
-	Filters         string              `faker:"paginatedLeaseRequestFiltersFaker"`
+	// the sort direction {asc, desc}
+	// required: true
+	// in: body
+	SortDirection enums.SortDirection `faker:"paginatedLeaseRequestSortDirectionFaker"`
+	// the filters
+	// in: body
+	Filters string `faker:"paginatedLeaseRequestFiltersFaker"`
 }
 
 func (r *PaginatedLeasesRequest) MarshalJSON() ([]byte, error) {
