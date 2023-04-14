@@ -1,6 +1,7 @@
 package service
 
 import (
+	stdErrors "errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/faker"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository/mocks"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
@@ -32,7 +34,7 @@ func TestGetAllLeasesOK(t *testing.T) {
 func TestGetAllLeasesRepositoryErr(t *testing.T) {
 	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
-	mockLeaseRepository.On("GetAllLeases").Return(nil, &shared.InternalServerError{})
+	mockLeaseRepository.On("GetAllLeases").Return(nil, &errors.InternalServerError{})
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
@@ -42,8 +44,7 @@ func TestGetAllLeasesRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetAllLeases", 1)
 	assert.Empty(t, resultLeases)
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }
 
 func TestCreateLeaseOK(t *testing.T) {
@@ -66,7 +67,7 @@ func TestCreateLeaseOK(t *testing.T) {
 func TestCreateLeaseRepositoryErr(t *testing.T) {
 	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
-	mockLeaseRepository.On("CreateLease", mock.AnythingOfType("*dto.Lease")).Return(uint(0), &shared.InternalServerError{})
+	mockLeaseRepository.On("CreateLease", mock.AnythingOfType("*dto.Lease")).Return(uint(0), &errors.InternalServerError{})
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
@@ -78,8 +79,7 @@ func TestCreateLeaseRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "CreateLease", 1)
 	assert.Zero(t, resultID)
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }
 
 func TestEditLeaseOK(t *testing.T) {
@@ -108,7 +108,7 @@ func TestEditLeaseOK(t *testing.T) {
 func TestEditLeaseRepositoryErr(t *testing.T) {
 	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
-	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(nil, &shared.InternalServerError{})
+	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(nil, &errors.InternalServerError{})
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
@@ -120,8 +120,7 @@ func TestEditLeaseRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "EditLease")
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }
 
 func TestEditLeaseMismatchedUserIdErr(t *testing.T) {
@@ -145,8 +144,7 @@ func TestEditLeaseMismatchedUserIdErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "EditLease")
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.BadRequestError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.BadRequestError{}, resultErr))
 }
 
 func TestDeleteLeaseOK(t *testing.T) {
@@ -172,7 +170,7 @@ func TestDeleteLeaseOK(t *testing.T) {
 func TestDeleteLeaseRepositoryErr(t *testing.T) {
 	initializeTest()
 	mockLeaseRepository := mocks.NewILeaseRepository(t)
-	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(nil, &shared.InternalServerError{})
+	mockLeaseRepository.On("GetLeaseById", mock.AnythingOfType("uint")).Return(nil, &errors.InternalServerError{})
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
@@ -182,8 +180,7 @@ func TestDeleteLeaseRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "DeleteLease")
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }
 
 func TestDeleteLeaseMismatchedUserIdErr(t *testing.T) {
@@ -204,8 +201,7 @@ func TestDeleteLeaseMismatchedUserIdErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "DeleteLease")
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.BadRequestError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.BadRequestError{}, resultErr))
 }
 
 func TestGetPaginatedLeasesOK(t *testing.T) {
@@ -250,8 +246,7 @@ func TestPaginatedLeasesBadFilterErr(t *testing.T) {
 	assert.Zero(t, resultPaginationToken)
 	assert.Zero(t, resultCount)
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.BadRequestError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.BadRequestError{}, resultErr))
 }
 
 func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
@@ -262,7 +257,7 @@ func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
 		mock.AnythingOfType("string"),
 		mock.AnythingOfType("string"),
 		mock.AnythingOfType("enums.SortDirection"),
-		mock.AnythingOfType("string")).Return(nil, "", int64(0), &shared.InternalServerError{})
+		mock.AnythingOfType("string")).Return(nil, "", int64(0), &errors.InternalServerError{})
 
 	leaseService := NewLeaseService(shared.NewUserContext(), mockLeaseRepository)
 
@@ -276,6 +271,5 @@ func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
 	assert.Zero(t, resultPaginationToken)
 	assert.Zero(t, resultCount)
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }

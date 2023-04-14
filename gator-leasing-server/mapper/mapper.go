@@ -2,7 +2,8 @@ package mapper
 
 import (
 	"github.com/dranikpg/dto-mapper"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
+
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 )
 
 type Mapper[T, U any] struct {
@@ -18,7 +19,7 @@ func (m *Mapper[T, U]) Map(from *T) (*U, error) {
 	to := new(U)
 	err := m.mapper.Map(to, from)
 	if err != nil {
-		return nil, &shared.InternalServerError{Msg: err.Error()}
+		return nil, &errors.InternalServerError{Msg: err.Error()}
 	}
 	return to, nil
 }

@@ -88,6 +88,7 @@ func (s *Server) handler() *mux.Router {
 	s.handle(r, "/leases/{id[0-9]+}", "DELETE", s.leaseHandler.DeleteLease, true)
 	s.handle(r, "/leases/paged", "POST", s.leaseHandler.GetPaginatedLeases, false)
 	s.handle(r, "/myleases", "GET", s.leaseHandler.GetMyLeases, true)
+	s.handle(r, "/myleases/paged", "POST", s.leaseHandler.GetMyLeasesPaged, true)
 
 	if s.config.ApiDocumentation {
 		r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
