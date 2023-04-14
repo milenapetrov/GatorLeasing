@@ -6,25 +6,46 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// swagger:model Lease
 type Lease struct {
-	ID            int             `json:"id"`
-	Name          string          `json:"name"`
-	CreatedAt     time.Time       `json:"createdAt"`
-	OwnerID       int             `json:"ownerID"`
-	Address       Address         `json:"address"`
-	StartDate     time.Time       `json:"startDate"`
-	EndDate       time.Time       `json:"endDate"`
-	Rent          decimal.Decimal `json:"rent"`
-	Utilities     decimal.Decimal `json:"utilities"`
-	ParkingCost   decimal.Decimal `json:"parkingCost"`
-	TotalCost     decimal.Decimal `json:"totalCost"`
-	SquareFootage int             `json:"squareFootage"`
-	Furnished     bool            `json:"furnished"`
-	Parking       bool            `json:"parking"`
-	Beds          int             `json:"beds"`
-	Baths         decimal.Decimal `json:"baths"`
-	Amenities     string          `json:"amenities"`
-	Appliances    string          `json:"appliances"`
-	Description   string          `json:"description"`
-	Contacts      []Contact       `json:"contacts"`
+	// id for this lease
+	ID int `json:"id"`
+	// name for this lese
+	Name string `json:"name"`
+	// created at time for this lease
+	CreatedAt time.Time `json:"createdAt"`
+	// owner id for this lease
+	OwnerID int `json:"ownerID"`
+	// address for this lease
+	Address Address `json:"address"`
+	// start date for this lease
+	StartDate time.Time `json:"startDate"`
+	// end date for this lease
+	EndDate time.Time `json:"endDate"`
+	// rent for this lease
+	Rent decimal.Decimal `json:"rent"`
+	// utilities for this lease
+	Utilities decimal.Decimal `json:"utilities"`
+	// parking cost for this lease
+	ParkingCost decimal.Decimal `json:"parkingCost"`
+	// total cost for this lease
+	TotalCost decimal.Decimal `json:"totalCost"`
+	// square footage for this lease
+	SquareFootage int `json:"squareFootage"`
+	// furnished info for this lease
+	Furnished bool `json:"furnished"`
+	// parking info for this lease
+	Parking bool `json:"parking"`
+	// bedroom info for this lease
+	Beds int `json:"beds"`
+	// bathroom info for this lease
+	Baths decimal.Decimal `json:"baths"`
+	// amenities info for this lease
+	Amenities string `json:"amenities"`
+	// appliances info for this lease
+	Appliances string `json:"appliances"`
+	// description for this lease
+	Description string `json:"description"`
+	// contacts array for this lease
+	Contacts []Contact `json:"contacts"`
 }

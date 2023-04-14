@@ -11,6 +11,8 @@ type CreateLease struct {
 	// the name for the new lease
 	// required: true
 	// in: body
+	// min: 3
+	// max: 20
 	Name string `json:"name" validate:"required,min=3,max=20" faker:"len=10"`
 	// the address for the new lease
 	// required: true
