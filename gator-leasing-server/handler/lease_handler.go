@@ -288,7 +288,7 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusNoContent, nil)
 }
 
-// swagger:route GET /leases/paged leases GetPaginatedLeases
+// swagger:route POST /leases/paged leases GetPaginatedLeases
 //
 // Get paged leases.
 //
