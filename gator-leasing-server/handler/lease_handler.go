@@ -82,20 +82,6 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusOK, leaseViewModel)
 }
 
-// PostLease godoc
-//
-//	@Summary		Create a lease
-//	@Description	post a lease
-//	@Tags			leases
-//	@Accept			json
-//	@Produce		plain
-//	@Param			createLeaseRequest	body		viewModel.CreateLease	true	"create lease"
-//	@Success		201					{object}	uint64					"id of created lease"
-//	@Failure		500
-//	@Failure		400
-//	@Router			/leases [post]
-//	@Security		Auth0
-//
 // swagger:route POST /leases leases PostLease
 //
 // Create a lease.
@@ -123,10 +109,17 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 //	    type: viewModel.CreateLease
 //
 //
-//	Responses:
-//	  201: GetLeaseResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	@Summary		Create a lease
+//	@Description	post a lease
+//	@Tags			leases
+//	@Accept			json
+//	@Produce		plain
+//	@Param			createLeaseRequest	body		viewModel.CreateLease	true	"create lease"
+//	@Success		201					{object}	uint64					"id of created lease"
+//	@Failure		500
+//	@Failure		400
+//	@Router			/leases [post]
+//	@Security		Auth0
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
