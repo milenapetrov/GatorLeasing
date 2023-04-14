@@ -6,20 +6,56 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// swagger:parameters PostLease
 type CreateLease struct {
-	Name          string          `json:"name" validate:"required,min=3,max=20" faker:"len=10"`
-	Address       Address         `json:"address" validate:"required"`
-	StartDate     time.Time       `json:"startDate" validate:"required" faker:"startDateFaker"`
-	EndDate       time.Time       `json:"endDate" validate:"required,gtfield=StartDate" faker:"endDateFaker"`
-	Rent          decimal.Decimal `json:"rent" validate:"required,dmin=0.01" faker:"rentFaker"`
-	Utilities     decimal.Decimal `json:"utilities"`
-	ParkingCost   decimal.Decimal `json:"parkingCost"`
-	SquareFootage int             `json:"squareFootage"`
-	Furnished     bool            `json:"furnished"`
-	Parking       bool            `json:"parking"`
-	Beds          int             `json:"beds"`
-	Baths         decimal.Decimal `json:"baths"`
-	Amenities     string          `json:"amenities"`
-	Appliances    string          `json:"appliances"`
-	Description   string          `json:"description"`
+	// the name for the new lease
+	// required: true
+	// in: body
+	Name string `json:"name" validate:"required,min=3,max=20" faker:"len=10"`
+	// the address for the new lease
+	// required: true
+	// in:body
+	Address Address `json:"address" validate:"required"`
+	// the start date for the new lease
+	// required: true
+	// in:body
+	StartDate time.Time `json:"startDate" validate:"required" faker:"startDateFaker"`
+	// the end date for the new lease
+	// required: true
+	// in:body
+	EndDate time.Time `json:"endDate" validate:"required,gtfield=StartDate" faker:"endDateFake"`
+	// the rent cost for the new lease
+	// required: true
+	// in:body
+	Rent decimal.Decimal `json:"rent" validate:"required,dmin=0.01" faker:"rentFaker"`
+	// the utilites cost for the new lease
+	// in:body
+	Utilities decimal.Decimal `json:"utilities"`
+	// the parking cost for the new lease
+	// in:body
+	ParkingCost decimal.Decimal `json:"parkingCost"`
+	// the square footage for the new lease
+	// in:body
+	SquareFootage int `json:"squareFootage"`
+	// the furnished data for the new lease
+	// in:body
+	Furnished bool `json:"furnished"`
+	// the parking data for the new lease
+	// in:body
+	Parking bool `json:"parking"`
+	// the bedroom info for the new lease
+	// in:body
+	Beds int `json:"beds"`
+	// the bathroom info for the new lease
+	// in:body
+	Baths decimal.Decimal `json:"baths"`
+	// the amenities info for the new lease
+	// in:body
+	Amenities string `json:"amenities"`
+	// the appliances info for the new lease
+	// in:body
+	Appliances string `json:"appliances"`
+	// the description for the new lease
+	// in:body
+	Description string `json:"description"`
 }
