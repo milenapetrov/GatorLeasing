@@ -178,7 +178,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //	Responses:
 //	  204: NoContentResponse
 //	  400: ErrorResponse[]
-//	  500: ErrprResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
