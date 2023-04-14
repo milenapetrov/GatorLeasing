@@ -374,9 +374,9 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 
 // swagger:route GET /myleases leases GetMyLeases
 //
-// List leases.
+// List my leases.
 //
-// get all leases.
+// get all my leases.
 //
 //	Produces:
 //	- application/json
@@ -406,6 +406,37 @@ func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusOK, leaseViewModels)
 }
 
+// swagger:route POST /leases/paged leases GetPaginatedLeases
+//
+// Get my paged leases.
+//
+// get my paged leases.
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//	Security:
+//	  oauth2:
+//
+//	Parameters:
+//	  + name: getPaginatedLeasesRequest
+//	    in: body
+//	    description: page size, column to sort on, pagination token, sort direction, filter
+//	    required: true
+//	    type: viewModel.PaginatedLeasesRequest
+//
+//
+//	Responses:
+//	  200: GetPaginatedLeasesResponse
+//	  400: ErrorResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) GetMyLeasesPaged(w http.ResponseWriter, r *http.Request) {
 	myLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
