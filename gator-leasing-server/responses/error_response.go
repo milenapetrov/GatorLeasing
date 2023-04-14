@@ -8,6 +8,6 @@ type ErrorResponse struct {
 	Body struct {
 		// The error message
 		// required: true
-		Error string
+		Msg string
 	}
 }
