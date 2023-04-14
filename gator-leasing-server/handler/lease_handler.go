@@ -39,8 +39,8 @@ func NewLeaseHandler(leaseService service.ILeaseService, validator *validator.Va
 //
 //
 //	Responses:
-//	  200: GetLeaseResponse[]
-//	  500: ErrorResponse[]
+//	  200: GetLeaseResponse[] Array of GetLeaseResponse
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 	leaseEntities, err := h.leaseService.GetAllLeases()
 	if err != nil {
@@ -87,9 +87,9 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  204: GetLeaseResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	  204: GetLeaseResponse GetLeaseResponse
+//	  400: ErrorResponse[] Array of ErrorResponse for Bad Request
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
@@ -156,10 +156,9 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  201: GetLeaseResponse
-//	  201: PostLeaseResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	  201: PostLeaseResponse PostLeaseResponse
+//	  400: ErrorResponse[] Array of ErrorResponse for Bad Request
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
@@ -217,9 +216,9 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  204: NoContentResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	  204: NoContentResponse NoContentResponse
+//	  400: ErrorResponse[] Array of ErrorResponse for Bad Request
+//	  500: ErrorResponse[] Araay of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
@@ -279,9 +278,9 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  204: NoContentResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	  204: NoContentResponse NoContentResponse
+//	  400: ErrorResponse[] Array of ErrorResponse for Bad Request
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
@@ -326,9 +325,9 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  200: GetPaginatedLeasesResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	  200: GetPaginatedLeasesResponse GetPaginatedLeasesResponse
+//	  400: ErrorResponse[] Array of ErrorResponse for Bad Request
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
@@ -381,8 +380,8 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 //
 //
 //	Responses:
-//	  200: GetLeaseResponse[]
-//	  500: ErrorResponse[]
+//	  200: GetLeaseResponse[] Array of GetLeaseResponse
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
 	myLeaseEntities, err := h.leaseService.GetMyLeases()
 	if err != nil {
@@ -428,9 +427,9 @@ func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  200: GetPaginatedLeasesResponse
-//	  400: ErrorResponse[]
-//	  500: ErrorResponse[]
+//	  200: GetPaginatedLeasesResponse GetPaginatedLeasesResponse
+//	  400: ErrorResponse[] Array of ErrorResponse for Bad Request
+//	  500: ErrorResponse[] Array of ErrorResponse for Internal Server Error
 func (h *LeaseHandler) GetMyLeasesPaged(w http.ResponseWriter, r *http.Request) {
 	myLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
