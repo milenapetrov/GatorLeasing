@@ -39,8 +39,8 @@ func NewLeaseHandler(leaseService service.ILeaseService, validator *validator.Va
 //
 //
 //	Responses:
-//	  200: viewModel.Lease[]
-//	  500:
+//	  200: GetLeaseResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 	leaseEntities, err := h.leaseService.GetAllLeases()
 	if err != nil {
@@ -86,9 +86,9 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  201:
-//	  400:
-//	  500:
+//	  201: GetLeaseResponse
+//	  400: ErrorResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
@@ -154,9 +154,9 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  204:
-//	  400:
-//	  500:
+//	  204: NoContentResponse
+//	  400: ErrorResponse[]
+//	  500: ErrprResponse[]
 func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id"], 10, 32)
@@ -216,9 +216,9 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  204:
-//	  400:
-//	  500:
+//	  204: NoContentResponse
+//	  400: ErrorResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id"], 10, 32)
@@ -262,9 +262,9 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 //
 //
 //	Responses:
-//	  200: viewModel.PaginatedLeasesResult
-//	  400:
-//	  500:
+//	  200: GetPaginatedLeasesResponse
+//	  400: ErrorResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
