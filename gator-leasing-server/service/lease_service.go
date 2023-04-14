@@ -2,6 +2,7 @@ package service
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/iancoleman/strcase"
@@ -9,6 +10,7 @@ import (
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/regex"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository"
@@ -23,6 +25,8 @@ type ILeaseService interface {
 	EditLease(editLease *entity.EditLease) error
 	DeleteLease(id uint) error
 	GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error)
+	GetMyLeases() ([]*entity.Lease, error)
+	GetMyLeasesPaged(myLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error)
 }
 
 type LeaseService struct {
@@ -91,7 +95,7 @@ func (s *LeaseService) EditLease(editLease *entity.EditLease) error {
 			return err
 		}
 		if s.userContext.ID != lease.OwnerID {
-			return &shared.BadRequestError{Msg: "you may only edit leases that belong to you"}
+			return &errors.BadRequestError{Msg: "you may only edit leases that belong to you"}
 		}
 	}
 
@@ -113,7 +117,7 @@ func (s *LeaseService) DeleteLease(id uint) error {
 			return err
 		}
 		if s.userContext.ID != lease.OwnerID {
-			return &shared.BadRequestError{Msg: "you may only delete leases that belong to you"}
+			return &errors.BadRequestError{Msg: "you may only delete leases that belong to you"}
 		}
 	}
 
@@ -134,11 +138,11 @@ func (s *LeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.Paginat
 				invalid = append(invalid, filter)
 				continue
 			}
-			filters[i] = strcase.ToSnake(match[1]) + " " + strings.ToUpper(match[2]) + " " + match[3] + " " + strings.ToUpper(match[4]) + " " + strcase.ToSnake(match[5]) + " " + strings.ToUpper(match[6]) + " " + match[7]
+			filters[i] = match[1] + " " + strings.ToUpper(match[2]) + " " + match[3] + " " + strings.ToUpper(match[4]) + " " + strcase.ToSnake(match[5]) + " " + strings.ToUpper(match[6]) + " " + match[7]
 		}
 		if len(invalid) > 0 {
 			msg := "Invalid filter(s): " + strings.Join(invalid, ", ")
-			return nil, "", 0, &shared.BadRequestError{Msg: msg}
+			return nil, "", 0, &errors.BadRequestError{Msg: msg}
 		}
 		paginatedLeasesRequest.Filters = strings.Join(filters, ",")
 	}
@@ -155,4 +159,30 @@ func (s *LeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.Paginat
 	}
 
 	return leaseEntities, paginationToken, count, nil
+}
+
+func (s *LeaseService) GetMyLeases() ([]*entity.Lease, error) {
+	leaseDtos, err := s.repository.GetLeasesByOwnerId(s.userContext.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	mapper := mapper.NewMapper(&dto.Lease{}, &entity.Lease{})
+	leases, err := mapper.MapSlice(leaseDtos)
+	if err != nil {
+		return nil, err
+	}
+
+	return leases, nil
+}
+
+func (s *LeaseService) GetMyLeasesPaged(myLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
+	myLeasesFilter := "leases.owner_id = " + strconv.Itoa(int(s.userContext.ID))
+	if myLeasesRequest.Filters == "" {
+		myLeasesRequest.Filters = myLeasesFilter
+	} else {
+		myLeasesRequest.Filters += ", " + myLeasesFilter
+	}
+
+	return s.GetPaginatedLeases(myLeasesRequest)
 }

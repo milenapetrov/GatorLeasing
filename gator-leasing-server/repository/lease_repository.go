@@ -1,22 +1,23 @@
 package repository
 
 import (
-	"errors"
+	stdErrors "errors"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 
 	"gorm.io/gorm"
 )
 
 //go:generate mockery --name ILeaseRepository
 type ILeaseRepository interface {
-	GetLeaseById(id uint) (*dto.Lease, error)
+	GetLeasesByOwnerId(id uint) ([]*dto.Lease, error)
 	GetAllLeases() ([]*dto.Lease, error)
+	GetLeaseById(id uint) (*dto.Lease, error)
 	CreateLease(lease *dto.Lease) (uint, error)
 	EditLease(lease *dto.Lease) error
 	DeleteLease(lease *dto.Lease) error
@@ -31,29 +32,29 @@ func NewLeaseRepository(db *gorm.DB) ILeaseRepository {
 	return &LeaseRepository{DB: db}
 }
 
+func (r *LeaseRepository) GetAllLeases() ([]*dto.Lease, error) {
+	leases := []*dto.Lease{}
+	if err := r.DB.Preload("Address").Find(&leases).Error; err != nil {
+		return nil, &errors.InternalServerError{Msg: err.Error()}
+	}
+	return leases, nil
+}
+
 func (r *LeaseRepository) GetLeaseById(id uint) (*dto.Lease, error) {
 	lease := &dto.Lease{ID: id}
 	if err := r.DB.Preload("Address").First(lease).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, &shared.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", id)}
+		if stdErrors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, &errors.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", id)}
 		}
-		return nil, &shared.InternalServerError{Msg: err.Error()}
+		return nil, &errors.InternalServerError{Msg: err.Error()}
 	}
 
 	return lease, nil
 }
 
-func (r *LeaseRepository) GetAllLeases() ([]*dto.Lease, error) {
-	leases := []*dto.Lease{}
-	if err := r.DB.Preload("Address").Find(&leases).Error; err != nil {
-		return nil, &shared.InternalServerError{Msg: err.Error()}
-	}
-	return leases, nil
-}
-
 func (r *LeaseRepository) CreateLease(lease *dto.Lease) (uint, error) {
 	if err := r.DB.Create(lease).Error; err != nil {
-		return 0, &shared.InternalServerError{Msg: err.Error()}
+		return 0, &errors.InternalServerError{Msg: err.Error()}
 	}
 	return lease.ID, nil
 }
@@ -61,10 +62,10 @@ func (r *LeaseRepository) CreateLease(lease *dto.Lease) (uint, error) {
 func (r *LeaseRepository) EditLease(lease *dto.Lease) error {
 	oldLease := &dto.Lease{ID: lease.ID}
 	if err := r.DB.Preload("Address").First(oldLease).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return &shared.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", lease.ID)}
+		if stdErrors.Is(err, gorm.ErrRecordNotFound) {
+			return &errors.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", lease.ID)}
 		}
-		return &shared.InternalServerError{Msg: err.Error()}
+		return &errors.InternalServerError{Msg: err.Error()}
 	}
 
 	oldLease.Name = lease.Name
@@ -84,21 +85,21 @@ func (r *LeaseRepository) EditLease(lease *dto.Lease) error {
 	oldLease.Description = lease.Description
 
 	if err := r.DB.Save(oldLease).Error; err != nil {
-		return &shared.InternalServerError{Msg: err.Error()}
+		return &errors.InternalServerError{Msg: err.Error()}
 	}
 	return nil
 }
 
 func (r *LeaseRepository) DeleteLease(lease *dto.Lease) error {
 	if err := r.DB.First(lease).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return &shared.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", lease.ID)}
+		if stdErrors.Is(err, gorm.ErrRecordNotFound) {
+			return &errors.BadRequestError{Msg: fmt.Sprintf("no lease with ID %d", lease.ID)}
 		}
-		return &shared.InternalServerError{Msg: err.Error()}
+		return &errors.InternalServerError{Msg: err.Error()}
 	}
 
 	if err := r.DB.Delete(lease).Error; err != nil {
-		return &shared.InternalServerError{Msg: err.Error()}
+		return &errors.InternalServerError{Msg: err.Error()}
 	}
 	return nil
 }
@@ -157,7 +158,7 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	err := query.Find(&leases).Error
 	if err != nil {
-		return nil, "", 0, &shared.BadRequestError{Msg: err.Error()}
+		return nil, "", 0, &errors.BadRequestError{Msg: err.Error()}
 	}
 
 	newPaginationToken := ""
@@ -180,7 +181,7 @@ func (r *LeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, pa
 
 	err = query.Count(&count).Error
 	if err != nil {
-		return nil, "", 0, &shared.InternalServerError{Msg: err.Error()}
+		return nil, "", 0, &errors.InternalServerError{Msg: err.Error()}
 	}
 
 	return leases, newPaginationToken, count, nil
@@ -220,4 +221,12 @@ func getPaginationToken(lastLease *dto.Lease, sortToken string) string {
 	paginationToken += lastLease.CreatedAt.String()
 
 	return paginationToken
+}
+
+func (r *LeaseRepository) GetLeasesByOwnerId(id uint) ([]*dto.Lease, error) {
+	leases := []*dto.Lease{}
+	if err := r.DB.Preload("Address").Where("owner_id = ?", id).Find(&leases).Error; err != nil {
+		return nil, &errors.InternalServerError{Msg: err.Error()}
+	}
+	return leases, nil
 }

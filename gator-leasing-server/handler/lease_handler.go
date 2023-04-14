@@ -8,9 +8,9 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/mapper"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/service"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/validator"
 	viewModel "github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model"
 )
@@ -54,7 +54,7 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
 	if err != nil {
-		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
 		return
 	}
 
@@ -91,7 +91,7 @@ func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(createLeaseRequest); err != nil {
-		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
 		return
 	}
 
@@ -133,14 +133,14 @@ func (h *LeaseHandler) PutLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
 	if err != nil {
-		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
 		return
 	}
 
 	editLeaseRequest := &viewModel.EditLease{ID: int(id)}
 	decoder := json.NewDecoder(r.Body)
 	if err = decoder.Decode(editLeaseRequest); err != nil {
-		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
 		return
 	}
 
@@ -174,7 +174,7 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
 	if err != nil {
-		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
 		return
 	}
 
@@ -198,9 +198,8 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request) {
 	paginatedLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(paginatedLeasesViewModel)
-	if err != nil {
-		respondError(w, &shared.BadRequestError{Msg: err.Error()})
+	if err := decoder.Decode(paginatedLeasesViewModel); err != nil {
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
 		return
 	}
 
@@ -234,5 +233,55 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 }
 
 func (h *LeaseHandler) GetMyLeases(w http.ResponseWriter, r *http.Request) {
+	myLeaseEntities, err := h.leaseService.GetMyLeases()
+	if err != nil {
+		respondError(w, err)
+		return
+	}
 
+	mapper := mapper.NewMapper(&entity.Lease{}, &viewModel.Lease{})
+	leaseViewModels, err := mapper.MapSlice(myLeaseEntities)
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	respondJson(w, http.StatusOK, leaseViewModels)
+}
+
+func (h *LeaseHandler) GetMyLeasesPaged(w http.ResponseWriter, r *http.Request) {
+	myLeasesViewModel := &viewModel.PaginatedLeasesRequest{}
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(myLeasesViewModel); err != nil {
+		respondError(w, &errors.BadRequestError{Msg: err.Error()})
+		return
+	}
+
+	requestMapper := mapper.NewMapper(&viewModel.PaginatedLeasesRequest{}, &entity.PaginatedLeasesRequest{})
+	myLeasesRequest, err := requestMapper.Map(myLeasesViewModel)
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	leases, paginationToken, count, err := h.leaseService.GetMyLeasesPaged(myLeasesRequest)
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	leasesMapper := mapper.NewMapper(&entity.Lease{}, &viewModel.Lease{})
+	leasesResult, err := leasesMapper.MapSlice(leases)
+	if err != nil {
+		respondError(w, err)
+		return
+	}
+
+	result := viewModel.PaginatedLeasesResult{
+		Leases:          leasesResult,
+		PaginationToken: paginationToken,
+		Count:           uint(count),
+	}
+
+	respondJson(w, http.StatusOK, result)
 }

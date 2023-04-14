@@ -118,19 +118,45 @@ func (_m *ILeaseRepository) GetLeaseById(id uint) (*dto.Lease, error) {
 	return r0, r1
 }
 
-// GetPaginatedLeases provides a mock function with given fields: pageSize, sortToken, paginationToken, sortDirection, filter
-func (_m *ILeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filter string) ([]*dto.Lease, string, int64, error) {
-	ret := _m.Called(pageSize, sortToken, paginationToken, sortDirection, filter)
+// GetLeasesByOwnerId provides a mock function with given fields: id
+func (_m *ILeaseRepository) GetLeasesByOwnerId(id uint) ([]*dto.Lease, error) {
+	ret := _m.Called(id)
+
+	var r0 []*dto.Lease
+	var r1 error
+	if rf, ok := ret.Get(0).(func(uint) ([]*dto.Lease, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(uint) []*dto.Lease); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*dto.Lease)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetPaginatedLeases provides a mock function with given fields: pageSize, sortToken, paginationToken, sortDirection, filters
+func (_m *ILeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, paginationToken string, sortDirection enums.SortDirection, filters string) ([]*dto.Lease, string, int64, error) {
+	ret := _m.Called(pageSize, sortToken, paginationToken, sortDirection, filters)
 
 	var r0 []*dto.Lease
 	var r1 string
 	var r2 int64
 	var r3 error
 	if rf, ok := ret.Get(0).(func(uint, string, string, enums.SortDirection, string) ([]*dto.Lease, string, int64, error)); ok {
-		return rf(pageSize, sortToken, paginationToken, sortDirection, filter)
+		return rf(pageSize, sortToken, paginationToken, sortDirection, filters)
 	}
 	if rf, ok := ret.Get(0).(func(uint, string, string, enums.SortDirection, string) []*dto.Lease); ok {
-		r0 = rf(pageSize, sortToken, paginationToken, sortDirection, filter)
+		r0 = rf(pageSize, sortToken, paginationToken, sortDirection, filters)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*dto.Lease)
@@ -138,19 +164,19 @@ func (_m *ILeaseRepository) GetPaginatedLeases(pageSize uint, sortToken string, 
 	}
 
 	if rf, ok := ret.Get(1).(func(uint, string, string, enums.SortDirection, string) string); ok {
-		r1 = rf(pageSize, sortToken, paginationToken, sortDirection, filter)
+		r1 = rf(pageSize, sortToken, paginationToken, sortDirection, filters)
 	} else {
 		r1 = ret.Get(1).(string)
 	}
 
 	if rf, ok := ret.Get(2).(func(uint, string, string, enums.SortDirection, string) int64); ok {
-		r2 = rf(pageSize, sortToken, paginationToken, sortDirection, filter)
+		r2 = rf(pageSize, sortToken, paginationToken, sortDirection, filters)
 	} else {
 		r2 = ret.Get(2).(int64)
 	}
 
 	if rf, ok := ret.Get(3).(func(uint, string, string, enums.SortDirection, string) error); ok {
-		r3 = rf(pageSize, sortToken, paginationToken, sortDirection, filter)
+		r3 = rf(pageSize, sortToken, paginationToken, sortDirection, filters)
 	} else {
 		r3 = ret.Error(3)
 	}

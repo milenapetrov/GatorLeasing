@@ -116,6 +116,72 @@ func (_m *ILeaseService) GetLeaseById(id uint) (*entity.Lease, error) {
 	return r0, r1
 }
 
+// GetMyLeases provides a mock function with given fields:
+func (_m *ILeaseService) GetMyLeases() ([]*entity.Lease, error) {
+	ret := _m.Called()
+
+	var r0 []*entity.Lease
+	var r1 error
+	if rf, ok := ret.Get(0).(func() ([]*entity.Lease, error)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() []*entity.Lease); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*entity.Lease)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetMyLeasesPaged provides a mock function with given fields: myLeasesRequest
+func (_m *ILeaseService) GetMyLeasesPaged(myLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
+	ret := _m.Called(myLeasesRequest)
+
+	var r0 []*entity.Lease
+	var r1 string
+	var r2 int64
+	var r3 error
+	if rf, ok := ret.Get(0).(func(*entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error)); ok {
+		return rf(myLeasesRequest)
+	}
+	if rf, ok := ret.Get(0).(func(*entity.PaginatedLeasesRequest) []*entity.Lease); ok {
+		r0 = rf(myLeasesRequest)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*entity.Lease)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*entity.PaginatedLeasesRequest) string); ok {
+		r1 = rf(myLeasesRequest)
+	} else {
+		r1 = ret.Get(1).(string)
+	}
+
+	if rf, ok := ret.Get(2).(func(*entity.PaginatedLeasesRequest) int64); ok {
+		r2 = rf(myLeasesRequest)
+	} else {
+		r2 = ret.Get(2).(int64)
+	}
+
+	if rf, ok := ret.Get(3).(func(*entity.PaginatedLeasesRequest) error); ok {
+		r3 = rf(myLeasesRequest)
+	} else {
+		r3 = ret.Error(3)
+	}
+
+	return r0, r1, r2, r3
+}
+
 // GetPaginatedLeases provides a mock function with given fields: paginatedLeasesRequest
 func (_m *ILeaseService) GetPaginatedLeases(paginatedLeasesRequest *entity.PaginatedLeasesRequest) ([]*entity.Lease, string, int64, error) {
 	ret := _m.Called(paginatedLeasesRequest)

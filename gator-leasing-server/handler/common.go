@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
+	stdErrors "errors"
 	"net/http"
 
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 )
 
 // respondJSON makes the response with payload as json format
@@ -23,33 +24,33 @@ func respondJson(w http.ResponseWriter, status int, payload interface{}) {
 
 func respondError(w http.ResponseWriter, err error) {
 	if err == nil {
-		respondError(w, &shared.InternalServerError{Msg: "error response with no errors"})
+		respondError(w, &errors.InternalServerError{Msg: "error response with no errors"})
 	}
 	errs := []error{}
-	if _, ise := err.(*shared.InternalServerError); ise {
-		errs = append(errs, &shared.InternalServerError{Msg: err.Error()})
+	if stdErrors.Is(&errors.InternalServerError{}, err) {
+		errs = append(errs, &errors.InternalServerError{Msg: err.Error()})
 		respondJson(w, http.StatusInternalServerError, errs)
-	} else if _, br := err.(*shared.BadRequestError); br {
-		errs = append(errs, &shared.BadRequestError{Msg: err.Error()})
+	} else if stdErrors.Is(&errors.BadRequestError{}, err) {
+		errs = append(errs, &errors.BadRequestError{Msg: err.Error()})
 		respondJson(w, http.StatusBadRequest, errs)
 	} else {
-		respondError(w, &shared.InternalServerError{Msg: "unknown error type"})
+		respondError(w, &errors.InternalServerError{Msg: "unknown error type"})
 	}
 	return
 }
 
 func respondErrors(w http.ResponseWriter, errs []error) {
 	if errs == nil || len(errs) == 0 {
-		respondError(w, &shared.InternalServerError{Msg: "errors response with no errors"})
+		respondError(w, &errors.InternalServerError{Msg: "errors response with no errors"})
 		return
 	}
 
-	if _, ise := errs[0].(*shared.InternalServerError); ise {
+	if stdErrors.Is(&errors.InternalServerError{}, errs[0]) {
 		respondJson(w, http.StatusInternalServerError, errs)
-	} else if _, br := errs[0].(*shared.BadRequestError); br {
+	} else if stdErrors.Is(&errors.BadRequestError{}, errs[0]) {
 		respondJson(w, http.StatusBadRequest, errs)
 	} else {
-		respondError(w, &shared.InternalServerError{Msg: "unknown error type"})
+		respondError(w, &errors.InternalServerError{Msg: "unknown error type"})
 	}
 	return
 }

@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"errors"
+	stdErrors "errors"
 
 	"gorm.io/gorm"
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 )
 
 //go:generate mockery --name ITenantUserRepository
@@ -26,11 +26,11 @@ func NewTenantUserRepository(db *gorm.DB) ITenantUserRepository {
 func (r *TenantUserRepository) GetTenantUserByUserId(userId string, tenantId uint) (*dto.TenantUser, error) {
 	tenantUser := dto.TenantUser{}
 	err := r.DB.Where("user_id = ? AND tenant_id = ?", userId, tenantId).First(&tenantUser).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
+	if stdErrors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
 	if err != nil {
-		return nil, &shared.InternalServerError{Msg: err.Error()}
+		return nil, &errors.InternalServerError{Msg: err.Error()}
 	}
 	return &tenantUser, nil
 }

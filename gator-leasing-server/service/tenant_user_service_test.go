@@ -1,11 +1,13 @@
 package service
 
 import (
+	stdErrors "errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/repository/mocks"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 )
@@ -28,7 +30,7 @@ func TestGetOrCreateUserOK(t *testing.T) {
 
 func TestGetOrCreateUserGetTenantUserErr(t *testing.T) {
 	mockTenantUserRepository := mocks.NewITenantUserRepository(t)
-	mockTenantUserRepository.On("GetTenantUserByUserId", mock.AnythingOfType("string"), mock.AnythingOfType("uint")).Return(nil, &shared.InternalServerError{})
+	mockTenantUserRepository.On("GetTenantUserByUserId", mock.AnythingOfType("string"), mock.AnythingOfType("uint")).Return(nil, &errors.InternalServerError{})
 
 	tenantUserService := NewTenantUserService(shared.NewUserContext(), mockTenantUserRepository)
 
@@ -39,14 +41,13 @@ func TestGetOrCreateUserGetTenantUserErr(t *testing.T) {
 	mockTenantUserRepository.AssertNotCalled(t, "CreateTenantUser")
 	assert.Nil(t, resultTenantUser)
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }
 
 func TestGetOrCreateUserCreateTenantUserErr(t *testing.T) {
 	mockTenantUserRepository := mocks.NewITenantUserRepository(t)
 	mockTenantUserRepository.On("GetTenantUserByUserId", mock.AnythingOfType("string"), mock.AnythingOfType("uint")).Return(nil, nil)
-	mockTenantUserRepository.On("CreateTenantUser", mock.AnythingOfType("*dto.TenantUser")).Return(uint(0), &shared.InternalServerError{})
+	mockTenantUserRepository.On("CreateTenantUser", mock.AnythingOfType("*dto.TenantUser")).Return(uint(0), &errors.InternalServerError{})
 
 	tenantUserService := NewTenantUserService(shared.NewUserContext(), mockTenantUserRepository)
 
@@ -57,6 +58,5 @@ func TestGetOrCreateUserCreateTenantUserErr(t *testing.T) {
 	mockTenantUserRepository.AssertNumberOfCalls(t, "CreateTenantUser", 1)
 	assert.Nil(t, resultTenantUser)
 	assert.NotNil(t, resultErr)
-	_, ok := resultErr.(*shared.InternalServerError)
-	assert.True(t, ok)
+	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
 }

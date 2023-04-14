@@ -10,8 +10,9 @@ import (
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/shared"
 	"github.com/shopspring/decimal"
+
+	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/errors"
 )
 
 type Validator struct {
@@ -51,11 +52,11 @@ func (v *Validator) Struct(x interface{}) []error {
 		return nil
 	}
 	if _, invalid := err.(*validator.InvalidValidationError); invalid {
-		return append(errs, &shared.InternalServerError{Msg: err.Error()})
+		return append(errs, &errors.InternalServerError{Msg: err.Error()})
 	}
 	validationErrs := err.(validator.ValidationErrors)
 	for _, e := range validationErrs {
-		errs = append(errs, &shared.BadRequestError{Msg: e.Translate(v.translator)})
+		errs = append(errs, &errors.BadRequestError{Msg: e.Translate(v.translator)})
 	}
 	return errs
 }
