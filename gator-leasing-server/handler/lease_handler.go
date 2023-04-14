@@ -88,38 +88,31 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 //
 // post a lease
 //
-//	Consumes:
-//	- application/json
+//		Consumes:
+//		- application/json
 //
-//	Produces:
-//	- application/json
+//		Produces:
+//		- application/json
 //
-//	Schemes: http, https
+//		Schemes: http, https
 //
-//	Deprecated: false
+//		Deprecated: false
 //
-//	Security:
-//	  oauth2:
+//		Security:
+//		  oauth2:
 //
-//	Parameters:
-//	  + name: limit
-//	    in: body
-//	    description: create a lease
-//	    required: true
-//	    type: viewModel.CreateLease
+//		Parameters:
+//		  + name: limit
+//		    in: body
+//		    description: create a lease
+//		    required: true
+//		    type: viewModel.CreateLease
 //
 //
-//	@Summary		Create a lease
-//	@Description	post a lease
-//	@Tags			leases
-//	@Accept			json
-//	@Produce		plain
-//	@Param			createLeaseRequest	body		viewModel.CreateLease	true	"create lease"
-//	@Success		201					{object}	uint64					"id of created lease"
-//	@Failure		500
-//	@Failure		400
-//	@Router			/leases [post]
-//	@Security		Auth0
+//		Responses:
+//		  201:
+//	   400:
+//		  500:
 func (h *LeaseHandler) PostLease(w http.ResponseWriter, r *http.Request) {
 	createLeaseRequest := &viewModel.CreateLease{}
 	decoder := json.NewDecoder(r.Body)
