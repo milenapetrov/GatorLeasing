@@ -1,4 +1,6 @@
 <ag-grid-angular
   class="ag-theme-alpine grid"
   [gridOptions]="gridOptions"
+  (gridReady)="onGridReady($event)"
+  (rowClicked)="onRowClicked($event)"
 ></ag-grid-angular>

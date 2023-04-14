@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
-import { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
+import { ColDef, GridReadyEvent, ICellRendererParams, RowClickedEvent } from 'ag-grid-community';
 import { format, parseISO } from 'date-fns';
 import { take, Observable } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
@@ -17,6 +17,7 @@ import {
   MyCellParams,
 } from '../grid-cell/grid-cell.component';
 import { HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-display-leases',
@@ -24,7 +25,6 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./display-leases.component.css']
 })
 export class DisplayLeasesComponent implements AfterViewInit{
-  ID = 0;
   gridOptions: GridOptions<Lease> = {
   columnDefs : [ 
     {
@@ -34,10 +34,10 @@ export class DisplayLeasesComponent implements AfterViewInit{
         filterParams: {
           filterOptions: ['contains'],
         },
-      cellRenderer: GridCellComponent,
+      /*cellRenderer: GridCellComponent,
       cellRendererParams: {
         buttonText: `Edit`,
-      } as MyCellParams,
+      } as MyCellParams,*/
     },
     {
       field: 'startDate',
@@ -82,24 +82,16 @@ export class DisplayLeasesComponent implements AfterViewInit{
     },
     { field: 'beds' },
     { field: 'baths' },
-    /*{ 
-      field: 'id',
-      cellRenderer: (params) => {
-        this.ID = params.value;
-      },
-    },*/
   ],
     rowModelType: 'serverSide',
     pagination: true,
     paginationPageSize: 10,
     cacheBlockSize: 10,
+    onRowClicked: (event: RowClickedEvent) => console.log("hey")
   }
 
-  getID(): number {
-    return this.ID;
-  }
 
-  constructor(private leaseService: LeaseService) {}
+  constructor(private leaseService: LeaseService, private router: Router) {}
   
   sortToken: string = '';
   sortDirection = SortDirection.descending;
@@ -108,6 +100,10 @@ export class DisplayLeasesComponent implements AfterViewInit{
 
   public rowData$!: Observable<Lease[]>;
 
+  onRowClicked(event: any){
+    const val = event.data
+    this.router.navigate((['/update']), {queryParams: {fieldParam: val.id}})
+  }
   onGridReady(params: GridReadyEvent) {
     this.rowData$ =  this.leaseService.getLeases();
   }

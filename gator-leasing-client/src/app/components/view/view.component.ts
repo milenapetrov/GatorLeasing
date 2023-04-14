@@ -6,6 +6,7 @@ import { Address } from 'src/app/models/address';
 import { DisplayLeasesComponent } from 'src/app/components/display-leases/display-leases.component';
 import { GridCellComponent } from 'src/app/components/grid-cell/grid-cell.component';
 import { LeaseListingsComponent } from '../lease-listings/lease-listings.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -45,16 +46,19 @@ export class ViewComponent {
     totalCost: 0,
     contacts: this.addy  //add contacts
   };
+  id = 0;
+  constructor ( private leaseService: LeaseService, private listing:LeaseListingsComponent, private grid: GridCellComponent, private route: ActivatedRoute) {}
 
-  constructor ( private leaseService: LeaseService, private listing:LeaseListingsComponent, private grid: GridCellComponent) {
-    console.log(this.listing.getID());
-  }
-  
-  id = this.listing.getID();
-  
-  lease = this.leaseService.getLease(0).subscribe(res => {
+  ngOnInit(){
+    this.route.queryParams.subscribe(params => {
+      this.id = params['fieldParam'];
+      console.log(params['fieldParam'])
+    })
+    this.leaseService.getLease(this.id).subscribe(res => {
       console.log(res)
       this.post = res;
-  })
-  
+    })
+  }
+
+  //if apt number exists then display
 }

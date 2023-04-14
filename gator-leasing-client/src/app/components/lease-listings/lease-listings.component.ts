@@ -1,8 +1,12 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import {
+  CellClickedEvent,
   GridOptions,
   IServerSideDatasource,
   IServerSideGetRowsRequest,
+  GridApi,
+  RowClickedEvent,
+  RowSelectedEvent
 } from 'ag-grid-community';
 import 'ag-grid-enterprise';
 import { Lease } from 'src/app/models/lease';
@@ -12,6 +16,9 @@ import { take } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
 import { GridCellComponent,MyCellParams,} from 'src/app/components/grid-cell/grid-cell.component';
 import { data } from 'cypress/types/jquery';
+import { Router } from '@angular/router';
+import { values } from 'cypress/types/lodash';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-lease-listings',
@@ -20,6 +27,7 @@ import { data } from 'cypress/types/jquery';
 })
 export class LeaseListingsComponent implements AfterViewInit {
   gridOptions: GridOptions<Lease> = {
+    onRowSelected: (event: RowSelectedEvent) => console.log,
     columnDefs: [
       {
         field: 'name',
@@ -28,10 +36,10 @@ export class LeaseListingsComponent implements AfterViewInit {
         filterParams: {
           filterOptions: ['contains'],
         },
-        cellRenderer: GridCellComponent,
+        /*cellRenderer: GridCellComponent,
         cellRendererParams: {
           buttonText: `view`,
-        } as MyCellParams,
+        } as MyCellParams,*/
       },
       {
         field: 'startDate',
@@ -51,18 +59,13 @@ export class LeaseListingsComponent implements AfterViewInit {
           return format(parseISO(data.value), 'MM/dd/yyyy');
         },
       },
-      { 
-        /*field: 'id',
-        cellRenderer: (data) => {
-  
-          return data.value;
-        },*/
-      },
+      
     ],
     rowModelType: 'serverSide',
     pagination: true,
     paginationPageSize: 10,
     cacheBlockSize: 10,
+    onRowClicked: (event: RowClickedEvent) => console.log("hey")
   };
 
   sortToken: string = '';
@@ -70,14 +73,18 @@ export class LeaseListingsComponent implements AfterViewInit {
   paginationToken: string = '';
   filter: string = '';
 
-  constructor(private leaseService: LeaseService) {}
+  constructor(private leaseService: LeaseService, private router: Router) {}
 
-  getID(): number {
-    return 11;
+  gridApi: any;
+
+  onRowClicked(event: any){
+    const val = event.data
+    this.router.navigate((['/view']), {queryParams: {fieldParam: val.id}})
   }
 
-  //lease = this.leaseService.getLease(this.getID());
-
+  onGridReady(params: any){
+    this.gridApi = params.api
+  }
   ngAfterViewInit() {
     var datasource = this.getLeaseDatasource();
     this.gridOptions.api?.setServerSideDatasource(datasource);

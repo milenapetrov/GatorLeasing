@@ -4,6 +4,7 @@ import { LeaseService } from 'src/app/services/lease.service';
 import { Post } from 'src/app/models/post';
 import { Address } from 'src/app/models/address';
 import { Lease } from 'src/app/models/lease';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update',
@@ -11,10 +12,6 @@ import { Lease } from 'src/app/models/lease';
   styleUrls: ['./update.component.css'],
 })
 export class UpdateComponent {
-  lease = this.leaseService.getLease(0).subscribe(res => {
-    console.log(res)
-    this.post = res;
-  })
 
   date: Date = new Date();
   addy: Address = {
@@ -50,10 +47,24 @@ export class UpdateComponent {
 
   constructor(
     private leaseService: LeaseService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
+  id = 0;
+
+  ngOnInit(){
+    this.route.queryParams.subscribe(params => {
+      this.id = params['fieldParam'];
+    })
+    this.leaseService.getLease(this.id).subscribe(res => {
+      console.log(res)
+      this.post = res;
+    })
+  }
   onSubmit(post: Post) {
-    this.leaseService.updatePost(this.post.id, this.post);
+    this.leaseService.updatePost(this.id, this.post).subscribe(res => {
+      console.log(res)
+    });
   }
 }
