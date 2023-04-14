@@ -11,6 +11,8 @@ type CreateLease struct {
 	// the name for the new lease
 	// required: true
 	// in: body
+	// min: 3
+	// max: 20
 	Name string `json:"name" validate:"required,min=3,max=20" faker:"len=10"`
 	// the address for the new lease
 	// required: true
@@ -27,6 +29,7 @@ type CreateLease struct {
 	// the rent cost for the new lease
 	// required: true
 	// in:body
+	// min: 0.01
 	Rent decimal.Decimal `json:"rent" validate:"required,dmin=0.01" faker:"createLeaseRentFaker"`
 	// the utilites cost for the new lease
 	// in:body
