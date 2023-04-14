@@ -1,0 +1,1039 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "# Server for subleasing website ReLease",
+    "title": "ReLease API.",
+    "termsOfService": "there are no TOS at this moment, use at your own risk we take no responsibility",
+    "version": "1.0"
+  },
+  "host": "localhost:8080",
+  "paths": {
+    "/leases": {
+      "get": {
+        "description": "get all leases.",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "List leases.",
+        "operationId": "GetAllLeases",
+        "responses": {
+          "200": {
+            "description": "Array of GetLeaseResponse",
+            "$ref": "#/responses/GetLeaseResponse[]"
+          },
+          "500": {
+            "description": "Array of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "description": "post a lease",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "Create a lease.",
+        "operationId": "PostLease",
+        "parameters": [
+          {
+            "maximum": 20,
+            "minimum": 3,
+            "x-go-name": "Name",
+            "description": "the name for the new lease",
+            "name": "name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Address",
+            "description": "the address for the new lease",
+            "name": "address",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          {
+            "x-go-name": "StartDate",
+            "description": "the start date for the new lease",
+            "name": "startDate",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "x-go-name": "EndDate",
+            "description": "the end date for the new lease",
+            "name": "endDate",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "minimum": 0.01,
+            "x-go-name": "Rent",
+            "description": "the rent cost for the new lease",
+            "name": "rent",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Utilities",
+            "description": "the utilites cost for the new lease",
+            "name": "utilities",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "ParkingCost",
+            "description": "the parking cost for the new lease",
+            "name": "parkingCost",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "SquareFootage",
+            "description": "the square footage for the new lease",
+            "name": "squareFootage",
+            "in": "body",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "x-go-name": "Furnished",
+            "description": "the furnished data for the new lease",
+            "name": "furnished",
+            "in": "body",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "x-go-name": "Parking",
+            "description": "the parking data for the new lease",
+            "name": "parking",
+            "in": "body",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "x-go-name": "Beds",
+            "description": "the bedroom info for the new lease",
+            "name": "beds",
+            "in": "body",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "x-go-name": "Baths",
+            "description": "the bathroom info for the new lease",
+            "name": "baths",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Amenities",
+            "description": "the amenities info for the new lease",
+            "name": "amenities",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Appliances",
+            "description": "the appliances info for the new lease",
+            "name": "appliances",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Description",
+            "description": "the description for the new lease",
+            "name": "description",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "create a lease",
+            "name": "CreateLease",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "create a lease",
+              "type": "object",
+              "$ref": "#/definitions/CreateLease"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "PostLeaseResponse",
+            "$ref": "#/responses/PostLeaseResponse"
+          },
+          "400": {
+            "description": "Array of ErrorResponse for Bad Request",
+            "$ref": "#/responses/ErrorResponse[]"
+          },
+          "500": {
+            "description": "Array of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      }
+    },
+    "/leases/paged": {
+      "post": {
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "description": "get my paged leases.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "Get my paged leases.",
+        "operationId": "GetMyLeasesPaged",
+        "parameters": [
+          {
+            "description": "the page size",
+            "name": "PageSize",
+            "in": "body",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "the sort token",
+            "name": "SortToken",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "the paginated token",
+            "name": "PaginationToken",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "the sort direction {asc, desc}",
+            "name": "SortDirection",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SortDirection"
+            }
+          },
+          {
+            "description": "the filters",
+            "name": "Filters",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "page size, column to sort on, pagination token, sort direction, filter",
+            "name": "getMyPaginatedLeases",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "page size, column to sort on, pagination token, sort direction, filter",
+              "type": "object",
+              "$ref": "#/definitions/PaginatedLeasesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GetPaginatedLeasesResponse",
+            "$ref": "#/responses/GetPaginatedLeasesResponse"
+          },
+          "400": {
+            "description": "Array of ErrorResponse for Bad Request",
+            "$ref": "#/responses/ErrorResponse[]"
+          },
+          "500": {
+            "description": "Array of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      }
+    },
+    "/leases/{id}": {
+      "get": {
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "description": "get a lease by id.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "Get a lease.",
+        "operationId": "GetLeaseById",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "description": "leaseid",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "GetLeaseResponse",
+            "$ref": "#/responses/GetLeaseResponse"
+          },
+          "400": {
+            "description": "Array of ErrorResponse for Bad Request",
+            "$ref": "#/responses/ErrorResponse[]"
+          },
+          "500": {
+            "description": "Array of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "description": "update a lease by id.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "Update a lease.",
+        "operationId": "PutLease",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "ID",
+            "description": "the id for the lease to update",
+            "name": "id",
+            "in": "query",
+            "required": true
+          },
+          {
+            "x-go-name": "Name",
+            "description": "the updated name for the lease",
+            "name": "name",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Address",
+            "description": "the updated address for the lease",
+            "name": "address",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          {
+            "x-go-name": "StartDate",
+            "description": "the updated start date for the lease",
+            "name": "startDate",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "x-go-name": "EndDate",
+            "description": "the updated end date for the lease",
+            "name": "endDate",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "x-go-name": "Rent",
+            "description": "the updated rent cost for the lease",
+            "name": "rent",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Utilities",
+            "description": "the updated utilities cost for the lease",
+            "name": "utilities",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "ParkingCost",
+            "description": "the updated parking cost for the lease",
+            "name": "parkingCost",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "SquareFootage",
+            "description": "the updated square footage for the lease",
+            "name": "squareFootage",
+            "in": "body",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "x-go-name": "Furnished",
+            "description": "the updated furnished data for the lease",
+            "name": "furnished",
+            "in": "body",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "x-go-name": "Parking",
+            "description": "the updated parking data for the lease",
+            "name": "parking",
+            "in": "body",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "x-go-name": "Beds",
+            "description": "the updated bedroom data for the lease",
+            "name": "beds",
+            "in": "body",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "x-go-name": "Baths",
+            "description": "the updated bathroom data for the lease",
+            "name": "baths",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Amenities",
+            "description": "the updated amenities info for the lease",
+            "name": "amenities",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Appliances",
+            "description": "the updated appliances info for the lease",
+            "name": "appliances",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "x-go-name": "Description",
+            "description": "the updated description for the lease",
+            "name": "description",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "edit lease request",
+            "name": "editLeaseRequest",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "description": "edit lease request",
+              "type": "object",
+              "$ref": "#/definitions/EditLease"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "NoContentResponse",
+            "$ref": "#/responses/NoContentResponse"
+          },
+          "400": {
+            "description": "Array of ErrorResponse for Bad Request",
+            "$ref": "#/responses/ErrorResponse[]"
+          },
+          "500": {
+            "description": "Araay of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "description": "delete a lease by id.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "Delete a lease.",
+        "operationId": "DeleteLease",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "description": "leaseid",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "NoContentResponse",
+            "$ref": "#/responses/NoContentResponse"
+          },
+          "400": {
+            "description": "Array of ErrorResponse for Bad Request",
+            "$ref": "#/responses/ErrorResponse[]"
+          },
+          "500": {
+            "description": "Array of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      }
+    },
+    "/myleases": {
+      "get": {
+        "description": "get all my leases.",
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "tags": [
+          "leases"
+        ],
+        "summary": "List my leases.",
+        "operationId": "GetMyLeases",
+        "responses": {
+          "200": {
+            "description": "Array of GetLeaseResponse",
+            "$ref": "#/responses/GetLeaseResponse[]"
+          },
+          "500": {
+            "description": "Array of ErrorResponse for Internal Server Error",
+            "$ref": "#/responses/ErrorResponse[]"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "required": [
+        "Street",
+        "City",
+        "State",
+        "ZipCode"
+      ],
+      "properties": {
+        "City": {
+          "description": "the city for this address",
+          "type": "string"
+        },
+        "RoomNumber": {
+          "description": "the room number for this address",
+          "type": "string"
+        },
+        "State": {
+          "description": "the state for this address",
+          "type": "string"
+        },
+        "Street": {
+          "description": "the street for this address",
+          "type": "string"
+        },
+        "ZipCode": {
+          "description": "the zip code for this address",
+          "type": "string"
+        }
+      },
+      "x-go-package": "github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+    },
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "Address": {
+          "$ref": "#/definitions/Address"
+        },
+        "Email": {
+          "description": "the email for this contact",
+          "type": "string"
+        },
+        "FirstName": {
+          "description": "the first name for this contact",
+          "type": "string"
+        },
+        "ID": {
+          "description": "the id for this contact",
+          "type": "integer",
+          "format": "uint64"
+        },
+        "LastName": {
+          "description": "the last name for this contact",
+          "type": "string"
+        },
+        "LeaseID": {
+          "description": "the lease id for this contact",
+          "type": "integer",
+          "format": "uint64"
+        },
+        "PhoneNumber": {
+          "description": "the phone number for this contact",
+          "type": "string"
+        },
+        "Salutation": {
+          "description": "the salutation for this contact",
+          "type": "string"
+        }
+      },
+      "x-go-package": "github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity"
+    },
+    "Lease": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/Address"
+        },
+        "amenities": {
+          "description": "amenities info for this lease",
+          "type": "string",
+          "x-go-name": "Amenities"
+        },
+        "appliances": {
+          "description": "appliances info for this lease",
+          "type": "string",
+          "x-go-name": "Appliances"
+        },
+        "baths": {
+          "description": "bathroom info for this lease",
+          "type": "string",
+          "x-go-name": "Baths"
+        },
+        "beds": {
+          "description": "bedroom info for this lease",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Beds"
+        },
+        "contacts": {
+          "description": "contacts array for this lease",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          },
+          "x-go-name": "Contacts"
+        },
+        "createdAt": {
+          "description": "created at time for this lease",
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "CreatedAt"
+        },
+        "description": {
+          "description": "description for this lease",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "endDate": {
+          "description": "end date for this lease",
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "EndDate"
+        },
+        "furnished": {
+          "description": "furnished info for this lease",
+          "type": "boolean",
+          "x-go-name": "Furnished"
+        },
+        "id": {
+          "description": "id for this lease",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "description": "name for this lese",
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "ownerID": {
+          "description": "owner id for this lease",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "OwnerID"
+        },
+        "parking": {
+          "description": "parking info for this lease",
+          "type": "boolean",
+          "x-go-name": "Parking"
+        },
+        "parkingCost": {
+          "description": "parking cost for this lease",
+          "type": "string",
+          "x-go-name": "ParkingCost"
+        },
+        "rent": {
+          "description": "rent for this lease",
+          "type": "string",
+          "x-go-name": "Rent"
+        },
+        "squareFootage": {
+          "description": "square footage for this lease",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "SquareFootage"
+        },
+        "startDate": {
+          "description": "start date for this lease",
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "StartDate"
+        },
+        "totalCost": {
+          "description": "total cost for this lease",
+          "type": "string",
+          "x-go-name": "TotalCost"
+        },
+        "utilities": {
+          "description": "utilities for this lease",
+          "type": "string",
+          "x-go-name": "Utilities"
+        }
+      },
+      "x-go-package": "github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model"
+    },
+    "SortDirection": {
+      "type": "integer",
+      "format": "uint8",
+      "x-go-package": "github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums"
+    }
+  },
+  "responses": {
+    "ErrorResponse": {
+      "description": "A generic error that is returned whens something goes wrong",
+      "schema": {
+        "type": "object",
+        "required": [
+          "Msg"
+        ],
+        "properties": {
+          "Msg": {
+            "description": "The error message",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "GetLeaseResponse": {
+      "description": "The response that is returned when the information of a lease is requested",
+      "schema": {
+        "type": "object",
+        "required": [
+          "ID",
+          "Name",
+          "OwnerID",
+          "Address",
+          "StartDate",
+          "EndDate",
+          "Rent",
+          "Utilities",
+          "ParkingCost",
+          "TotalCost",
+          "SquareFootage",
+          "Furnished",
+          "Parking",
+          "Beds",
+          "Baths",
+          "Amenities",
+          "Appliances",
+          "Description",
+          "Contacts"
+        ],
+        "properties": {
+          "Address": {
+            "$ref": "#/definitions/Address"
+          },
+          "Amenities": {
+            "description": "the lease amenities",
+            "type": "string"
+          },
+          "Appliances": {
+            "description": "the lease appliances",
+            "type": "string"
+          },
+          "Baths": {
+            "description": "the lease baths count",
+            "type": "string"
+          },
+          "Beds": {
+            "description": "the lease bedroom count",
+            "type": "integer",
+            "format": "uint64"
+          },
+          "Contacts": {
+            "description": "the lease contacts",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "Description": {
+            "description": "the lease description",
+            "type": "string"
+          },
+          "EndDate": {
+            "description": "the lease end date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "Furnished": {
+            "description": "the lease furnished value",
+            "type": "boolean"
+          },
+          "ID": {
+            "description": "the lease ID",
+            "type": "integer",
+            "format": "uint64"
+          },
+          "Name": {
+            "description": "the lease name",
+            "type": "string"
+          },
+          "OwnerID": {
+            "description": "the lease owner id",
+            "type": "integer",
+            "format": "uint64"
+          },
+          "Parking": {
+            "description": "the lease parking value",
+            "type": "boolean"
+          },
+          "ParkingCost": {
+            "description": "the lease parking cost",
+            "type": "string"
+          },
+          "Rent": {
+            "description": "the lease rent cost",
+            "type": "string"
+          },
+          "SquareFootage": {
+            "description": "the lease square footage",
+            "type": "integer",
+            "format": "uint64"
+          },
+          "StartDate": {
+            "description": "the lease start date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "TotalCost": {
+            "description": "the lease total cost",
+            "type": "string"
+          },
+          "Utilities": {
+            "description": "the lease utilities cost",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "GetPaginatedLeasesResponse": {
+      "description": "The response that is returned when paginated leases are requested",
+      "schema": {
+        "type": "object",
+        "required": [
+          "Leases",
+          "Count",
+          "PaginationToken"
+        ],
+        "properties": {
+          "Count": {
+            "description": "the lease count",
+            "type": "integer",
+            "format": "uint64"
+          },
+          "Leases": {
+            "description": "the list of leases",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Lease"
+            }
+          },
+          "PaginationToken": {
+            "description": "the pagination token",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "NoContentResponse": {
+      "description": "An empty response"
+    },
+    "PostLeaseResponse": {
+      "description": "Response returned after creating a new lease",
+      "schema": {
+        "type": "object",
+        "required": [
+          "ID"
+        ],
+        "properties": {
+          "ID": {
+            "description": "Lease id of created lease",
+            "type": "integer",
+            "format": "uint64"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "in": "header",
+      "authorizationUrl": "https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token",
+      "tokenUrl": "https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token"
+    }
+  }
+}
