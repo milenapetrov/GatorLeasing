@@ -102,18 +102,18 @@ func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 //
 // post a lease
 //
-//	Consumes:
-//	- application/json
+//		Consumes:
+//		- application/json
 //
-//	Produces:
-//	- application/json
+//		Produces:
+//		- application/json
 //
-//	Schemes: http, https
+//		Schemes: http, https
 //
-//	Deprecated: false
+//		Deprecated: false
 //
-//	Security:
-//	  oauth2:
+//		Security:
+//		  oauth2:
 //
 //	Parameters:
 //	  + name: limit
