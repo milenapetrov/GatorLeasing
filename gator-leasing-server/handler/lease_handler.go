@@ -58,6 +58,38 @@ func (h *LeaseHandler) GetAllLeases(w http.ResponseWriter, r *http.Request) {
 	respondJson(w, http.StatusOK, leaseViewModels)
 }
 
+// swagger:route GET /leases/{id} leases GetLeaseById
+//
+// Get a lease.
+//
+// get a lease by id.
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes: http, https
+//
+//	Deprecated: false
+//
+//	Security:
+//	  oauth2:
+//
+//	Parameters:
+//	  + name: id
+//	    in: path
+//	    description: leaseid
+//	    required: true
+//	    type: integer
+//	    format: uint64
+//
+//
+//	Responses:
+//	  204: GetLeaseResponse
+//	  400: ErrorResponse[]
+//	  500: ErrorResponse[]
 func (h *LeaseHandler) GetLeaseById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseUint(params["id[0-9]+"], 10, 32)
