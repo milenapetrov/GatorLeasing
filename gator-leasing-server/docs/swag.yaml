@@ -1,0 +1,740 @@
+consumes:
+    - application/json
+definitions:
+    Address:
+        properties:
+            City:
+                description: the city for this address
+                type: string
+            RoomNumber:
+                description: the room number for this address
+                type: string
+            State:
+                description: the state for this address
+                type: string
+            Street:
+                description: the street for this address
+                type: string
+            ZipCode:
+                description: the zip code for this address
+                type: string
+        required:
+            - Street
+            - City
+            - State
+            - ZipCode
+        type: object
+        x-go-package: github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity
+    Contact:
+        properties:
+            Address:
+                $ref: '#/definitions/Address'
+            Email:
+                description: the email for this contact
+                type: string
+            FirstName:
+                description: the first name for this contact
+                type: string
+            ID:
+                description: the id for this contact
+                format: uint64
+                type: integer
+            LastName:
+                description: the last name for this contact
+                type: string
+            LeaseID:
+                description: the lease id for this contact
+                format: uint64
+                type: integer
+            PhoneNumber:
+                description: the phone number for this contact
+                type: string
+            Salutation:
+                description: the salutation for this contact
+                type: string
+        type: object
+        x-go-package: github.com/milenapetrov/GatorLeasing/gator-leasing-server/entity
+    Lease:
+        properties:
+            address:
+                $ref: '#/definitions/Address'
+            amenities:
+                description: amenities info for this lease
+                type: string
+                x-go-name: Amenities
+            appliances:
+                description: appliances info for this lease
+                type: string
+                x-go-name: Appliances
+            baths:
+                description: bathroom info for this lease
+                type: string
+                x-go-name: Baths
+            beds:
+                description: bedroom info for this lease
+                format: int64
+                type: integer
+                x-go-name: Beds
+            contacts:
+                description: contacts array for this lease
+                items:
+                    $ref: '#/definitions/Contact'
+                type: array
+                x-go-name: Contacts
+            createdAt:
+                description: created at time for this lease
+                format: date-time
+                type: string
+                x-go-name: CreatedAt
+            description:
+                description: description for this lease
+                type: string
+                x-go-name: Description
+            endDate:
+                description: end date for this lease
+                format: date-time
+                type: string
+                x-go-name: EndDate
+            furnished:
+                description: furnished info for this lease
+                type: boolean
+                x-go-name: Furnished
+            id:
+                description: id for this lease
+                format: int64
+                type: integer
+                x-go-name: ID
+            name:
+                description: name for this lese
+                type: string
+                x-go-name: Name
+            ownerID:
+                description: owner id for this lease
+                format: int64
+                type: integer
+                x-go-name: OwnerID
+            parking:
+                description: parking info for this lease
+                type: boolean
+                x-go-name: Parking
+            parkingCost:
+                description: parking cost for this lease
+                type: string
+                x-go-name: ParkingCost
+            rent:
+                description: rent for this lease
+                type: string
+                x-go-name: Rent
+            squareFootage:
+                description: square footage for this lease
+                format: int64
+                type: integer
+                x-go-name: SquareFootage
+            startDate:
+                description: start date for this lease
+                format: date-time
+                type: string
+                x-go-name: StartDate
+            totalCost:
+                description: total cost for this lease
+                type: string
+                x-go-name: TotalCost
+            utilities:
+                description: utilities for this lease
+                type: string
+                x-go-name: Utilities
+        type: object
+        x-go-package: github.com/milenapetrov/GatorLeasing/gator-leasing-server/view-model
+    SortDirection:
+        format: uint8
+        type: integer
+        x-go-package: github.com/milenapetrov/GatorLeasing/gator-leasing-server/enums
+host: localhost:8080
+info:
+    description: '# Server for subleasing website ReLease'
+    termsOfService: there are no TOS at this moment, use at your own risk we take no responsibility
+    title: ReLease API.
+    version: "1.0"
+paths:
+    /leases:
+        get:
+            description: get all leases.
+            operationId: GetAllLeases
+            produces:
+                - application/json
+            responses:
+                "200":
+                    $ref: '#/responses/GetLeaseResponse[]'
+                    description: Array of GetLeaseResponse
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            summary: List leases.
+            tags:
+                - leases
+        post:
+            consumes:
+                - application/json
+            description: post a lease
+            operationId: PostLease
+            parameters:
+                - description: the name for the new lease
+                  in: body
+                  maximum: 20
+                  minimum: 3
+                  name: name
+                  required: true
+                  schema:
+                    type: string
+                  x-go-name: Name
+                - description: the address for the new lease
+                  in: body
+                  name: address
+                  required: true
+                  schema:
+                    $ref: '#/definitions/Address'
+                  x-go-name: Address
+                - description: the start date for the new lease
+                  in: body
+                  name: startDate
+                  required: true
+                  schema:
+                    format: date-time
+                    type: string
+                  x-go-name: StartDate
+                - description: the end date for the new lease
+                  in: body
+                  name: endDate
+                  required: true
+                  schema:
+                    format: date-time
+                    type: string
+                  x-go-name: EndDate
+                - description: the rent cost for the new lease
+                  in: body
+                  minimum: 0.01
+                  name: rent
+                  required: true
+                  schema:
+                    type: string
+                  x-go-name: Rent
+                - description: the utilites cost for the new lease
+                  in: body
+                  name: utilities
+                  schema:
+                    type: string
+                  x-go-name: Utilities
+                - description: the parking cost for the new lease
+                  in: body
+                  name: parkingCost
+                  schema:
+                    type: string
+                  x-go-name: ParkingCost
+                - description: the square footage for the new lease
+                  in: body
+                  name: squareFootage
+                  schema:
+                    format: int64
+                    type: integer
+                  x-go-name: SquareFootage
+                - description: the furnished data for the new lease
+                  in: body
+                  name: furnished
+                  schema:
+                    type: boolean
+                  x-go-name: Furnished
+                - description: the parking data for the new lease
+                  in: body
+                  name: parking
+                  schema:
+                    type: boolean
+                  x-go-name: Parking
+                - description: the bedroom info for the new lease
+                  in: body
+                  name: beds
+                  schema:
+                    format: int64
+                    type: integer
+                  x-go-name: Beds
+                - description: the bathroom info for the new lease
+                  in: body
+                  name: baths
+                  schema:
+                    type: string
+                  x-go-name: Baths
+                - description: the amenities info for the new lease
+                  in: body
+                  name: amenities
+                  schema:
+                    type: string
+                  x-go-name: Amenities
+                - description: the appliances info for the new lease
+                  in: body
+                  name: appliances
+                  schema:
+                    type: string
+                  x-go-name: Appliances
+                - description: the description for the new lease
+                  in: body
+                  name: description
+                  schema:
+                    type: string
+                  x-go-name: Description
+                - description: create a lease
+                  in: body
+                  name: CreateLease
+                  required: true
+                  schema:
+                    $ref: '#/definitions/CreateLease'
+                    description: create a lease
+                    type: object
+            produces:
+                - application/json
+            responses:
+                "201":
+                    $ref: '#/responses/PostLeaseResponse'
+                    description: PostLeaseResponse
+                "400":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Bad Request
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            security:
+                - oauth2: []
+            summary: Create a lease.
+            tags:
+                - leases
+    /leases/{id}:
+        delete:
+            consumes:
+                - application/json
+            description: delete a lease by id.
+            operationId: DeleteLease
+            parameters:
+                - description: leaseid
+                  format: uint64
+                  in: path
+                  name: id
+                  required: true
+                  type: integer
+            produces:
+                - application/json
+            responses:
+                "204":
+                    $ref: '#/responses/NoContentResponse'
+                    description: NoContentResponse
+                "400":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Bad Request
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            security:
+                - oauth2: []
+            summary: Delete a lease.
+            tags:
+                - leases
+        get:
+            consumes:
+                - application/json
+            description: get a lease by id.
+            operationId: GetLeaseById
+            parameters:
+                - description: leaseid
+                  format: uint64
+                  in: path
+                  name: id
+                  required: true
+                  type: integer
+            produces:
+                - application/json
+            responses:
+                "204":
+                    $ref: '#/responses/GetLeaseResponse'
+                    description: GetLeaseResponse
+                "400":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Bad Request
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            security:
+                - oauth2: []
+            summary: Get a lease.
+            tags:
+                - leases
+        put:
+            consumes:
+                - application/json
+            description: update a lease by id.
+            operationId: PutLease
+            parameters:
+                - description: the id for the lease to update
+                  format: int64
+                  in: query
+                  name: id
+                  required: true
+                  type: integer
+                  x-go-name: ID
+                - description: the updated name for the lease
+                  in: body
+                  name: name
+                  schema:
+                    type: string
+                  x-go-name: Name
+                - description: the updated address for the lease
+                  in: body
+                  name: address
+                  schema:
+                    $ref: '#/definitions/Address'
+                  x-go-name: Address
+                - description: the updated start date for the lease
+                  in: body
+                  name: startDate
+                  schema:
+                    format: date-time
+                    type: string
+                  x-go-name: StartDate
+                - description: the updated end date for the lease
+                  in: body
+                  name: endDate
+                  schema:
+                    format: date-time
+                    type: string
+                  x-go-name: EndDate
+                - description: the updated rent cost for the lease
+                  in: body
+                  name: rent
+                  schema:
+                    type: string
+                  x-go-name: Rent
+                - description: the updated utilities cost for the lease
+                  in: body
+                  name: utilities
+                  schema:
+                    type: string
+                  x-go-name: Utilities
+                - description: the updated parking cost for the lease
+                  in: body
+                  name: parkingCost
+                  schema:
+                    type: string
+                  x-go-name: ParkingCost
+                - description: the updated square footage for the lease
+                  in: body
+                  name: squareFootage
+                  schema:
+                    format: int64
+                    type: integer
+                  x-go-name: SquareFootage
+                - description: the updated furnished data for the lease
+                  in: body
+                  name: furnished
+                  schema:
+                    type: boolean
+                  x-go-name: Furnished
+                - description: the updated parking data for the lease
+                  in: body
+                  name: parking
+                  schema:
+                    type: boolean
+                  x-go-name: Parking
+                - description: the updated bedroom data for the lease
+                  in: body
+                  name: beds
+                  schema:
+                    format: int64
+                    type: integer
+                  x-go-name: Beds
+                - description: the updated bathroom data for the lease
+                  in: body
+                  name: baths
+                  schema:
+                    type: string
+                  x-go-name: Baths
+                - description: the updated amenities info for the lease
+                  in: body
+                  name: amenities
+                  schema:
+                    type: string
+                  x-go-name: Amenities
+                - description: the updated appliances info for the lease
+                  in: body
+                  name: appliances
+                  schema:
+                    type: string
+                  x-go-name: Appliances
+                - description: the updated description for the lease
+                  in: body
+                  name: description
+                  schema:
+                    type: string
+                  x-go-name: Description
+                - description: edit lease request
+                  in: body
+                  name: editLeaseRequest
+                  required: true
+                  schema:
+                    $ref: '#/definitions/EditLease'
+                    description: edit lease request
+                    type: object
+            produces:
+                - application/json
+            responses:
+                "204":
+                    $ref: '#/responses/NoContentResponse'
+                    description: NoContentResponse
+                "400":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Bad Request
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Araay of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            security:
+                - oauth2: []
+            summary: Update a lease.
+            tags:
+                - leases
+    /leases/paged:
+        post:
+            consumes:
+                - application/json
+            description: get my paged leases.
+            operationId: GetMyLeasesPaged
+            parameters:
+                - description: the page size
+                  in: body
+                  name: PageSize
+                  schema:
+                    format: int64
+                    type: integer
+                - description: the sort token
+                  in: body
+                  name: SortToken
+                  schema:
+                    type: string
+                - description: the paginated token
+                  in: body
+                  name: PaginationToken
+                  schema:
+                    type: string
+                - description: the sort direction {asc, desc}
+                  in: body
+                  name: SortDirection
+                  required: true
+                  schema:
+                    $ref: '#/definitions/SortDirection'
+                - description: the filters
+                  in: body
+                  name: Filters
+                  schema:
+                    type: string
+                - description: page size, column to sort on, pagination token, sort direction, filter
+                  in: body
+                  name: getMyPaginatedLeases
+                  required: true
+                  schema:
+                    $ref: '#/definitions/PaginatedLeasesRequest'
+                    description: page size, column to sort on, pagination token, sort direction, filter
+                    type: object
+            produces:
+                - application/json
+            responses:
+                "200":
+                    $ref: '#/responses/GetPaginatedLeasesResponse'
+                    description: GetPaginatedLeasesResponse
+                "400":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Bad Request
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            security:
+                - oauth2: []
+            summary: Get my paged leases.
+            tags:
+                - leases
+    /myleases:
+        get:
+            description: get all my leases.
+            operationId: GetMyLeases
+            produces:
+                - application/json
+            responses:
+                "200":
+                    $ref: '#/responses/GetLeaseResponse[]'
+                    description: Array of GetLeaseResponse
+                "500":
+                    $ref: '#/responses/ErrorResponse[]'
+                    description: Array of ErrorResponse for Internal Server Error
+            schemes:
+                - http
+                - https
+            summary: List my leases.
+            tags:
+                - leases
+produces:
+    - application/json
+responses:
+    ErrorResponse:
+        description: A generic error that is returned whens something goes wrong
+        schema:
+            properties:
+                Msg:
+                    description: The error message
+                    type: string
+            required:
+                - Msg
+            type: object
+    GetLeaseResponse:
+        description: The response that is returned when the information of a lease is requested
+        schema:
+            properties:
+                Address:
+                    $ref: '#/definitions/Address'
+                Amenities:
+                    description: the lease amenities
+                    type: string
+                Appliances:
+                    description: the lease appliances
+                    type: string
+                Baths:
+                    description: the lease baths count
+                    type: string
+                Beds:
+                    description: the lease bedroom count
+                    format: uint64
+                    type: integer
+                Contacts:
+                    description: the lease contacts
+                    items:
+                        $ref: '#/definitions/Contact'
+                    type: array
+                Description:
+                    description: the lease description
+                    type: string
+                EndDate:
+                    description: the lease end date
+                    format: date-time
+                    type: string
+                Furnished:
+                    description: the lease furnished value
+                    type: boolean
+                ID:
+                    description: the lease ID
+                    format: uint64
+                    type: integer
+                Name:
+                    description: the lease name
+                    type: string
+                OwnerID:
+                    description: the lease owner id
+                    format: uint64
+                    type: integer
+                Parking:
+                    description: the lease parking value
+                    type: boolean
+                ParkingCost:
+                    description: the lease parking cost
+                    type: string
+                Rent:
+                    description: the lease rent cost
+                    type: string
+                SquareFootage:
+                    description: the lease square footage
+                    format: uint64
+                    type: integer
+                StartDate:
+                    description: the lease start date
+                    format: date-time
+                    type: string
+                TotalCost:
+                    description: the lease total cost
+                    type: string
+                Utilities:
+                    description: the lease utilities cost
+                    type: string
+            required:
+                - ID
+                - Name
+                - OwnerID
+                - Address
+                - StartDate
+                - EndDate
+                - Rent
+                - Utilities
+                - ParkingCost
+                - TotalCost
+                - SquareFootage
+                - Furnished
+                - Parking
+                - Beds
+                - Baths
+                - Amenities
+                - Appliances
+                - Description
+                - Contacts
+            type: object
+    GetPaginatedLeasesResponse:
+        description: The response that is returned when paginated leases are requested
+        schema:
+            properties:
+                Count:
+                    description: the lease count
+                    format: uint64
+                    type: integer
+                Leases:
+                    description: the list of leases
+                    items:
+                        $ref: '#/definitions/Lease'
+                    type: array
+                PaginationToken:
+                    description: the pagination token
+                    type: string
+            required:
+                - Leases
+                - Count
+                - PaginationToken
+            type: object
+    NoContentResponse:
+        description: An empty response
+    PostLeaseResponse:
+        description: Response returned after creating a new lease
+        schema:
+            properties:
+                ID:
+                    description: Lease id of created lease
+                    format: uint64
+                    type: integer
+            required:
+                - ID
+            type: object
+schemes:
+    - http
+    - https
+securityDefinitions:
+    oauth2:
+        authorizationUrl: https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
+        in: header
+        tokenUrl: https://dev-nkzmwy1mucvvl5xb.us.auth0.com/oauth/token
+        type: oauth2
+swagger: "2.0"
