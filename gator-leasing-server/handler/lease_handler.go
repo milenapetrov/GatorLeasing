@@ -352,7 +352,7 @@ func (h *LeaseHandler) GetPaginatedLeases(w http.ResponseWriter, r *http.Request
 
 // swagger:route GET /myleases leases GetMyLeases
 //
-// List my leases.
+// Get my leases.
 //
 // get all my leases.
 //
