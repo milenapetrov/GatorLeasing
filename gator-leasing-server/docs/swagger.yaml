@@ -589,7 +589,7 @@ paths:
             schemes:
                 - http
                 - https
-            summary: List my leases.
+            summary: Get my leases.
             tags:
                 - leases
 produces:

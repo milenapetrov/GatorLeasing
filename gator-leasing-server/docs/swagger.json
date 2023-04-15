@@ -643,7 +643,7 @@
         "tags": [
           "leases"
         ],
-        "summary": "List my leases.",
+        "summary": "Get my leases.",
         "operationId": "GetMyLeases",
         "responses": {
           "200": {
