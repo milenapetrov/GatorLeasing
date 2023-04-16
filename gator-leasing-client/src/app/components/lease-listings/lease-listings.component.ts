@@ -1,12 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import {
-  CellClickedEvent,
   GridOptions,
   IServerSideDatasource,
   IServerSideGetRowsRequest,
-  GridApi,
   RowClickedEvent,
-  RowSelectedEvent
+  RowSelectedEvent,
 } from 'ag-grid-community';
 import 'ag-grid-enterprise';
 import { Lease } from 'src/app/models/lease';
@@ -14,11 +12,8 @@ import { LeaseService } from 'src/app/services/lease.service';
 import { format, parseISO } from 'date-fns';
 import { take } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
-import { GridCellComponent,MyCellParams,} from 'src/app/components/grid-cell/grid-cell.component';
-import { data } from 'cypress/types/jquery';
 import { Router } from '@angular/router';
-import { values } from 'cypress/types/lodash';
-import { HttpParams } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-lease-listings',
@@ -59,6 +54,14 @@ export class LeaseListingsComponent implements AfterViewInit {
           return format(parseISO(data.value), 'MM/dd/yyyy');
         },
       },
+      {
+        field: 'address.zipCode',
+        sortable: true,
+        filter: 'agTextColumnFilter',
+        filterParams: {
+          filterOptions: ['contains'],
+        },
+      }
       
     ],
     rowModelType: 'serverSide',
@@ -85,6 +88,8 @@ export class LeaseListingsComponent implements AfterViewInit {
   onGridReady(params: any){
     this.gridApi = params.api
   }
+
+
   ngAfterViewInit() {
     var datasource = this.getLeaseDatasource();
     this.gridOptions.api?.setServerSideDatasource(datasource);

@@ -51,7 +51,7 @@ export class CreateComponent {
   ) {}
 
   onSubmit(post: Post) {
-    this.leaseService.createPost(this.post);
     this.router.navigateByUrl('/home');
+    this.leaseService.createPost(this.post);
   }
 }

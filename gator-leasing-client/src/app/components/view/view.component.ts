@@ -7,6 +7,7 @@ import { DisplayLeasesComponent } from 'src/app/components/display-leases/displa
 import { GridCellComponent } from 'src/app/components/grid-cell/grid-cell.component';
 import { LeaseListingsComponent } from '../lease-listings/lease-listings.component';
 import { ActivatedRoute } from '@angular/router';
+import { format, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-view',
@@ -47,8 +48,20 @@ export class ViewComponent {
     contacts: this.addy  //add contacts
   };
   id = 0;
+  appliances: string[] = [];
+  amenities: string[] = [];
+  start: string = '';
+  end: string = '';
   constructor ( private leaseService: LeaseService, private listing:LeaseListingsComponent, private grid: GridCellComponent, private route: ActivatedRoute) {}
 
+  getApps(){
+    var apps = this.post.appliances;
+    this.appliances= apps.split(',');
+    var amens = this.post.amenities;
+    this.amenities = amens.split(',');
+    this.start = format(parseISO(this.post.startDate.toLocaleString()), 'MM/dd/yyyy')
+    this.end = format(parseISO(this.post.endDate.toLocaleString()), 'MM/dd/yyyy')
+  }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
       this.id = params['fieldParam'];
@@ -58,7 +71,7 @@ export class ViewComponent {
       console.log(res)
       this.post = res;
     })
+
   }
 
-  //if apt number exists then display
 }

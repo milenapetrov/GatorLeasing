@@ -5,6 +5,7 @@ import { Post } from 'src/app/models/post';
 import { Address } from 'src/app/models/address';
 import { Lease } from 'src/app/models/lease';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-update',
@@ -48,7 +49,8 @@ export class UpdateComponent {
   constructor(
     private leaseService: LeaseService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   id = 0;
@@ -63,11 +65,13 @@ export class UpdateComponent {
     })
   }
   onSubmit(post: Post) {
+    this.router.navigateByUrl('/display');
     this.leaseService.updatePost(this.id, this.post).subscribe(res => {
       console.log(res)
     });
   }
   onDelete() {
+    this.router.navigateByUrl('/display');
     this.leaseService.deletePost(this.id).subscribe(res => {
       console.log("successful delete")
     });

@@ -3,3 +3,21 @@
     /*justify-content:right;*/
     align-items: center;
 }
+
+.blue-box {
+    background-color: lightblue;
+    border-radius: 5px;
+    padding: 5px;
+    display:inline-block;
+}
+
+.list {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.list li {
+    display: inline-block;
+    margin-right: 10px;
+}

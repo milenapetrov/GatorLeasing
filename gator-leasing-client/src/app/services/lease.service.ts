@@ -16,6 +16,7 @@ export class LeaseService {
   BASEURL: string = 'http://localhost:8080';
   LEASEURL: string = '/leases';
   PAGEDURL: string = '/leases/paged';
+  MYPAGEURL: string = '/myleases/paged';
 
   getLeases(): Observable<Lease[]> {
     return this.http.get<Lease[]>(`${this.BASEURL}${this.LEASEURL}`);
@@ -38,6 +39,27 @@ export class LeaseService {
     };
     return this.http.post<PaginatedLeasesResult>(
       `${this.BASEURL}${this.PAGEDURL}`,
+      paginatedLeasesRequest
+    );
+  }
+
+  getMyPagedLeases(
+    pageSize: number,
+    sortToken: string,
+    paginationToken: string,
+    sortDirection: SortDirection,
+    filters: string
+  ): Observable<PaginatedLeasesResult> {
+
+    const paginatedLeasesRequest: PaginatedLeasesRequest = {
+      pageSize: pageSize,
+      sortToken: sortToken,
+      paginationToken: paginationToken,
+      sortDirection: sortDirection,
+      filters: filters,
+    };
+    return this.http.post<PaginatedLeasesResult>(
+      `${this.BASEURL}${this.MYPAGEURL}`,
       paginatedLeasesRequest
     );
   }

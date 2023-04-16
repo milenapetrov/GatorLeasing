@@ -1,22 +1,16 @@
 import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
-import { ColDef, GridReadyEvent, ICellRendererParams, RowClickedEvent } from 'ag-grid-community';
+import { GridReadyEvent, ICellRendererParams, RowClickedEvent } from 'ag-grid-community';
 import { format, parseISO } from 'date-fns';
 import { take, Observable } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
 import {
-  Grid,
   GridOptions,
   IServerSideDatasource,
   IServerSideGetRowsRequest,
 } from 'ag-grid-community';
 import 'ag-grid-enterprise';
-import {
-  GridCellComponent,
-  MyCellParams,
-} from '../grid-cell/grid-cell.component';
-import { HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -154,7 +148,7 @@ export class DisplayLeasesComponent implements AfterViewInit{
         }
 
         this.leaseService
-          .getPagedLeases(
+          .getMyPagedLeases(
             10,
             this.sortToken,
             this.paginationToken,

@@ -7,39 +7,28 @@
       body {
         font-family: 'Rubik', serif;
         font-size: 38px;
+        color:blueviolet
       }
     </style>  
 </head>
 <mat-card
   id="card"
   class="bg"
-  style="text-align: center; background-color: transparent"
+  style="text-align: center;"   
 >
-  <div class="example">
+ 
     <div div class="overlay" style="margin-top: 300px">
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Search"
-          name="search"
-          [(ngModel)]="search"
-        />
-        <button name="s" matSuffix mat-button routerLink="/my-leases">
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-form-field>
+      <button name="post" mat-raised-button (click)="loginOrRoute('/create')">
+        Post a Lease
+      </button>
     </div>
-  </div>
+ 
 </mat-card>
 
 <br />
 <br />
-<div class="center">
-  <button name="post" mat-stroked-button (click)="loginOrRoute('/create')">
-    Post a Lease
-  </button>
-</div>
 
-<body>Listings
-<app-lease-listings></app-lease-listings>
+<body >
+  Listings
+<app-lease-listings></app-lease-listings> <!--[filter]="searchQuery"-->
 </body>

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
+import { LeaseListingsComponent } from '../components/lease-listings/lease-listings.component';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  search: String = '';
+  search = '';
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public auth: AuthService, private router: Router) {}
+  constructor(private breakpointObserver: BreakpointObserver, public auth: AuthService, private router: Router, private listing:LeaseListingsComponent) {}
 
   loginOrRoute(requested: string) {
     this.auth.isAuthenticated$.pipe(take(1)).subscribe(isLoggedIn => {
@@ -37,5 +38,6 @@ export class HomeComponent implements OnInit {
       }
     })
   }
+
   ngOnInit(): void {}
 }

@@ -7,8 +7,9 @@
             href="https://fonts.googleapis.com/css?family=Rubik">
       <style>
         mat-card-title {
-          font-family: 'Rubik', serif;
+          font-family: 'Rubik', sans-serif;
           font-size: 27px;
+          font-weight:bolder;
         }
         mat-card-subtitle {
           font-family: 'Rubik', serif;
@@ -18,16 +19,44 @@
             font-family: 'Rubik', serif;
             font-size: 20px;
         }
+        h4 {
+          font-family:'Rubik', sans-serif;
+          font-weight: bolder;
+        }
+        p{
+          font-size: 18px;
+        }
       </style>  
 </head>
 <mat-card>
     <mat-card-header class="header">
         <mat-card-title>{{post.name}}</mat-card-title>
-        <mat-card-subtitle>{{post.address.street}}, Apt {{post.address.roomNumber}}, {{post.address.city}}, {{post.address.state}} {{post.address.zipCode}}</mat-card-subtitle>
+        <mat-card-subtitle >{{post.address.street}}, {{post.address.city}}, {{post.address.state}} {{post.address.zipCode}}</mat-card-subtitle> 
+        <!--*ngIf="post.address.roomNumber" -> Apt {{post.address.roomNumber}},-->
     </mat-card-header>
     <br>
-    <mat-card-content>${{post.rent}} | {{post.beds}} bd | {{post.baths}} ba | {{post.squareFootage}} sqft</mat-card-content>
+    <mat-card-content>${{post.rent}}/mo | {{post.beds}} bed | {{post.baths}} bath | {{post.squareFootage}} sqft</mat-card-content>
     <br>
     <mat-card-content>{{post.description}}</mat-card-content>
+  
+    <mat-card-content *ngIf="post.appliances">
+      <h4> Appliances {{getApps()}}</h4>
+        <ul class="list">
+          <li *ngFor="let appliance of appliances" class="blue-box">{{appliance}}</li>
+        </ul>
+    </mat-card-content>
+    <mat-card-content *ngIf="post.amenities">
+      <h4> Amenities </h4>
+      <ul class="list">
+        <li *ngFor="let amenity of amenities" class="blue-box"> {{amenity}} </li>
+      </ul>
+    </mat-card-content>
+    <br>
+    <mat-card-content>
+      <h4>Overview</h4>
+      <p> Available from: {{start}} to: {{end}}</p>
+      <p *ngIf="post.furnished"> Furnished </p>
+      <p *ngIf="post.parking">Cost of parking : ${{post.parkingCost}}</p>
+    </mat-card-content>
 </mat-card>
 
