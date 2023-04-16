@@ -67,4 +67,9 @@ export class UpdateComponent {
       console.log(res)
     });
   }
+  onDelete() {
+    this.leaseService.deletePost(this.id).subscribe(res => {
+      console.log("successful delete")
+    });
+  }
 }

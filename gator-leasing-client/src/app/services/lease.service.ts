@@ -59,4 +59,8 @@ export class LeaseService {
     console.log(`${post.name}`);
     return this.http.put(`${this.BASEURL}${this.LEASEURL}/${id}`, post);
   }
+
+  deletePost(id: number): Observable<any> {
+    return this.http.delete(`${this.BASEURL}${this.LEASEURL}/${id}`);
+  }
 }
