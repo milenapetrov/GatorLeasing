@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"bytes"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -65,8 +63,7 @@ func TestPostLeaseOK(t *testing.T) {
 	faker.FakeData(&createLease)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&createLease)
-	req := httptest.NewRequest(http.MethodPost, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/leases", createBody(&createLease))
 
 	leaseHandler.PostLease(rr, req)
 
@@ -88,8 +85,7 @@ func TestPostLeaseDecodeErr(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&badBody)
-	req := httptest.NewRequest(http.MethodPost, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/leases", createBody(&badBody))
 
 	leaseHandler.PostLease(rr, req)
 
@@ -109,8 +105,7 @@ func TestPostLeaseValidatorErr(t *testing.T) {
 	createLease.Name = "a"
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&createLease)
-	req := httptest.NewRequest(http.MethodPost, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/leases", createBody(&createLease))
 
 	leaseHandler.PostLease(rr, req)
 
@@ -130,8 +125,7 @@ func TestPostLeaseServiceErr(t *testing.T) {
 	faker.FakeData(&createLease)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&createLease)
-	req := httptest.NewRequest(http.MethodPost, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/leases", createBody(&createLease))
 
 	leaseHandler.PostLease(rr, req)
 
@@ -151,8 +145,7 @@ func TestPutLeaseOK(t *testing.T) {
 	faker.FakeData(&editLease)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&editLease)
-	req := httptest.NewRequest(http.MethodPut, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(&editLease))
 	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.PutLease(rr, req)
@@ -172,8 +165,7 @@ func TestPutLeaseBadPathParamErr(t *testing.T) {
 	faker.FakeData(&editLease)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&editLease)
-	req := httptest.NewRequest(http.MethodPut, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(&editLease))
 	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "bad"})
 
 	leaseHandler.PutLease(rr, req)
@@ -196,8 +188,7 @@ func TestPutLeaseDecodeErr(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&badBody)
-	req := httptest.NewRequest(http.MethodPut, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(&badBody))
 	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.PutLease(rr, req)
@@ -218,8 +209,7 @@ func TestPutLeaseServiceErr(t *testing.T) {
 	faker.FakeData(&editLease)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&editLease)
-	req := httptest.NewRequest(http.MethodPut, "/leases", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodPut, "/leases", createBody(&editLease))
 	req = mux.SetURLVars(req, map[string]string{"id[0-9]+": "1"})
 
 	leaseHandler.PutLease(rr, req)
@@ -294,8 +284,7 @@ func TestGetPaginatedLeasesOK(t *testing.T) {
 	faker.FakeData(&paginatedLeasesRequest)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&paginatedLeasesRequest)
-	req := httptest.NewRequest(http.MethodGet, "/leases/paged", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodGet, "/leases/paged", createBody(&paginatedLeasesRequest))
 
 	leaseHandler.GetPaginatedLeases(rr, req)
 
@@ -317,8 +306,7 @@ func TestGetPaginatedLeasesDecodeErr(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&badBody)
-	req := httptest.NewRequest(http.MethodGet, "/leases/paged", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodGet, "/leases/paged", createBody(&badBody))
 
 	leaseHandler.GetPaginatedLeases(rr, req)
 
@@ -338,8 +326,7 @@ func TestGetPaginateLeasesServiceErr(t *testing.T) {
 	faker.FakeData(&paginatedLeasesRequest)
 
 	rr := httptest.NewRecorder()
-	body, _ := json.Marshal(&paginatedLeasesRequest)
-	req := httptest.NewRequest(http.MethodGet, "/leases/paged", bytes.NewReader(body))
+	req := httptest.NewRequest(http.MethodGet, "/leases/paged", createBody(&paginatedLeasesRequest))
 
 	leaseHandler.GetPaginatedLeases(rr, req)
 

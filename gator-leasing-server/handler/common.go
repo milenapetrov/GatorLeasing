@@ -27,11 +27,11 @@ func respondError(w http.ResponseWriter, err error) {
 		respondError(w, &errors.InternalServerError{Msg: "error response with no errors"})
 	}
 	errs := []error{}
-	if stdErrors.Is(&errors.InternalServerError{}, err) {
-		errs = append(errs, &errors.InternalServerError{Msg: err.Error()})
+	if stdErrors.As(err, &errors.INTERNAL_SERVER_ERROR) {
+		errs = append(errs, err)
 		respondJson(w, http.StatusInternalServerError, errs)
-	} else if stdErrors.Is(&errors.BadRequestError{}, err) {
-		errs = append(errs, &errors.BadRequestError{Msg: err.Error()})
+	} else if stdErrors.As(err, &errors.BAD_REQUEST_ERROR) {
+		errs = append(errs, err)
 		respondJson(w, http.StatusBadRequest, errs)
 	} else {
 		respondError(w, &errors.InternalServerError{Msg: "unknown error type"})
@@ -45,9 +45,9 @@ func respondErrors(w http.ResponseWriter, errs []error) {
 		return
 	}
 
-	if stdErrors.Is(&errors.InternalServerError{}, errs[0]) {
+	if stdErrors.As(errs[0], &errors.INTERNAL_SERVER_ERROR) {
 		respondJson(w, http.StatusInternalServerError, errs)
-	} else if stdErrors.Is(&errors.BadRequestError{}, errs[0]) {
+	} else if stdErrors.As(errs[0], &errors.BAD_REQUEST_ERROR) {
 		respondJson(w, http.StatusBadRequest, errs)
 	} else {
 		respondError(w, &errors.InternalServerError{Msg: "unknown error type"})

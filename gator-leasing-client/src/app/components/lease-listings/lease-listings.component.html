@@ -4,3 +4,13 @@
   (gridReady)="onGridReady($event)"
   (rowClicked)="onRowClicked($event)"
 ></ag-grid-angular>
+<mat-form-field>
+  <mat-label>Page Size</mat-label>
+  <mat-select (selectionChange)="pageSizeChange($event)">
+    <mat-option value="10">10</mat-option>
+    <mat-option value="20">20</mat-option>
+    <mat-option value="50">50</mat-option>
+   </mat-select>
+</mat-form-field>
+
+
