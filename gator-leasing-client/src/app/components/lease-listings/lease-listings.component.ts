@@ -3,16 +3,19 @@ import {
   GridOptions,
   IServerSideDatasource,
   IServerSideGetRowsRequest,
+  
+  ColDef
+} from 'ag-grid-enterprise';
+import { 
   RowClickedEvent,
-  RowSelectedEvent,
-} from 'ag-grid-community';
-import 'ag-grid-enterprise';
+  RowSelectedEvent } from 'ag-grid-community';
 import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
 import { format, parseISO } from 'date-fns';
 import { take } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
 import { Router } from '@angular/router';
+import { CustomColumnDef } from 'src/app/shared/custom-column-def';
 
 
 @Component({
@@ -21,54 +24,63 @@ import { Router } from '@angular/router';
   styleUrls: ['./lease-listings.component.css'],
 })
 export class LeaseListingsComponent implements AfterViewInit {
+  columnDefs : CustomColumnDef[] = [
+    {
+      field: 'name',
+      colId: 'name',
+      dataType: 'text',
+      sortable: true,
+      filterable: true,
+      filter: 'agTextColumnFilter',
+      filterParams: {
+        filterOptions: ['contains'],
+      },
+    },
+    {
+      field: 'startDate',
+      colId: 'startDate',
+      dataType: 'date',
+      sortable: true,
+      filterable: true,
+      cellRenderer: (data) => {
+        return format(parseISO(data.value), 'MM/dd/yyyy');
+      },
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        filterOptions: ['greaterThanOrEqual'],
+      },
+    },
+    {
+      field: 'endDate',
+      colId: 'endDate',
+      dataType: 'date',
+      sortable: true,
+      filterable: true,
+      cellRenderer: (data) => {
+        return format(parseISO(data.value), 'MM/dd/yyyy');
+      },
+    },
+    {
+      field: 'address.zipCode',
+      colId: 'zipCode',
+      dataType: 'text',
+      headerName: 'Zip Code',
+      sortable: true,
+      filterable: true,
+      filter: 'agTextColumnFilter',
+      filterParams: {
+        filterOptions: ['contains'],
+      },
+    }
+  ]
   gridOptions: GridOptions<Lease> = {
     onRowSelected: (event: RowSelectedEvent) => console.log,
-    columnDefs: [
-      {
-        field: 'name',
-        sortable: true,
-        filter: 'agTextColumnFilter',
-        filterParams: {
-          filterOptions: ['contains'],
-        },
-        /*cellRenderer: GridCellComponent,
-        cellRendererParams: {
-          buttonText: `view`,
-        } as MyCellParams,*/
-      },
-      {
-        field: 'startDate',
-        sortable: true,
-        cellRenderer: (data) => {
-          return format(parseISO(data.value), 'MM/dd/yyyy');
-        },
-        filter: 'agDateColumnFilter',
-        filterParams: {
-          filterOptions: ['greaterThanOrEqual'],
-        },
-      },
-      {
-        field: 'endDate',
-        sortable: true,
-        cellRenderer: (data) => {
-          return format(parseISO(data.value), 'MM/dd/yyyy');
-        },
-      },
-      {
-        field: 'address.zipCode',
-        sortable: true,
-        filter: 'agTextColumnFilter',
-        filterParams: {
-          filterOptions: ['contains'],
-        },
-      }
-      
-    ],
+    columnDefs: this.columnDefs,
     rowModelType: 'serverSide',
     pagination: true,
     paginationPageSize: 10,
     cacheBlockSize: 10,
-    onRowClicked: (event: RowClickedEvent) => console.log("hey")
+    suppressPropertyNamesCheck: true
   };
 
   sortToken: string = '';
@@ -100,7 +112,7 @@ export class LeaseListingsComponent implements AfterViewInit {
       getRows: (params) => {
         let needsReset = false;
 
-        const newFilter = this.getFilter(params.request);
+        const newFilter = this.getFilters(params.request);
         if (this.filter != newFilter) {
           this.paginationToken = '';
           this.filter = newFilter;
@@ -156,68 +168,54 @@ export class LeaseListingsComponent implements AfterViewInit {
     };
   }
 
-  getFilter(request: IServerSideGetRowsRequest): string {
+  getFilters(request: IServerSideGetRowsRequest): string {
     let filterArr: string[] = [];
-    if (request.filterModel?.name) {
-      let nameFilter = '';
-      if (request.filterModel.name.condition1) {
-        nameFilter += this.getClause(
-          'name',
-          'text',
-          request.filterModel.name.condition1.type,
-          request.filterModel.name.condition1.filter
-        );
-        nameFilter += ' ' + request.filterModel.name.operator + ' ';
-        nameFilter += this.getClause(
-          'name',
-          'text',
-          request.filterModel.name.condition2.type,
-          request.filterModel.name.condition2.filter
-        );
-      } else {
-        nameFilter += this.getClause(
-          'name',
-          'text',
-          request.filterModel.name.type,
-          request.filterModel.name.filter
-        );
-      }
-      filterArr.push(nameFilter);
+    if (request.filterModel) {
+      this.gridOptions.columnDefs?.forEach(colDef => {
+        const customColDef = colDef as CustomColumnDef
+        if (customColDef.filterable) {
+          const filter = this.getFilter(request.filterModel, customColDef.colId!, customColDef.colId!.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`), customColDef.dataType)
+          if (filter != '') {
+            filterArr.push(filter)
+          }
+        }
+      })
     }
-
-    if (request.filterModel?.startDate) {
-      let startDateFilter = '';
-      if (request.filterModel.startDate.condition1) {
-        startDateFilter += this.getClause(
-          'start_date',
-          request.filterModel.startDate.condtion1.type,
-          'text',
-          request.filterModel.startDate.condition1.dateFrom
-        );
-        startDateFilter += ' ' + request.filterModel.startDate.operator + ' ';
-        startDateFilter += this.getClause(
-          'start_date',
-          'text',
-          request.filterModel.startDate.condition2.type,
-          request.filterModel.startDate.condition2.dateFrom
-        )
-      } else {
-        startDateFilter += this.getClause(
-          'start_date',
-          'text',
-          request.filterModel.startDate.type,
-          request.filterModel.startDate.dateFrom
-        )
-      }
-      filterArr.push(startDateFilter)
-    }
-
     let filters = filterArr.join(",")
     return filters;
   }
 
-  getClause(column: string, columnType : string, type: string, param: string) {
-    switch (type) {
+  getFilter(filterModel, fieldName : string, columnName : string, columnType : string) : string {
+    let filter = '';
+    if (filterModel[fieldName] != undefined) {
+      if (filterModel[fieldName].condition1) {
+        filter += this.getClause(
+          columnName,
+          columnType,
+          filterModel[fieldName].condition1.type,
+          columnType === "date" ? filterModel[fieldName].condition1.dateFrom : filterModel[fieldName].condition1.filter
+        );
+        filter += ' ' + filterModel[fieldName].operator + ' ';
+        filter += this.getClause(
+          columnName,
+          columnType,
+          filterModel[fieldName].condition2.type,
+          columnType === "date" ? filterModel[fieldName].condition2.dateFrom : filterModel[fieldName].condition2.filter
+        )
+      } else {
+        filter += this.getClause(
+          columnName,
+          columnType,
+          filterModel[fieldName].type,
+          columnType === "date" ? filterModel[fieldName].dateFrom : filterModel[fieldName].filter
+        )
+      }
+    }
+    return filter
+  }
+
+  getClause(column: string, columnType : string, comparisonType: string, param: string) {
+    switch (comparisonType) {
       case 'contains':
         return column + ' LIKE ' + "'%" + param + "%'";
       case 'greaterThanOrEqual':
