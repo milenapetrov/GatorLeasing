@@ -44,7 +44,7 @@ func TestGetAllLeasesRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetAllLeases", 1)
 	assert.Empty(t, resultLeases)
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }
 
 func TestCreateLeaseOK(t *testing.T) {
@@ -79,7 +79,7 @@ func TestCreateLeaseRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "CreateLease", 1)
 	assert.Zero(t, resultID)
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }
 
 func TestEditLeaseOK(t *testing.T) {
@@ -120,7 +120,7 @@ func TestEditLeaseRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "EditLease")
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }
 
 func TestEditLeaseMismatchedUserIdErr(t *testing.T) {
@@ -144,7 +144,7 @@ func TestEditLeaseMismatchedUserIdErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "EditLease")
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.BadRequestError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.BAD_REQUEST_ERROR))
 }
 
 func TestDeleteLeaseOK(t *testing.T) {
@@ -180,7 +180,7 @@ func TestDeleteLeaseRepositoryErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "DeleteLease")
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }
 
 func TestDeleteLeaseMismatchedUserIdErr(t *testing.T) {
@@ -201,7 +201,7 @@ func TestDeleteLeaseMismatchedUserIdErr(t *testing.T) {
 	mockLeaseRepository.AssertNumberOfCalls(t, "GetLeaseById", 1)
 	mockLeaseRepository.AssertNotCalled(t, "DeleteLease")
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.BadRequestError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.BAD_REQUEST_ERROR))
 }
 
 func TestGetPaginatedLeasesOK(t *testing.T) {
@@ -246,7 +246,7 @@ func TestPaginatedLeasesBadFilterErr(t *testing.T) {
 	assert.Zero(t, resultPaginationToken)
 	assert.Zero(t, resultCount)
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.BadRequestError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.BAD_REQUEST_ERROR))
 }
 
 func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
@@ -271,5 +271,5 @@ func TestGetPaginatedLeasesRepositoryErr(t *testing.T) {
 	assert.Zero(t, resultPaginationToken)
 	assert.Zero(t, resultCount)
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }

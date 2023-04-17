@@ -3,12 +3,7 @@ import {
   GridOptions,
   IServerSideDatasource,
   IServerSideGetRowsRequest,
-  
-  ColDef
 } from 'ag-grid-enterprise';
-import { 
-  RowClickedEvent,
-  RowSelectedEvent } from 'ag-grid-community';
 import { Lease } from 'src/app/models/lease';
 import { LeaseService } from 'src/app/services/lease.service';
 import { format, parseISO } from 'date-fns';
@@ -16,6 +11,7 @@ import { take } from 'rxjs';
 import { SortDirection } from 'src/enums/sort-direction';
 import { Router } from '@angular/router';
 import { CustomColumnDef } from 'src/app/shared/custom-column-def';
+import { MatSelectChange } from '@angular/material/select';
 
 
 @Component({
@@ -74,7 +70,6 @@ export class LeaseListingsComponent implements AfterViewInit {
     }
   ]
   gridOptions: GridOptions<Lease> = {
-    onRowSelected: (event: RowSelectedEvent) => console.log,
     columnDefs: this.columnDefs,
     rowModelType: 'serverSide',
     pagination: true,
@@ -83,6 +78,8 @@ export class LeaseListingsComponent implements AfterViewInit {
     suppressPropertyNamesCheck: true
   };
 
+  pageSize = 10
+  cacheBlockSize = this.pageSize * 5
   sortToken: string = '';
   sortDirection = SortDirection.descending;
   paginationToken: string = '';
@@ -150,7 +147,7 @@ export class LeaseListingsComponent implements AfterViewInit {
 
         this.leaseService
           .getPagedLeases(
-            10,
+            this.cacheBlockSize,
             this.sortToken,
             this.paginationToken,
             this.sortDirection,
@@ -229,5 +226,13 @@ export class LeaseListingsComponent implements AfterViewInit {
       default:
         return '';
     }
+  }
+
+  pageSizeChange(evt : MatSelectChange) {
+    this.pageSize = evt.value
+    this.cacheBlockSize = 5 * this.pageSize
+    this.gridOptions.paginationPageSize = this.pageSize
+    this.gridOptions.cacheBlockSize = this.cacheBlockSize
+    this.gridOptions.api?.setServerSideDatasource(this.getLeaseDatasource())
   }
 }

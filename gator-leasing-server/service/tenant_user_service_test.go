@@ -41,7 +41,7 @@ func TestGetOrCreateUserGetTenantUserErr(t *testing.T) {
 	mockTenantUserRepository.AssertNotCalled(t, "CreateTenantUser")
 	assert.Nil(t, resultTenantUser)
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }
 
 func TestGetOrCreateUserCreateTenantUserErr(t *testing.T) {
@@ -58,5 +58,5 @@ func TestGetOrCreateUserCreateTenantUserErr(t *testing.T) {
 	mockTenantUserRepository.AssertNumberOfCalls(t, "CreateTenantUser", 1)
 	assert.Nil(t, resultTenantUser)
 	assert.NotNil(t, resultErr)
-	assert.True(t, stdErrors.Is(&errors.InternalServerError{}, resultErr))
+	assert.True(t, stdErrors.As(resultErr, &errors.INTERNAL_SERVER_ERROR))
 }

@@ -46,6 +46,7 @@ import { LeaseListingsComponent } from './components/lease-listings/lease-listin
 import { ViewComponent } from './components/view/view.component';
 import { GridCellComponent } from 'src/app/components/grid-cell/grid-cell.component';
 import { DisplayLeasesComponent } from './components/display-leases/display-leases.component';
+import { MatSelectModule } from '@angular/material/select'
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { DisplayLeasesComponent } from './components/display-leases/display-leas
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
+    MatSelectModule,
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -100,6 +102,7 @@ import { DisplayLeasesComponent } from './components/display-leases/display-leas
       },
     }),
     AgGridModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
