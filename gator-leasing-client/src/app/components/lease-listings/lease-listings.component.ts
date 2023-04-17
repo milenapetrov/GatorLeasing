@@ -91,7 +91,9 @@ export class LeaseListingsComponent implements AfterViewInit {
 
   onRowClicked(event: any){
     const val = event.data
-    this.router.navigate((['/view']), {queryParams: {fieldParam: val.id}})
+    const url = '/view?data=' + encodeURIComponent(val.id);
+    window.open(`${window.location.origin}${url}`, 'width-600m height=400')
+    //this.router.navigate((['/view']), {queryParams: {fieldParam: val.id}})
   }
 
   onGridReady(params: any){

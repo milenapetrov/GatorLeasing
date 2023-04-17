@@ -2,3 +2,8 @@
     height: calc(100% - 64px);
     width: 100%;
 }
+mat-form-field {
+    justify-content: center;
+    align-items: center;
+    margin-left: 85%;
+}

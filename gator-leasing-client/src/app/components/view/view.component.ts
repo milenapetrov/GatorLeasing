@@ -64,8 +64,8 @@ export class ViewComponent {
   }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
-      this.id = params['fieldParam'];
-      console.log(params['fieldParam'])
+      this.id = params['data'];
+      console.log(params['data']) 
     })
     this.leaseService.getLease(this.id).subscribe(res => {
       console.log(res)
