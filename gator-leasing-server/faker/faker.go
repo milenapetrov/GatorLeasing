@@ -17,11 +17,6 @@ import (
 )
 
 func InitializeFaker() {
-	amenityOptions := strings.Split(constants.AMENITIES, ",")
-	numAmenities, _ := faker.RandomInt(0, len(amenityOptions), 1)
-	amenities, _ := faker.RandomInt(0, len(amenityOptions)-1, numAmenities[0])
-	println(amenities)
-
 	_ = faker.AddProvider("nameFaker", func(v reflect.Value) (interface{}, error) {
 		babbler := babble.NewBabbler()
 		babbler.Count = 1
