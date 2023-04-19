@@ -32,7 +32,7 @@ func InitializeFaker() {
 		houseNumber, _ := faker.RandomInt(1, 99999, 1)
 		babbler := babble.NewBabbler()
 		name := cases.Title(language.English).String(babbler.Babble())
-		suffixes := []string{"Avenue", "Road", "Street", "Lane", "Drive"}
+		suffixes := strings.Split(constants.STREET_SUFFIXES, ",")
 		suffix, _ := faker.RandomInt(0, len(suffixes)-1, 1)
 
 		return strconv.Itoa(houseNumber[0]) + " " + name + " " + suffixes[suffix[0]], nil
