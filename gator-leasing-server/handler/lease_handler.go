@@ -180,6 +180,7 @@ func (h *LeaseHandler) DeleteLease(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.leaseService.DeleteLease(uint(id)); err != nil {
 		respondError(w, err)
+		return
 	}
 
 	respondJson(w, http.StatusNoContent, nil)
