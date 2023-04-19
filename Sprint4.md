@@ -37,7 +37,14 @@
     - Don't require room number for address
 - Documentation
     - Use go-swagger package for documentation
-    - Code annotations for all endpoints and models
+        - (issue) go-swagger assumes distinct structs for responses and parameters
+        - (issue) Led to errors with valid spec generation for generating a swagger md file
+        - Generated swagger pdf using www.swdoc.org
+    - Code annotations
+        - //swagger:meta
+        - //swagger:route
+        - //swagger:parameters
+        - //swagger:model
 
 
 #### Frontend
