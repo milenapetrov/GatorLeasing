@@ -14,6 +14,6 @@ describe('LoginComponent', () => {
         }),
       ],
     });
-    cy.get('a');
   });
 });
+

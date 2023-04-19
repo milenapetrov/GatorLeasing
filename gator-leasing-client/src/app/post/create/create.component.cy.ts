@@ -10,4 +10,13 @@ describe('CreateComponent', () => {
       imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule],
     });
   });
+
 });
+
+/*
+describe('Button', () => {
+  it('should click', () => {
+    cy.get('button[name="post"]').click();
+  })
+});
+*/
