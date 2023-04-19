@@ -7,9 +7,9 @@ import (
 )
 
 type Tenant struct {
-	ID        uint `gorm:"primarykey" faker:"-"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
-	Name      string
+	ID        uint           `gorm:"primarykey" faker:"-"`
+	CreatedAt time.Time      `faker:"-"`
+	UpdatedAt time.Time      `faker:"-"`
+	DeletedAt gorm.DeletedAt `gorm:"index" faker:"-"`
+	Name      string         `faker:"len=10"`
 }

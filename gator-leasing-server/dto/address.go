@@ -7,14 +7,14 @@ import (
 )
 
 type Address struct {
-	OwnerID    uint   `gorm:"primaryKey"`
-	OwnerType  string `gorm:"primaryKey"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
-	Street     string         `gorm:"not null"`
-	RoomNumber string
-	City       string `gorm:"not null"`
-	State      string `gorm:"not null"`
-	ZipCode    string `gorm:"not null"`
+	OwnerID    uint           `gorm:"primaryKey" faker:"-"`
+	OwnerType  string         `gorm:"primaryKey" faker:"-"`
+	CreatedAt  time.Time      `faker:"-"`
+	UpdatedAt  time.Time      `faker:"-"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" faker:"-"`
+	Street     string         `gorm:"not null" faker:"streetFaker"`
+	RoomNumber string         `faker:"-"`
+	City       string         `gorm:"not null" faker:"cityFaker"`
+	State      string         `gorm:"not null" faker:"stateFaker"`
+	ZipCode    string         `gorm:"not null" faker:"zipCodeFaker"`
 }

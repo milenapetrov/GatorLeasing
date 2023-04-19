@@ -1,0 +1,5 @@
+DELETE FROM addresses;
+DELETE FROM contacts;
+DELETE FROM leases;
+DELETE FROM tenant_users;
+DELETE FROM tenants;
