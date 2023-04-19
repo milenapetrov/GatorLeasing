@@ -1,8 +1,10 @@
 package database
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -10,7 +12,6 @@ import (
 
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/config"
 	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/dto"
-	"github.com/milenapetrov/GatorLeasing/gator-leasing-server/faker"
 )
 
 type Database struct {
@@ -45,6 +46,22 @@ func (d *Database) AutoMigrate() {
 	}
 }
 
-func (d *Database) Generate() {
-	faker.InitializeFaker()
+func (d *Database) Clear() {
+	file, err := os.Open("database/scripts/clear_database.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	sql := []string{}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		sql = append(sql, scanner.Text())
+	}
+
+	for _, s := range sql {
+		if err := d.DB.Exec(s).Error; err != nil {
+			log.Fatal(err)
+		}
+	}
 }

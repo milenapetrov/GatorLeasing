@@ -30,6 +30,9 @@ func (a *App) Initialize() {
 	if a.config.DB.Migrate {
 		db.AutoMigrate()
 	}
+	if a.config.DB.Clear {
+		db.Clear()
+	}
 	if a.config.DB.Populate {
 		db.Generate()
 	}
