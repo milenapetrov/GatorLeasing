@@ -44,6 +44,12 @@ func (d *Database) AutoMigrate() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	tenant := &dto.Tenant{
+		ID:   1,
+		Name: "Default Tenant",
+	}
+	d.DB.Create(tenant)
 }
 
 func (d *Database) Clear() {
