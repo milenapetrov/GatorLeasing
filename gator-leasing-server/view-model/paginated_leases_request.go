@@ -24,7 +24,7 @@ type PaginatedLeasesRequest struct {
 	SortDirection enums.SortDirection `faker:"sortDirectionFaker"`
 	// the filters
 	// in: body
-	Filters string `faker:"filtersFake"`
+	Filters string `faker:"filtersFaker"`
 }
 
 func (r *PaginatedLeasesRequest) MarshalJSON() ([]byte, error) {
