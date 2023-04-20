@@ -1,6 +1,6 @@
 # Sprint 4
 
-#### Backend
+## Backend
 
 - Documentation located at gator-leasing-server/docs
 - Unit testing
@@ -47,7 +47,7 @@
         - //swagger:model
 
 
-#### Frontend
+## Frontend
 
 - Display leases on home page
     - Displays all leases posted by any user on the home page
@@ -70,9 +70,9 @@
     - The user can search leases on the home page by name, availability, and zip code
 - Implemented styling, fonts, placement, images, and color
 - Testing
-    - <b>{finish}</b>
+    - **{finish}**
 
 
-#### Documentation
+## Documentation
 
 - [Documentation pdf](https://github.com/milenapetrov/GatorLeasing/blob/main/gator-leasing-server/docs/api-documentation.pdf)
