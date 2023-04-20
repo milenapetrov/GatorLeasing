@@ -52,6 +52,7 @@
 - Display leases on home page
     - Displays all leases posted by any user on the home page
     - Clicking any of these leases directs the user to a page of that lease’s details
+    - Able to view various pages of leases and change each page size
 - Click on lease and see full details
     - Use Get lease by ID (GET /lease/{id})
     - Pass this data between components
@@ -69,8 +70,10 @@
     - Using the grid filter
     - The user can search leases on the home page by name, availability, and zip code
 - Implemented styling, fonts, placement, images, and color
-- Testing
-    - **{finish}**
+    - Clearer front image for the home page 
+- Cypress Component Testing
+    - Created cy testing files for each component
+    - Confirmed ability to mount, press buttons, take correct input, and analyze input
 
 
 ## Documentation
